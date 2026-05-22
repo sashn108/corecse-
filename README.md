@@ -1,7 +1,6 @@
 # CoreCSE — Every Concept. Every Year. One Place.
 
-GATE CSE preparation platform targeting AIR 1 (IIT Bombay CSE, IISc Bangalore).
-
+GATE CSE preparation platform.
 ## Features
 - Subject-wise concept trees with expandable nodes
 - Mastery-level theory notes with GATE-specific traps highlighted
