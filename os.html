@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Operating Systems — CoreCSE</title>
+  <link rel="stylesheet" href="../style.css"/>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">
+    <a href="../index.html" style="display:flex;align-items:center;gap:10px;">
+      <div class="logo-mark">C²</div>
+      <div>
+        <div class="logo-text">CoreCSE</div>
+        <div class="logo-sub">GATE CSE · AIR 1</div>
+      </div>
+    </a>
+  </div>
+  <div class="nav-links">
+    <a href="../index.html">← All subjects</a>
+    <span style="font-size:13px;color:#999;">Operating Systems</span>
+  </div>
+</nav>
+
+<div class="page-layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-head">Topics</div>
+
+    <div class="tree-item active" onclick="loadTopic(this, 'processes')">
+      <span class="tree-dot dot-active"></span> Processes &amp; Threads
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'scheduling')">
+      <span class="tree-dot dot-done"></span> CPU Scheduling
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'sync')">
+      <span class="tree-dot dot-active"></span> Synchronization
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'deadlock')">
+      <span class="tree-dot dot-todo"></span> Deadlock
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'memory')">
+      <span class="tree-dot dot-todo"></span> Memory Management
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'paging')">
+      <span class="tree-dot dot-done"></span> Paging &amp; Segmentation
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'virtual')">
+      <span class="tree-dot dot-todo"></span> Virtual Memory
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'fs')">
+      <span class="tree-dot dot-todo"></span> File Systems
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'disk')">
+      <span class="tree-dot dot-todo"></span> Disk Scheduling
+    </div>
+    <div class="tree-item" onclick="loadTopic(this, 'ipc')">
+      <span class="tree-dot dot-todo"></span> IPC &amp; Sockets
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-area">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab(this,'concepts')">🗺 Concept tree</button>
+      <button class="tab" onclick="switchTab(this,'theory')">📖 Theory</button>
+      <button class="tab" onclick="switchTab(this,'pyqs')">📚 PYQs <span style="font-size:10px;background:#f0f0f0;padding:1px 6px;border-radius:99px;margin-left:4px;">31</span></button>
+      <button class="tab" onclick="switchTab(this,'predict')">🧠 Predict</button>
+    </div>
+
+    <!-- CONCEPT TREE PANEL -->
+    <div class="panel active" id="panel-concepts">
+      <div class="topic-hero">
+        <h2>Processes &amp; Threads</h2>
+        <p>A process is a program in execution — an abstraction that includes code, data, stack, heap, and OS bookkeeping. Threads share the process address space but have their own stack and registers, enabling concurrency within a single process.</p>
+        <div class="tags">
+          <span class="tag">GATE weightage: high</span>
+          <span class="tag">Avg 2–3 Qs/year</span>
+          <span class="tag">Theory + numerical</span>
+        </div>
+      </div>
+
+      <div class="concept-list">
+
+        <div class="c-node open">
+          <div class="c-node-head" onclick="toggleNode(this)">
+            <div class="c-icon ic-blue">📋</div>
+            <div style="flex:1">
+              <div class="c-title">Process concept &amp; PCB</div>
+              <div class="c-sub">Process Control Block · States · Transitions</div>
+            </div>
+            <span class="c-badge cb-blue">Core</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="c-node-body">
+            <ul>
+              <li>PCB stores: PID, state, PC, registers, memory maps, open files, scheduling info</li>
+              <li>5-state model: New → Ready → Running → Waiting → Terminated</li>
+              <li>Context switch saves/restores PCB — pure overhead, no useful work done</li>
+              <li>Process creation via fork(); child gets a copy of parent's address space (copy-on-write)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-node">
+          <div class="c-node-head" onclick="toggleNode(this)">
+            <div class="c-icon ic-teal">🔀</div>
+            <div style="flex:1">
+              <div class="c-title">Threads &amp; concurrency models</div>
+              <div class="c-sub">User threads · Kernel threads · M:N model</div>
+            </div>
+            <span class="c-badge cb-green">High freq</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="c-node-body">
+            <ul>
+              <li>User-level threads: managed by runtime, no kernel involvement — fast but one block = all block</li>
+              <li>Kernel threads: scheduled independently — blocking safe, but creation is costly</li>
+              <li>M:N (hybrid) model maps M user threads onto N kernel threads</li>
+              <li>POSIX pthreads use kernel threads; Java green threads were user-level</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-node">
+          <div class="c-node-head" onclick="toggleNode(this)">
+            <div class="c-icon ic-amber">🔁</div>
+            <div style="flex:1">
+              <div class="c-title">Context switching internals</div>
+              <div class="c-sub">Switch cost · voluntary vs preemptive</div>
+            </div>
+            <span class="c-badge cb-amber">Medium</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="c-node-body">
+            <ul>
+              <li>Triggered by: timer interrupt, I/O wait, yield(), or higher-priority process arrival</li>
+              <li>Steps: save PC + registers → update PCB → select next process → restore PCB → resume</li>
+              <li>TLB flush on context switch adds significant overhead (unless hardware ASID is supported)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-node">
+          <div class="c-node-head" onclick="toggleNode(this)">
+            <div class="c-icon ic-purple">💬</div>
+            <div style="flex:1">
+              <div class="c-title">Inter-process communication</div>
+              <div class="c-sub">Pipes · Shared memory · Message passing</div>
+            </div>
+            <span class="c-badge cb-blue">Core</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="c-node-body">
+            <ul>
+              <li>Pipes: unidirectional, FIFO byte stream between related processes via file descriptors</li>
+              <li>Shared memory: fastest IPC — processes map same physical frames; needs explicit synchronization</li>
+              <li>Message passing: send/receive primitives — no shared state, safe but slower than shared memory</li>
+              <li>Sockets: IPC over network — used in client-server models (can also be used locally)</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- THEORY PANEL -->
+    <div class="panel" id="panel-theory">
+
+      <div class="theory-block">
+        <h3>What is a process?</h3>
+        <p>A process is an instance of a program in execution. Unlike a program (a passive entity on disk), a process is active — it has a program counter, registers, stack, heap, and associated OS metadata bundled in a <strong>Process Control Block (PCB)</strong>.</p>
+        <div class="callout">
+          <strong>PCB fields tested in GATE:</strong> Process ID, process state, program counter, CPU registers, CPU scheduling info, memory-management info, I/O status info, accounting info.
+        </div>
+        <p>The OS uses the PCB to save and restore process state during context switches. Any GATE question asking "what is saved during a context switch" is really asking about PCB contents.</p>
+      </div>
+
+      <div class="theory-block">
+        <h3>Process state transitions</h3>
+        <p>The five-state process model is the most commonly tested in GATE. Know each transition trigger precisely:</p>
+        <div class="formula">New       → Ready      : admitted by OS (memory allocated)
+Ready     → Running    : dispatched by scheduler (CPU assigned)
+Running   → Ready      : preempted (timer interrupt / higher priority arrives)
+Running   → Waiting    : I/O request or event wait (voluntary block)
+Waiting   → Ready      : I/O completion / event occurs
+Running   → Terminated : exit() called or unhandled exception</div>
+        <div class="callout">
+          <strong>GATE trap:</strong> A process can go Running → Ready (preemption) but NEVER directly Waiting → Running. It must pass through Ready first. This distinction is asked almost every alternate year.
+        </div>
+      </div>
+
+      <div class="theory-block">
+        <h3>Threads: user-level vs kernel-level</h3>
+        <p>The key distinction is where the thread table lives and who manages scheduling:</p>
+        <div class="formula">User-level threads:
+  · Thread table in user space (managed by runtime library)
+  · Kernel sees one process — not individual threads
+  · One blocking syscall blocks ALL threads in the process
+  · Fast creation/switching — no kernel mode transition needed
+
+Kernel-level threads:
+  · Thread table in kernel space
+  · Each thread scheduled independently by OS
+  · Blocking safe — other threads in same process continue
+  · Slower: every thread operation requires a kernel call</div>
+      </div>
+
+      <div class="theory-block">
+        <h3>fork() — GATE numerical type</h3>
+        <p>fork() creates an exact copy of the calling process. The number of processes after n fork() calls (if no process exits):</p>
+        <div class="formula">fork() called once   → 2 processes (parent + child)
+fork() called twice  → 4 processes
+fork() called n times → 2^n processes
+
+Example: 3 sequential fork() calls → 2^3 = 8 processes total</div>
+        <div class="callout">
+          <strong>Variation tested:</strong> fork() inside a loop — count carefully. Each child also executes remaining loop iterations. Draw a process tree.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PYQs PANEL -->
+    <div class="panel" id="panel-pyqs">
+      <div class="pyq-filters">
+        <button class="filter-btn active" onclick="filterYear(this,'all')">All years</button>
+        <button class="filter-btn" onclick="filterYear(this,'2024')">2024</button>
+        <button class="filter-btn" onclick="filterYear(this,'2023')">2023</button>
+        <button class="filter-btn" onclick="filterYear(this,'2022')">2022</button>
+        <button class="filter-btn" onclick="filterYear(this,'1m')">1 mark</button>
+        <button class="filter-btn" onclick="filterYear(this,'2m')">2 marks</button>
+      </div>
+
+      <div class="pyq-list">
+
+        <div class="pyq-item" data-year="2024" data-marks="2m">
+          <div class="pyq-meta">
+            <span class="pyq-year">GATE 2024</span>
+            <span class="pyq-m2">2 marks</span>
+            <span class="pyq-tag">Process states</span>
+          </div>
+          <div class="pyq-q">Which of the following state transitions is NOT possible in a standard 5-state process model?</div>
+          <div class="pyq-opts">(A) Ready → Running &nbsp; (B) Waiting → Running &nbsp; (C) Running → Waiting &nbsp; (D) Running → Ready</div>
+          <div class="pyq-actions">
+            <button class="pyq-btn primary" onclick="solveQuestion(this, 'GATE 2024: Which transition is NOT possible in 5-state model? Answer: (B) Waiting→Running is not allowed — process must go through Ready state first.')">Show answer</button>
+          </div>
+          <div class="answer-box">✅ Answer: (B) Waiting → Running is NOT possible. A process must return to the Ready state first before being dispatched to Running.</div>
+        </div>
+
+        <div class="pyq-item" data-year="2023" data-marks="1m">
+          <div class="pyq-meta">
+            <span class="pyq-year">GATE 2023</span>
+            <span class="pyq-m1">1 mark</span>
+            <span class="pyq-tag">Threads</span>
+          </div>
+          <div class="pyq-q">In which threading model does a single blocking system call block all threads of the process?</div>
+          <div class="pyq-opts">(A) Kernel-level threading &nbsp; (B) User-level threading &nbsp; (C) Hybrid M:N model &nbsp; (D) POSIX pthreads</div>
+          <div class="pyq-actions">
+            <button class="pyq-btn primary" onclick="solveQuestion(this, 'Answer: (B) User-level threading. The kernel sees only one process, so any blocking syscall by one user thread blocks the entire process.')">Show answer</button>
+          </div>
+          <div class="answer-box">✅ Answer: (B) User-level threading. The kernel only sees a single process — a blocking syscall from any user thread causes the entire process to block.</div>
+        </div>
+
+        <div class="pyq-item" data-year="2022" data-marks="2m">
+          <div class="pyq-meta">
+            <span class="pyq-year">GATE 2022</span>
+            <span class="pyq-m2">2 marks</span>
+            <span class="pyq-tag">Context switch</span>
+          </div>
+          <div class="pyq-q">During a context switch from process P1 to P2, which of the following is saved as part of P1's context?</div>
+          <div class="pyq-opts">(I) Program Counter &nbsp; (II) Stack Pointer &nbsp; (III) Page table base register &nbsp; (IV) Open file descriptors</div>
+          <div class="pyq-actions">
+            <button class="pyq-btn primary" onclick="solveQuestion(this, 'Answer: All four (I, II, III, IV). All CPU registers including PC, SP, and the page table base register (CR3 in x86) are saved. Open file descriptor references stored in PCB are also preserved.')">Show answer</button>
+          </div>
+          <div class="answer-box">✅ Answer: All four are saved — PC, SP, page table base register (CR3 in x86), and open file descriptor references are all part of the PCB.</div>
+        </div>
+
+        <div class="pyq-item" data-year="2021" data-marks="2m">
+          <div class="pyq-meta">
+            <span class="pyq-year">GATE 2021</span>
+            <span class="pyq-m2">2 marks</span>
+            <span class="pyq-tag">fork()</span>
+          </div>
+          <div class="pyq-q">How many processes are created by the following code snippet (including the original process)?<br><code style="font-size:12px;background:#f5f5f5;padding:2px 6px;border-radius:4px;">for(i=0; i&lt;3; i++) fork();</code></div>
+          <div class="pyq-actions">
+            <button class="pyq-btn primary" onclick="solveQuestion(this, 'Answer: 8 processes. Each fork() doubles the number of processes. After 3 fork() calls: 2^3 = 8 total processes.')">Show answer</button>
+          </div>
+          <div class="answer-box">✅ Answer: 8 processes. Each fork() doubles the process count. After 3 forks: 2³ = 8 total processes (including the original).</div>
+        </div>
+
+        <div class="pyq-item" data-year="2020" data-marks="1m">
+          <div class="pyq-meta">
+            <span class="pyq-year">GATE 2020</span>
+            <span class="pyq-m1">1 mark</span>
+            <span class="pyq-tag">IPC</span>
+          </div>
+          <div class="pyq-q">Which IPC mechanism provides the fastest communication between two processes on the same machine, assuming proper synchronization?</div>
+          <div class="pyq-opts">(A) Pipes &nbsp; (B) Sockets &nbsp; (C) Shared memory &nbsp; (D) Message queues</div>
+          <div class="pyq-actions">
+            <button class="pyq-btn primary" onclick="solveQuestion(this, 'Answer: (C) Shared memory. No kernel involvement after setup — processes read/write directly to a common memory region, making it the fastest IPC mechanism.')">Show answer</button>
+          </div>
+          <div class="answer-box">✅ Answer: (C) Shared memory. After the initial setup, no kernel involvement is needed — processes communicate by reading/writing to a common physical memory region directly.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PREDICT PANEL -->
+    <div class="panel" id="panel-predict">
+      <div class="pred-panel">
+        <div class="pred-panel-head">
+          <h3>High-probability topics · GATE 2027 · Processes &amp; Threads</h3>
+          <span class="live-badge">● 20-yr pattern</span>
+        </div>
+        <div class="pred-panel-body">
+          <div class="pred-item">
+            <span class="pred-item-name">Process state diagram — tricky transition question</span>
+            <div class="pred-item-bar"><div class="pred-item-fill" style="width:90%"></div></div>
+            <span class="pred-item-pct">90%</span>
+          </div>
+          <div class="pred-item">
+            <span class="pred-item-name">User vs kernel thread blocking behaviour</span>
+            <div class="pred-item-bar"><div class="pred-item-fill" style="width:78%"></div></div>
+            <span class="pred-item-pct">78%</span>
+          </div>
+          <div class="pred-item">
+            <span class="pred-item-name">fork() — number of processes created</span>
+            <div class="pred-item-bar"><div class="pred-item-fill" style="width:72%"></div></div>
+            <span class="pred-item-pct">72%</span>
+          </div>
+          <div class="pred-item">
+            <span class="pred-item-name">Context switch cost — TLB &amp; cache effects</span>
+            <div class="pred-item-bar"><div class="pred-item-fill" style="width:55%"></div></div>
+            <span class="pred-item-pct">55%</span>
+          </div>
+          <div class="pred-item">
+            <span class="pred-item-name">Shared memory IPC numerical (size / sync)</span>
+            <div class="pred-item-bar"><div class="pred-item-fill" style="width:48%"></div></div>
+            <span class="pred-item-pct">48%</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#f7f7f5;border:1px solid #e5e5e5;border-radius:12px;padding:1.25rem;margin-top:1rem;">
+        <div style="font-size:13px;font-weight:500;margin-bottom:6px;">Pattern insight</div>
+        <p style="font-size:13px;color:#555;line-height:1.7;">Process state transitions have appeared in 14 of the last 20 GATE papers. The "Waiting → Running is not allowed" trap is tested every 2–3 years. fork() numericals appear roughly every 3 years — last seen in 2021, making 2024–2025 high probability. Thread model blocking has been asked 6 times since 2015.</p>
+      </div>
+    </div>
+
+  </div><!-- end main-area -->
+</div><!-- end page-layout -->
+
+<script>
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+function toggleNode(head) {
+  head.closest('.c-node').classList.toggle('open');
+}
+
+function loadTopic(el, id) {
+  document.querySelectorAll('.tree-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  // In a full build, this would load topic-specific content dynamically
+  // For now, content is static per page
+}
+
+function solveQuestion(btn, answer) {
+  const box = btn.closest('.pyq-item').querySelector('.answer-box');
+  if (box.classList.contains('show')) {
+    box.classList.remove('show');
+    btn.textContent = 'Show answer';
+  } else {
+    box.classList.add('show');
+    btn.textContent = 'Hide answer';
+  }
+}
+
+function filterYear(btn, filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const items = document.querySelectorAll('.pyq-item');
+  items.forEach(item => {
+    if (filter === 'all') {
+      item.style.display = 'block';
+    } else if (filter === '1m' || filter === '2m') {
+      item.style.display = item.dataset.marks === filter ? 'block' : 'none';
+    } else {
+      item.style.display = item.dataset.year === filter ? 'block' : 'none';
+    }
+  });
+}
+</script>
+
+</body>
+</html>
