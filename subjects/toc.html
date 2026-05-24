@@ -1,20 +1,208 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Theory of Computation — CoreCSE</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"><style>:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;--accent:#a29bfe;--accent2:#ff6a6a;--green:#4fffb0;--yellow:#ffd166;--text:#e8e8f0;--muted:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}*{margin:0;padding:0;box-sizing:border-box;}body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.95);backdrop-filter:blur(12px);}.logo{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:#7c6aff;text-decoration:none;}.logo span{color:var(--text);}nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;}nav a:hover{color:var(--text);}.nav-links{display:flex;gap:1.5rem;align-items:center;}.nav-back{font-family:var(--mono);font-size:0.8rem;border:1px solid var(--border);padding:0.4rem 0.8rem;border-radius:4px;transition:all 0.2s;}.nav-back:hover{color:var(--accent)!important;border-color:var(--accent);}.hero{padding:4rem 2rem 2rem;max-width:1100px;margin:0 auto;display:flex;align-items:flex-start;gap:3rem;}.hero-icon{font-size:4rem;flex-shrink:0;filter:drop-shadow(0 0 30px rgba(162,155,254,0.4));}.hero-text{flex:1;}.subject-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;}.hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:1rem;}.hero p{color:var(--muted);font-size:1rem;line-height:1.7;max-width:600px;margin-bottom:1.5rem;}.hero-stats{display:flex;gap:2rem;flex-wrap:wrap;}.stat{text-align:center;}.stat-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--accent);display:block;}.stat-label{font-size:0.75rem;color:var(--muted);}.weightage-bar-wrap{max-width:1100px;margin:0 auto 2rem;padding:0 2rem;}.weightage-bar-label{font-family:var(--mono);font-size:0.75rem;color:var(--muted);margin-bottom:0.4rem;display:flex;justify-content:space-between;}.weightage-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}.weightage-fill{height:100%;background:linear-gradient(90deg,var(--accent),#7c6aff);border-radius:3px;}.main{max-width:1100px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:1fr 340px;gap:2rem;}.section-title{font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;}.topics-list{display:flex;flex-direction:column;gap:0.75rem;}.topic-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.5rem;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}.topic-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transition:transform 0.25s;border-radius:0 2px 2px 0;}.topic-card:hover{border-color:var(--accent);background:var(--surface2);transform:translateX(4px);}.topic-card:hover::before{transform:scaleY(1);}.topic-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.4rem;}.topic-name{font-weight:700;font-size:0.95rem;}.topic-meta{display:flex;gap:0.5rem;align-items:center;}.badge{font-family:var(--mono);font-size:0.65rem;padding:0.2rem 0.5rem;border-radius:3px;font-weight:600;}.badge-hot{background:rgba(255,106,106,0.15);color:var(--accent2);border:1px solid rgba(255,106,106,0.3);}.badge-warm{background:rgba(255,209,102,0.12);color:var(--yellow);border:1px solid rgba(255,209,102,0.3);}.badge-core{background:rgba(79,255,176,0.1);color:var(--green);border:1px solid rgba(79,255,176,0.25);}.pyq-count{font-family:var(--mono);font-size:0.7rem;color:var(--muted);}.topic-subtopics{font-size:0.8rem;color:var(--muted);line-height:1.6;}.sidebar{display:flex;flex-direction:column;gap:1.5rem;}.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem;}.card h3{font-family:var(--mono);font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem;}.pyq-years{display:flex;flex-wrap:wrap;gap:0.4rem;}.year-chip{font-family:var(--mono);font-size:0.7rem;padding:0.25rem 0.5rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);}.year-chip.active{background:rgba(124,106,255,0.1);border-color:var(--accent);color:var(--accent);}.predict-item{margin-bottom:1rem;}.predict-topic{font-size:0.85rem;font-weight:600;margin-bottom:0.3rem;display:flex;justify-content:space-between;}.predict-prob{font-family:var(--mono);font-size:0.8rem;color:var(--green);}.prob-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}.prob-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--green));}.formula{font-family:var(--mono);font-size:0.78rem;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:0.6rem 0.8rem;margin-bottom:0.5rem;color:var(--green);line-height:1.5;}.quick-links{display:flex;flex-direction:column;gap:0.4rem;}.quick-link{display:flex;align-items:center;gap:0.6rem;font-size:0.82rem;color:var(--muted);text-decoration:none;padding:0.4rem 0;border-bottom:1px solid var(--border);transition:color 0.2s;}.quick-link:last-child{border-bottom:none;}.quick-link:hover{color:var(--accent);}.subject-nav{display:flex;justify-content:space-between;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);grid-column:1/-1;}.subject-nav a{font-family:var(--mono);font-size:0.8rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:0.5rem 1rem;border-radius:4px;transition:all 0.2s;}.subject-nav a:hover{border-color:var(--accent);color:var(--accent);}@media(max-width:768px){.main{grid-template-columns:1fr}.hero{flex-direction:column;gap:1rem;padding:2rem 1rem 1rem}nav{padding:0.8rem 1rem}.nav-links{gap:0.8rem}.main{padding:0 1rem 3rem}.weightage-bar-wrap{padding:0 1rem}}</style></head><body>
-<nav><a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a><div class="nav-links"><a class="nav-back" href="../index.html">← All Subjects</a><a href="#">PYQs</a><a href="#">Predict</a></div></nav>
-<div class="hero"><div class="hero-icon">🔄</div><div class="hero-text"><div class="subject-tag">Subject 06 · 9% Weightage</div><h1>Theory of Computation</h1><p>Automata, regular languages, context-free grammars, pushdown automata, Turing machines, and decidability — heavily theoretical, high precision required.</p><div class="hero-stats"><div class="stat"><span class="stat-val">7</span><span class="stat-label">Core Topics</span></div><div class="stat"><span class="stat-val">~3</span><span class="stat-label">Qs per GATE</span></div><div class="stat"><span class="stat-val">180+</span><span class="stat-label">PYQs</span></div><div class="stat"><span class="stat-val">20 yr</span><span class="stat-label">Coverage</span></div></div></div></div>
-<div class="weightage-bar-wrap"><div class="weightage-bar-label"><span>GATE Weightage</span><span>9%</span></div><div class="weightage-bar"><div class="weightage-fill" style="width:9%"></div></div></div>
-<div class="main"><div><div class="section-title">Topics · 7 units</div><div class="topics-list"><div class="topic-card"><div class="topic-header"><div class="topic-name">1. Regular Languages & DFA</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">35 PYQs</span></div></div><div class="topic-subtopics">DFA construction · NFA to DFA (subset construction) · ε-NFA · Regular expressions · Equivalence · Minimization (Myhill-Nerode)</div></div>
-<div class="topic-card"><div class="topic-header"><div class="topic-name">2. Pumping Lemma</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">28 PYQs</span></div></div><div class="topic-subtopics">Pumping lemma for regular languages · Proving non-regularity · Pumping lemma for CFLs · Closure properties of regular languages</div></div>
-<div class="topic-card"><div class="topic-header"><div class="topic-name">3. Context-Free Grammars</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">32 PYQs</span></div></div><div class="topic-subtopics">CFG derivations · Parse trees · Ambiguity · CNF/GNF conversions · CYK algorithm · Left recursion removal · Left factoring</div></div>
-<div class="topic-card"><div class="topic-header"><div class="topic-name">4. Pushdown Automata</div><div class="topic-meta"><span class="badge badge-warm">⚡ WARM</span><span class="pyq-count">22 PYQs</span></div></div><div class="topic-subtopics">DPDA vs NPDA · Acceptance by final state vs empty stack · PDA design · PDA ↔ CFG equivalence · DCFL vs CFL</div></div>
-<div class="topic-card"><div class="topic-header"><div class="topic-name">5. Turing Machines</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">30 PYQs</span></div></div><div class="topic-subtopics">TM variants (multi-tape, nondeterministic) · Church-Turing thesis · TM design · Universal TM · Configuration & computation</div></div>
-<div class="topic-card"><div class="topic-header"><div class="topic-name">6. Decidability</div><div class="topic-meta"><span class="badge badge-warm">⚡ WARM</span><span class="pyq-count">20 PYQs</span></div></div><div class="topic-subtopics">Decidable vs undecidable problems · Halting problem · Rice theorem · Reduction · Post correspondence problem · ATM undecidability</div></div>
-<div class="topic-card"><div class="topic-header"><div class="topic-name">7. Chomsky Hierarchy</div><div class="topic-meta"><span class="badge badge-core">● CORE</span><span class="pyq-count">13 PYQs</span></div></div><div class="topic-subtopics">Type 0/1/2/3 grammars · Hierarchy of languages · Closure properties of each class · Recursive vs RE languages · Context-sensitive languages</div></div></div></div>
-<div class="sidebar"><div class="card"><h3>🎯 2027 Predictions</h3><div class="predict-item"><div class="predict-topic"><span>Pumping Lemma for CFLs</span><span class="predict-prob">71%</span></div><div class="prob-bar"><div class="prob-fill" style="width:71%"></div></div></div>
-<div class="predict-item"><div class="predict-topic"><span>NFA → DFA Conversion</span><span class="predict-prob">75%</span></div><div class="prob-bar"><div class="prob-fill" style="width:75%"></div></div></div>
-<div class="predict-item"><div class="predict-topic"><span>Decidability / Rice Theorem</span><span class="predict-prob">63%</span></div><div class="prob-bar"><div class="prob-fill" style="width:63%"></div></div></div>
-<div class="predict-item"><div class="predict-topic"><span>CFG Ambiguity</span><span class="predict-prob">58%</span></div><div class="prob-bar"><div class="prob-fill" style="width:58%"></div></div></div>
-<div class="predict-item"><div class="predict-topic"><span>Turing Machine Design</span><span class="predict-prob">50%</span></div><div class="prob-bar"><div class="prob-fill" style="width:50%"></div></div></div></div><div class="card"><h3>📐 Key Formulas</h3><div class="formula">DFA states after subset: at most 2^n states</div>
-<div class="formula">Minimum DFA states: equivalence classes of Myhill-Nerode</div>
-<div class="formula">Pumping length p: |w|≥p ⟹ w=xyz<br>|y|≥1, |xy|≤p, xyⁱz∈L ∀i≥0</div>
-<div class="formula">Rice: any non-trivial semantic property of TM is undecidable</div></div><div class="card"><h3>📅 PYQ Years</h3><div class="pyq-years"><span class="year-chip active">2024</span><span class="year-chip active">2023</span><span class="year-chip active">2022</span><span class="year-chip active">2021</span><span class="year-chip active">2020</span><span class="year-chip">2019</span><span class="year-chip">2018</span><span class="year-chip">2017</span><span class="year-chip">2016</span><span class="year-chip">2015</span><span class="year-chip">2014</span><span class="year-chip">2013</span><span class="year-chip">2012</span><span class="year-chip">2011</span><span class="year-chip">2010</span><span class="year-chip">2009</span><span class="year-chip">2008</span><span class="year-chip">2007</span><span class="year-chip">2006</span><span class="year-chip">2005</span></div></div><div class="card"><h3>🔗 Quick Access</h3><div class="quick-links"><a class="quick-link" href="#"><span>📄</span> Cheat Sheet PDF</a><a class="quick-link" href="#"><span>🧩</span> PYQ Practice Bank</a><a class="quick-link" href="#"><span>🎲</span> Mock Quiz</a><a class="quick-link" href="#"><span>🗺️</span> Topic Mind Map</a></div></div></div>
-<div class="subject-nav"><a href="cn.html">← Computer Networks</a><a href="dl.html">Digital Logic →</a></div></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theory of Computation — CoreCSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;--accent:#a29bfe;--green:#4fffb0;--yellow:#ffd166;--red:#ff6a6a;--text:#e8e8f0;--muted:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.95);backdrop-filter:blur(12px);}
+  .logo{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:#7c6aff;text-decoration:none;}.logo span{color:var(--text);}
+  nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;}nav a:hover{color:var(--text);}
+  .nav-links{display:flex;gap:1.5rem;align-items:center;}
+  .nav-back{font-family:var(--mono);font-size:0.8rem;border:1px solid var(--border);padding:0.4rem 0.8rem;border-radius:4px;transition:all 0.2s;}.nav-back:hover{color:var(--accent)!important;border-color:var(--accent);}
+  .hero{padding:3rem 2rem 1.5rem;max-width:1100px;margin:0 auto;display:flex;align-items:flex-start;gap:2.5rem;}
+  .hero-icon{font-size:3.5rem;flex-shrink:0;filter:drop-shadow(0 0 24px rgba(162,155,254,0.5));}
+  .hero-text{flex:1;}.subject-tag{font-family:var(--mono);font-size:0.68rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem;}
+  .hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.1;margin-bottom:0.8rem;}
+  .hero p{color:var(--muted);font-size:0.95rem;line-height:1.7;max-width:560px;margin-bottom:1.2rem;}
+  .hero-stats{display:flex;gap:2rem;flex-wrap:wrap;}.stat{text-align:center;}
+  .stat-val{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--accent);display:block;}.stat-label{font-size:0.72rem;color:var(--muted);}
+  .wbar-wrap{max-width:1100px;margin:0 auto 1.5rem;padding:0 2rem;}
+  .wbar-label{font-family:var(--mono);font-size:0.72rem;color:var(--muted);margin-bottom:0.35rem;display:flex;justify-content:space-between;}
+  .wbar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .wbar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#7c6aff);border-radius:3px;}
+  .main{max-width:1100px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:1fr 320px;gap:2rem;}
+  .sec-title{font-family:var(--mono);font-size:0.68rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.8rem;}
+  .topics-list{display:flex;flex-direction:column;gap:0.6rem;}
+  .topic-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color 0.2s;}
+  .topic-card.active{border-color:var(--accent);}
+  .topic-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;cursor:pointer;transition:background 0.2s;}
+  .topic-header:hover{background:var(--surface2);}
+  .topic-left{display:flex;align-items:center;gap:0.75rem;}
+  .topic-name{font-weight:700;font-size:0.92rem;}
+  .topic-meta{display:flex;gap:0.4rem;align-items:center;}
+  .badge{font-family:var(--mono);font-size:0.62rem;padding:0.18rem 0.45rem;border-radius:3px;font-weight:600;}
+  .badge-hot{background:rgba(255,106,106,0.15);color:var(--red);border:1px solid rgba(255,106,106,0.3);}
+  .badge-warm{background:rgba(255,209,102,0.12);color:var(--yellow);border:1px solid rgba(255,209,102,0.3);}
+  .badge-core{background:rgba(79,255,176,0.1);color:var(--green);border:1px solid rgba(79,255,176,0.25);}
+  .pyq-count{font-family:var(--mono);font-size:0.68rem;color:var(--muted);}
+  .chevron{font-size:0.7rem;color:var(--muted);transition:transform 0.3s;flex-shrink:0;}
+  .topic-card.active .chevron{transform:rotate(180deg);}
+  .topic-summary{font-size:0.78rem;color:var(--muted);padding:0 1.25rem 0.8rem;line-height:1.6;}
+  .topic-panel{display:none;border-top:1px solid var(--border);background:var(--surface2);}
+  .topic-card.active .topic-panel{display:block;}
+  .panel-tabs{display:flex;border-bottom:1px solid var(--border);}
+  .tab-btn{font-family:var(--mono);font-size:0.72rem;padding:0.6rem 1rem;cursor:pointer;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.05em;}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}.tab-btn:hover{color:var(--text);}
+  .tab-content{display:none;padding:1.25rem;}.tab-content.active{display:block;}
+  .ai-loading{display:flex;align-items:center;gap:0.6rem;color:var(--muted);font-family:var(--mono);font-size:0.78rem;padding:1rem 0;}
+  .ai-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.2s ease-in-out infinite;}
+  .ai-dot:nth-child(2){animation-delay:0.2s;}.ai-dot:nth-child(3){animation-delay:0.4s;}
+  @keyframes pulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
+  .ai-content{font-size:0.85rem;line-height:1.8;color:var(--text);}
+  .ai-content h4{font-family:var(--mono);font-size:0.75rem;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;margin:1rem 0 0.4rem;border-bottom:1px solid var(--border);padding-bottom:0.3rem;}
+  .ai-content h4:first-child{margin-top:0;}
+  .ai-content ul{list-style:none;padding:0;margin:0 0 0.5rem;}
+  .ai-content ul li{padding:0.2rem 0 0.2rem 1rem;position:relative;color:var(--text);font-size:0.83rem;}
+  .ai-content ul li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.7rem;top:0.3rem;}
+  .ai-content p{margin-bottom:0.5rem;color:var(--muted);font-size:0.83rem;}
+  .ai-content code{font-family:var(--mono);font-size:0.78rem;background:rgba(124,106,255,0.1);padding:0.1rem 0.35rem;border-radius:3px;color:var(--green);}
+  .ai-error{font-family:var(--mono);font-size:0.78rem;color:var(--red);padding:0.5rem 0;}
+  .pyq-list{display:flex;flex-direction:column;gap:0.75rem;}
+  .pyq-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  .pyq-q{padding:0.9rem 1rem;font-size:0.83rem;line-height:1.6;}
+  .pyq-meta{display:flex;gap:0.5rem;align-items:center;margin-bottom:0.4rem;}
+  .pyq-year{font-family:var(--mono);font-size:0.65rem;background:rgba(124,106,255,0.15);color:#7c6aff;padding:0.15rem 0.4rem;border-radius:3px;}
+  .pyq-marks{font-family:var(--mono);font-size:0.65rem;background:rgba(79,255,176,0.1);color:var(--green);padding:0.15rem 0.4rem;border-radius:3px;}
+  .pyq-text{font-size:0.83rem;line-height:1.6;color:var(--text);}
+  .pyq-answer{padding:0.75rem 1rem;background:rgba(79,255,176,0.05);border-top:1px solid var(--border);font-size:0.8rem;line-height:1.6;color:var(--muted);display:none;}
+  .pyq-answer.show{display:block;}
+  .pyq-answer strong{color:var(--green);font-family:var(--mono);font-size:0.72rem;display:block;margin-bottom:0.3rem;letter-spacing:0.05em;}
+  .show-ans-btn{font-family:var(--mono);font-size:0.68rem;color:var(--accent);background:none;border:1px solid rgba(124,106,255,0.3);padding:0.25rem 0.6rem;border-radius:3px;cursor:pointer;margin-top:0.5rem;transition:all 0.2s;}.show-ans-btn:hover{background:rgba(124,106,255,0.1);}
+  .generate-pyq-btn{font-family:var(--mono);font-size:0.72rem;color:var(--accent);background:rgba(124,106,255,0.08);border:1px solid rgba(124,106,255,0.25);padding:0.5rem 1rem;border-radius:4px;cursor:pointer;transition:all 0.2s;width:100%;margin-top:0.5rem;}.generate-pyq-btn:hover{background:rgba(124,106,255,0.15);}
+  .sidebar{display:flex;flex-direction:column;gap:1.25rem;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;}
+  .card h3{font-family:var(--mono);font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem;}
+  .predict-item{margin-bottom:0.85rem;}.predict-topic{font-size:0.82rem;font-weight:600;margin-bottom:0.25rem;display:flex;justify-content:space-between;}
+  .predict-prob{font-family:var(--mono);font-size:0.75rem;color:var(--green);}
+  .prob-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .prob-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--green));}
+  .formula{font-family:var(--mono);font-size:0.75rem;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:0.55rem 0.75rem;margin-bottom:0.45rem;color:var(--green);line-height:1.5;}
+  .pyq-years{display:flex;flex-wrap:wrap;gap:0.35rem;}
+  .year-chip{font-family:var(--mono);font-size:0.65rem;padding:0.22rem 0.45rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all 0.2s;}.year-chip:hover,.year-chip.active{background:rgba(124,106,255,0.12);border-color:var(--accent);color:var(--accent);}
+  .quick-links{display:flex;flex-direction:column;gap:0.35rem;}
+  .quick-link{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--muted);text-decoration:none;padding:0.35rem 0;border-bottom:1px solid var(--border);transition:color 0.2s;}.quick-link:last-child{border-bottom:none;}.quick-link:hover{color:var(--accent);}
+  .subject-nav{display:flex;justify-content:space-between;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);grid-column:1/-1;}
+  .subject-nav a{font-family:var(--mono);font-size:0.78rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:0.45rem 0.9rem;border-radius:4px;transition:all 0.2s;}.subject-nav a:hover{border-color:var(--accent);color:var(--accent);}
+  @media(max-width:768px){.main{grid-template-columns:1fr}.hero{flex-direction:column;gap:1rem;padding:2rem 1rem 1rem}nav{padding:0.8rem 1rem}.nav-links{gap:0.8rem}.main{padding:0 1rem 3rem}.wbar-wrap{padding:0 1rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-links"><a class="nav-back" href="../index.html">← All Subjects</a><a href="#">PYQs</a><a href="#">Predict</a></div>
+</nav>
+<div class="hero">
+  <div class="hero-icon">🔄</div>
+  <div class="hero-text">
+    <div class="subject-tag">Subject 06 · 9% Weightage</div>
+    <h1>Theory of Computation</h1>
+    <p>Automata, regular languages, context-free grammars, Turing machines, decidability — heavily theoretical, high precision required.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-val">7</span><span class="stat-label">Topics</span></div>
+      <div class="stat"><span class="stat-val">~3</span><span class="stat-label">Qs/GATE</span></div>
+      <div class="stat"><span class="stat-val">180+</span><span class="stat-label">PYQs</span></div>
+    </div>
+  </div>
+</div>
+<div class="wbar-wrap">
+  <div class="wbar-label"><span>GATE Weightage</span><span>9%</span></div>
+  <div class="wbar"><div class="wbar-fill" style="width:9%"></div></div>
+</div>
+<div class="main">
+  <div>
+    <div class="sec-title">Topics — click to expand notes &amp; PYQs</div>
+    <div class="topics-list" id="topicsList"></div>
+  </div>
+  <div class="sidebar">
+    <div class="card"><h3>🎯 2027 Predictions</h3><div class="predict-item"><div class="predict-topic"><span>NFA→DFA Conversion</span><span class="predict-prob">75%</span></div><div class="prob-bar"><div class="prob-fill" style="width:75%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Pumping Lemma for CFLs</span><span class="predict-prob">71%</span></div><div class="prob-bar"><div class="prob-fill" style="width:71%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Decidability/Rice Theorem</span><span class="predict-prob">63%</span></div><div class="prob-bar"><div class="prob-fill" style="width:63%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>CFG Ambiguity</span><span class="predict-prob">58%</span></div><div class="prob-bar"><div class="prob-fill" style="width:58%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Turing Machine Design</span><span class="predict-prob">50%</span></div><div class="prob-bar"><div class="prob-fill" style="width:50%"></div></div></div></div>
+    <div class="card"><h3>📐 Key Formulas</h3><div class="formula">DFA states after subset: at most 2^n</div><div class="formula">Min DFA: Myhill-Nerode equivalence classes</div><div class="formula">Pumping length p: w=xyz, |y|≥1, |xy|≤p, xyⁱz∈L</div><div class="formula">Rice: non-trivial semantic TM property → undecidable</div></div>
+    <div class="card">
+      <h3>📅 PYQ Years</h3>
+      <div class="pyq-years">
+        <span class="year-chip active">2024</span><span class="year-chip active">2023</span><span class="year-chip active">2022</span><span class="year-chip active">2021</span><span class="year-chip active">2020</span><span class="year-chip">2019</span><span class="year-chip">2018</span><span class="year-chip">2017</span><span class="year-chip">2016</span><span class="year-chip">2015</span><span class="year-chip">2014</span><span class="year-chip">2013</span><span class="year-chip">2012</span><span class="year-chip">2011</span><span class="year-chip">2010</span><span class="year-chip">2009</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔗 Quick Access</h3>
+      <div class="quick-links">
+        <a class="quick-link" href="#"><span>📄</span> Cheat Sheet PDF</a>
+        <a class="quick-link" href="#"><span>🧩</span> PYQ Practice Bank</a>
+        <a class="quick-link" href="#"><span>🎲</span> Mock Quiz</a>
+        <a class="quick-link" href="#"><span>🗺️</span> Mind Map</a>
+      </div>
+    </div>
+  </div>
+  <div class="subject-nav">
+    <a href="cn.html">← Computer Networks</a>
+    <a href="dl.html">Digital Logic →</a>
+  </div>
+</div>
+<script>
+const SUBJECT = "Theory of Computation";
+const TOPICS = [{"name": "Regular Languages & DFA", "badge": "hot", "pyqs": 35, "summary": "DFA construction \u00b7 NFA to DFA (subset) \u00b7 \u03b5-NFA \u00b7 Regular expressions \u00b7 Minimization"}, {"name": "Pumping Lemma", "badge": "hot", "pyqs": 28, "summary": "Pumping lemma for regular langs \u00b7 Non-regularity proofs \u00b7 Closure properties"}, {"name": "Context-Free Grammars", "badge": "hot", "pyqs": 32, "summary": "CFG derivations \u00b7 Parse trees \u00b7 Ambiguity \u00b7 CNF/GNF \u00b7 CYK \u00b7 Left recursion removal"}, {"name": "Pushdown Automata", "badge": "warm", "pyqs": 22, "summary": "DPDA vs NPDA \u00b7 Acceptance modes \u00b7 PDA design \u00b7 PDA \u2194 CFG equivalence"}, {"name": "Turing Machines", "badge": "hot", "pyqs": 30, "summary": "TM variants \u00b7 Church-Turing thesis \u00b7 TM design \u00b7 Universal TM \u00b7 Configurations"}, {"name": "Decidability", "badge": "warm", "pyqs": 20, "summary": "Decidable vs undecidable \u00b7 Halting problem \u00b7 Rice theorem \u00b7 Reduction \u00b7 Post correspondence"}, {"name": "Chomsky Hierarchy", "badge": "core", "pyqs": 13, "summary": "Type 0/1/2/3 grammars \u00b7 Hierarchy \u00b7 Closure properties \u00b7 Recursive vs RE languages"}];
+const badgeHTML = {hot:'<span class="badge badge-hot">🔥 HOT</span>',warm:'<span class="badge badge-warm">⚡ WARM</span>',core:'<span class="badge badge-core">● CORE</span>'};
+const cache = {};
+function buildTopics(){
+  const list=document.getElementById('topicsList');
+  TOPICS.forEach((t,i)=>{
+    const card=document.createElement('div');
+    card.className='topic-card';card.id=`card-${i}`;
+    card.innerHTML=`<div class="topic-header" onclick="toggleTopic(${i})"><div class="topic-left">${badgeHTML[t.badge]}<span class="topic-name">${t.name}</span></div><div class="topic-meta"><span class="pyq-count">${t.pyqs} PYQs</span><span class="chevron">▼</span></div></div><div class="topic-summary">${t.summary}</div><div class="topic-panel" id="panel-${i}"><div class="panel-tabs"><button class="tab-btn active" onclick="switchTab(${i},'notes',this)">📖 Notes</button><button class="tab-btn" onclick="switchTab(${i},'pyq',this)">📝 PYQ Questions</button></div><div class="tab-content active" id="notes-${i}"><div class="ai-loading" id="notes-loading-${i}"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Generating notes…</span></div><div class="ai-content" id="notes-content-${i}" style="display:none"></div></div><div class="tab-content" id="pyq-${i}"><div class="ai-loading" id="pyq-loading-${i}" style="display:none"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Fetching PYQ questions…</span></div><div id="pyq-content-${i}"></div></div></div>`;
+    list.appendChild(card);
+  });
+}
+function toggleTopic(i){
+  const card=document.getElementById(`card-${i}`);
+  const wasActive=card.classList.contains('active');
+  document.querySelectorAll('.topic-card').forEach(c=>c.classList.remove('active'));
+  if(!wasActive){card.classList.add('active');if(!cache[`notes-${i}`])loadNotes(i);}
+}
+function switchTab(i,tab,btn){
+  document.querySelectorAll(`#panel-${i} .tab-btn`).forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll(`#panel-${i} .tab-content`).forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');document.getElementById(`${tab}-${i}`).classList.add('active');
+  if(tab==='pyq'&&!cache[`pyq-${i}`])loadPYQ(i);
+}
+async function callClaude(prompt){
+  const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+  const data=await res.json();
+  if(data.error)throw new Error(data.error.message);
+  return data.content[0].text;
+}
+function parseMarkdownToHTML(text){
+  return text.replace(/^####? (.+)$/gm,'<h4>$1</h4>').replace(/^###? (.+)$/gm,'<h4>$1</h4>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>
+?)+/gs,m=>`<ul>${m}</ul>`).replace(/^(?!<[hul]).+$/gm,m=>m.trim()?`<p>${m}</p>`:'').replace(/<p><\/p>/g,'');
+}
+async function loadNotes(i){
+  cache[`notes-${i}`]=true;
+  const loading=document.getElementById(`notes-loading-${i}`);
+  const content=document.getElementById(`notes-content-${i}`);
+  try{
+    const text=await callClaude(`You are a GATE CSE expert. Give concise but complete study notes for the topic "${TOPICS[i].name}" in ${SUBJECT} for GATE 2027 preparation.\n\nFormat using markdown with:\n- ### Section headings (Key Concepts, Important Algorithms, Common Traps, GATE Tips)\n- Bullet points\n- \`code\` for formulas or technical terms\n- 300-400 words max\n\nCover: core concepts, important algorithms/techniques, key formulas, and common GATE question patterns.`);
+    loading.style.display='none';content.style.display='block';content.innerHTML=parseMarkdownToHTML(text);
+  }catch(e){loading.style.display='none';content.style.display='block';content.innerHTML=`<div class="ai-error">⚠ Could not load notes. Check connection and try again. (${e.message})</div>`;cache[`notes-${i}`]=false;}
+}
+async function loadPYQ(i){
+  cache[`pyq-${i}`]=true;
+  const loading=document.getElementById(`pyq-loading-${i}`);
+  const content=document.getElementById(`pyq-content-${i}`);
+  loading.style.display='flex';
+  try{
+    const text=await callClaude(`You are a GATE CSE PYQ expert. Generate 5 GATE-style questions for "${TOPICS[i].name}" in ${SUBJECT}.\n\nRespond ONLY with a JSON array, no markdown, no extra text:\n[{"year":"GATE 2023","marks":"2","question":"Full question text...","answer":"Correct answer with brief explanation"}]\n\nMake questions realistic GATE-style: mix of MCQ and numerical. Cover different difficulty levels. Base on actual GATE PYQ patterns.`);
+    loading.style.display='none';
+    let questions;
+    try{const clean=text.replace(/```json|```/g,'').trim();questions=JSON.parse(clean);}catch(e){throw new Error('Parse error');}
+    const html=questions.map((q,qi)=>`<div class="pyq-card"><div class="pyq-q"><div class="pyq-meta"><span class="pyq-year">${q.year}</span><span class="pyq-marks">${q.marks} mark${q.marks>1?'s':''}</span></div><div class="pyq-text">${q.question}</div><button class="show-ans-btn" onclick="toggleAns(this,'ans-${i}-${qi}')">Show Answer</button></div><div class="pyq-answer" id="ans-${i}-${qi}"><strong>✓ ANSWER & EXPLANATION</strong>${q.answer}</div></div>`).join('');
+    content.innerHTML=html+`<button class="generate-pyq-btn" onclick="reloadPYQ(${i})">↺ Generate 5 More Questions</button>`;
+  }catch(e){loading.style.display='none';content.innerHTML=`<div class="ai-error">⚠ Could not load questions. (${e.message})</div><button class="generate-pyq-btn" onclick="reloadPYQ(${i})">↺ Retry</button>`;cache[`pyq-${i}`]=false;}
+}
+function reloadPYQ(i){cache[`pyq-${i}`]=false;document.getElementById(`pyq-content-${i}`).innerHTML='';loadPYQ(i);}
+function toggleAns(btn,id){const ans=document.getElementById(id);ans.classList.toggle('show');btn.textContent=ans.classList.contains('show')?'Hide Answer':'Show Answer';}
+buildTopics();
+</script>
+</body>
+</html>
