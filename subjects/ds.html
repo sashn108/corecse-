@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Structures — CoreCSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0a0a0f; --surface:#12121a; --surface2:#1a1a26; --border:#2a2a3d; --accent:#4fffb0; --accent2:#ff6a6a; --green:#4fffb0; --yellow:#ffd166; --text:#e8e8f0; --muted:#6b6b8a; --mono:'JetBrains Mono',monospace; --sans:'Syne',sans-serif; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; }
+  nav { display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; background:rgba(10,10,15,0.95); backdrop-filter:blur(12px); }
+  .logo { font-family:var(--mono); font-weight:700; font-size:1.1rem; color:#7c6aff; text-decoration:none; }
+  .logo span { color:var(--text); }
+  nav a { color:var(--muted); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
+  nav a:hover { color:var(--text); }
+  .nav-links { display:flex; gap:1.5rem; align-items:center; }
+  .nav-back { display:flex; align-items:center; gap:0.4rem; font-family:var(--mono); font-size:0.8rem; color:var(--muted); text-decoration:none; border:1px solid var(--border); padding:0.4rem 0.8rem; border-radius:4px; transition:all 0.2s; }
+  .nav-back:hover { color:var(--accent); border-color:var(--accent); }
+  .hero { padding:4rem 2rem 2rem; max-width:1100px; margin:0 auto; display:flex; align-items:flex-start; gap:3rem; }
+  .hero-icon { font-size:4rem; flex-shrink:0; filter:drop-shadow(0 0 30px rgba(79,255,176,0.4)); }
+  .hero-text { flex:1; }
+  .subject-tag { font-family:var(--mono); font-size:0.7rem; color:var(--accent); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5rem; }
+  .hero h1 { font-size:clamp(2rem,5vw,3.5rem); font-weight:800; line-height:1.1; margin-bottom:1rem; }
+  .hero p { color:var(--muted); font-size:1rem; line-height:1.7; max-width:600px; margin-bottom:1.5rem; }
+  .hero-stats { display:flex; gap:2rem; flex-wrap:wrap; }
+  .stat { text-align:center; }
+  .stat-val { font-family:var(--mono); font-size:1.4rem; font-weight:700; color:var(--accent); display:block; }
+  .stat-label { font-size:0.75rem; color:var(--muted); }
+  .weightage-bar-wrap { max-width:1100px; margin:0 auto 2rem; padding:0 2rem; }
+  .weightage-bar-label { font-family:var(--mono); font-size:0.75rem; color:var(--muted); margin-bottom:0.4rem; display:flex; justify-content:space-between; }
+  .weightage-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+  .weightage-fill { height:100%; background:linear-gradient(90deg,var(--accent),#7c6aff); border-radius:3px; }
+  .main { max-width:1100px; margin:0 auto; padding:0 2rem 4rem; display:grid; grid-template-columns:1fr 340px; gap:2rem; }
+  .section-title { font-family:var(--mono); font-size:0.7rem; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem; }
+  .topics-list { display:flex; flex-direction:column; gap:0.75rem; }
+  .topic-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.2rem 1.5rem; cursor:pointer; transition:all 0.25s; position:relative; overflow:hidden; }
+  .topic-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent); transform:scaleY(0); transition:transform 0.25s; border-radius:0 2px 2px 0; }
+  .topic-card:hover { border-color:var(--accent); background:var(--surface2); transform:translateX(4px); }
+  .topic-card:hover::before { transform:scaleY(1); }
+  .topic-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.4rem; }
+  .topic-name { font-weight:700; font-size:0.95rem; }
+  .topic-meta { display:flex; gap:0.5rem; align-items:center; }
+  .badge { font-family:var(--mono); font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:3px; font-weight:600; }
+  .badge-hot { background:rgba(255,106,106,0.15); color:var(--accent2); border:1px solid rgba(255,106,106,0.3); }
+  .badge-warm { background:rgba(255,209,102,0.12); color:var(--yellow); border:1px solid rgba(255,209,102,0.3); }
+  .badge-core { background:rgba(79,255,176,0.1); color:var(--green); border:1px solid rgba(79,255,176,0.25); }
+  .pyq-count { font-family:var(--mono); font-size:0.7rem; color:var(--muted); }
+  .topic-subtopics { font-size:0.8rem; color:var(--muted); line-height:1.6; }
+  .sidebar { display:flex; flex-direction:column; gap:1.5rem; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.5rem; }
+  .card h3 { font-family:var(--mono); font-size:0.75rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem; }
+  .pyq-years { display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .year-chip { font-family:var(--mono); font-size:0.7rem; padding:0.25rem 0.5rem; border-radius:3px; border:1px solid var(--border); color:var(--muted); }
+  .year-chip.active { background:rgba(79,255,176,0.1); border-color:var(--accent); color:var(--accent); }
+  .predict-item { margin-bottom:1rem; }
+  .predict-topic { font-size:0.85rem; font-weight:600; margin-bottom:0.3rem; display:flex; justify-content:space-between; }
+  .predict-prob { font-family:var(--mono); font-size:0.8rem; color:var(--green); }
+  .prob-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+  .prob-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--accent),#7c6aff); }
+  .formula { font-family:var(--mono); font-size:0.78rem; background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:0.6rem 0.8rem; margin-bottom:0.5rem; color:var(--green); line-height:1.5; }
+  .quick-links { display:flex; flex-direction:column; gap:0.4rem; }
+  .quick-link { display:flex; align-items:center; gap:0.6rem; font-size:0.82rem; color:var(--muted); text-decoration:none; padding:0.4rem 0; border-bottom:1px solid var(--border); transition:color 0.2s; }
+  .quick-link:last-child { border-bottom:none; }
+  .quick-link:hover { color:var(--accent); }
+  .subject-nav { display:flex; justify-content:space-between; margin-top:2rem; padding-top:2rem; border-top:1px solid var(--border); grid-column:1/-1; }
+  .subject-nav a { font-family:var(--mono); font-size:0.8rem; color:var(--muted); text-decoration:none; border:1px solid var(--border); padding:0.5rem 1rem; border-radius:4px; transition:all 0.2s; }
+  .subject-nav a:hover { border-color:var(--accent); color:var(--accent); }
+  @media(max-width:768px) { .main{grid-template-columns:1fr} .hero{flex-direction:column;gap:1rem;padding:2rem 1rem 1rem} nav{padding:0.8rem 1rem} .nav-links{gap:0.8rem} .main{padding:0 1rem 3rem} .weightage-bar-wrap{padding:0 1rem} }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-links">
+    <a class="nav-back" href="../index.html">← All Subjects</a>
+    <a href="#">PYQs</a><a href="#">Predict</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-icon">🌲</div>
+  <div class="hero-text">
+    <div class="subject-tag">Subject 02 · 18% Weightage</div>
+    <h1>Data<br>Structures</h1>
+    <p>The highest-weightage subject in GATE CSE. Arrays, trees, graphs, heaps and hashing — every question tests both theory and implementation depth.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-val">12</span><span class="stat-label">Core Topics</span></div>
+      <div class="stat"><span class="stat-val">~6–7</span><span class="stat-label">Qs per GATE</span></div>
+      <div class="stat"><span class="stat-val">320+</span><span class="stat-label">PYQs</span></div>
+      <div class="stat"><span class="stat-val">20 yr</span><span class="stat-label">Coverage</span></div>
+    </div>
+  </div>
+</div>
+<div class="weightage-bar-wrap">
+  <div class="weightage-bar-label"><span>GATE Weightage</span><span>18%</span></div>
+  <div class="weightage-bar"><div class="weightage-fill" style="width:18%"></div></div>
+</div>
+<div class="main">
+  <div>
+    <div class="section-title">Topics · 12 units</div>
+    <div class="topics-list">
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">1. Arrays & Strings</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">28 PYQs</span></div></div><div class="topic-subtopics">1D/2D arrays · String operations · Sliding window · Prefix sums · Rotation · Searching in sorted arrays</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">2. Linked Lists</div><div class="topic-meta"><span class="badge badge-warm">⚡ WARM</span><span class="pyq-count">22 PYQs</span></div></div><div class="topic-subtopics">Singly & doubly linked · Circular lists · Reversal · Cycle detection (Floyd's) · Merge sorted lists</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">3. Stacks & Queues</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">30 PYQs</span></div></div><div class="topic-subtopics">Stack applications · Infix/Prefix/Postfix conversion · Circular queue · Deque · Priority queue</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">4. Trees & Binary Trees</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">45 PYQs</span></div></div><div class="topic-subtopics">Traversals (Inorder, Preorder, Postorder, Level) · Height · Diameter · LCA · Complete vs Full vs Perfect · Catalan numbers</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">5. Binary Search Trees</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">38 PYQs</span></div></div><div class="topic-subtopics">Insert/Delete/Search · Successor/Predecessor · BST from traversal · Number of BSTs · Expected height</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">6. AVL & Balanced Trees</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">33 PYQs</span></div></div><div class="topic-subtopics">Balance factor · LL/RR/LR/RL rotations · Height after insertions · 2-3 Trees · Red-Black Trees overview</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">7. Heaps</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">29 PYQs</span></div></div><div class="topic-subtopics">Min-Heap / Max-Heap · Heapify · Build-heap O(n) · Heap sort · d-ary heap · Priority queue operations</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">8. Hashing</div><div class="topic-meta"><span class="badge badge-warm">⚡ WARM</span><span class="pyq-count">26 PYQs</span></div></div><div class="topic-subtopics">Hash functions · Chaining · Open addressing (Linear, Quadratic, Double hashing) · Load factor · Expected probes</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">9. Graphs</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">40 PYQs</span></div></div><div class="topic-subtopics">Representation (Adj matrix/list) · BFS/DFS · Topological sort · SCC (Kosaraju's, Tarjan's) · Bipartite check</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">10. Segment & Fenwick Trees</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">18 PYQs</span></div></div><div class="topic-subtopics">Range sum queries · Lazy propagation · Point updates · BIT/Fenwick for prefix sums · 2D BIT</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">11. Tries</div><div class="topic-meta"><span class="badge badge-core">● CORE</span><span class="pyq-count">10 PYQs</span></div></div><div class="topic-subtopics">Insert/Search · Prefix matching · Compressed trie · Aho-Corasick basics · Applications</div></div>
+      <div class="topic-card"><div class="topic-header"><div class="topic-name">12. Disjoint Sets (Union-Find)</div><div class="topic-meta"><span class="badge badge-warm">⚡ WARM</span><span class="pyq-count">14 PYQs</span></div></div><div class="topic-subtopics">Union by rank · Path compression · Amortized complexity · Applications in Kruskal's MST · Connected components</div></div>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="card">
+      <h3>🎯 2027 Predictions</h3>
+      <div class="predict-item"><div class="predict-topic"><span>Segment Trees & Lazy Prop</span><span class="predict-prob">88%</span></div><div class="prob-bar"><div class="prob-fill" style="width:88%"></div></div></div>
+      <div class="predict-item"><div class="predict-topic"><span>AVL Tree Rotations</span><span class="predict-prob">81%</span></div><div class="prob-bar"><div class="prob-fill" style="width:81%"></div></div></div>
+      <div class="predict-item"><div class="predict-topic"><span>Hashing & Probing</span><span class="predict-prob">74%</span></div><div class="prob-bar"><div class="prob-fill" style="width:74%"></div></div></div>
+      <div class="predict-item"><div class="predict-topic"><span>Graph SCC</span><span class="predict-prob">62%</span></div><div class="prob-bar"><div class="prob-fill" style="width:62%"></div></div></div>
+      <div class="predict-item"><div class="predict-topic"><span>Heap Sort Analysis</span><span class="predict-prob">57%</span></div><div class="prob-bar"><div class="prob-fill" style="width:57%"></div></div></div>
+    </div>
+    <div class="card">
+      <h3>📐 Key Formulas</h3>
+      <div class="formula">AVL height: 1.44·log₂(n+2) − 0.328</div>
+      <div class="formula">Max nodes in BST height h: 2^(h+1) − 1</div>
+      <div class="formula">Heapify: O(log n) · Build: O(n)</div>
+      <div class="formula">Expected probes (open addr): 1/(1−α)<br>α = load factor = n/m</div>
+      <div class="formula">Catalan(n) = C(2n,n)/(n+1)</div>
+    </div>
+    <div class="card">
+      <h3>📅 PYQ Years</h3>
+      <div class="pyq-years">
+        <span class="year-chip active">2024</span><span class="year-chip active">2023</span><span class="year-chip active">2022</span><span class="year-chip active">2021</span><span class="year-chip active">2020</span><span class="year-chip">2019</span><span class="year-chip">2018</span><span class="year-chip">2017</span><span class="year-chip">2016</span><span class="year-chip">2015</span><span class="year-chip">2014</span><span class="year-chip">2013</span><span class="year-chip">2012</span><span class="year-chip">2011</span><span class="year-chip">2010</span><span class="year-chip">2009</span><span class="year-chip">2008</span><span class="year-chip">2007</span><span class="year-chip">2006</span><span class="year-chip">2005</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔗 Quick Access</h3>
+      <div class="quick-links">
+        <a class="quick-link" href="#"><span>📄</span> Cheat Sheet PDF</a>
+        <a class="quick-link" href="#"><span>🧩</span> PYQ Practice Bank</a>
+        <a class="quick-link" href="#"><span>🎲</span> Mock Quiz</a>
+        <a class="quick-link" href="#"><span>🗺️</span> Topic Mind Map</a>
+      </div>
+    </div>
+  </div>
+  <div class="subject-nav">
+    <a href="os.html">← Operating Systems</a>
+    <a href="algo.html">Algorithms →</a>
+  </div>
+</div>
+</body>
+</html>
