@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBMS — CoreCSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;--accent:#ff9f43;--accent2:#ff6a6a;--green:#4fffb0;--yellow:#ffd166;--text:#e8e8f0;--muted:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.95);backdrop-filter:blur(12px);}
+  .logo{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:#7c6aff;text-decoration:none;}.logo span{color:var(--text);}
+  nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;}nav a:hover{color:var(--text);}
+  .nav-links{display:flex;gap:1.5rem;align-items:center;}
+  .nav-back{font-family:var(--mono);font-size:0.8rem;border:1px solid var(--border);padding:0.4rem 0.8rem;border-radius:4px;transition:all 0.2s;}.nav-back:hover{color:var(--accent)!important;border-color:var(--accent);}
+  .hero{padding:4rem 2rem 2rem;max-width:1100px;margin:0 auto;display:flex;align-items:flex-start;gap:3rem;}
+  .hero-icon{font-size:4rem;flex-shrink:0;filter:drop-shadow(0 0 30px rgba(255,159,67,0.4));}
+  .hero-text{flex:1;}.subject-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:1rem;}
+  .hero p{color:var(--muted);font-size:1rem;line-height:1.7;max-width:600px;margin-bottom:1.5rem;}
+  .hero-stats{display:flex;gap:2rem;flex-wrap:wrap;}.stat{text-align:center;}
+  .stat-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--accent);display:block;}.stat-label{font-size:0.75rem;color:var(--muted);}
+  .weightage-bar-wrap{max-width:1100px;margin:0 auto 2rem;padding:0 2rem;}
+  .weightage-bar-label{font-family:var(--mono);font-size:0.75rem;color:var(--muted);margin-bottom:0.4rem;display:flex;justify-content:space-between;}
+  .weightage-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .weightage-fill{height:100%;background:linear-gradient(90deg,var(--accent),#7c6aff);border-radius:3px;}
+  .main{max-width:1100px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:1fr 340px;gap:2rem;}
+  .section-title{font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;}
+  .topics-list{display:flex;flex-direction:column;gap:0.75rem;}
+  .topic-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.5rem;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+  .topic-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transition:transform 0.25s;border-radius:0 2px 2px 0;}
+  .topic-card:hover{border-color:var(--accent);background:var(--surface2);transform:translateX(4px);}.topic-card:hover::before{transform:scaleY(1);}
+  .topic-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.4rem;}
+  .topic-name{font-weight:700;font-size:0.95rem;}.topic-meta{display:flex;gap:0.5rem;align-items:center;}
+  .badge{font-family:var(--mono);font-size:0.65rem;padding:0.2rem 0.5rem;border-radius:3px;font-weight:600;}
+  .badge-hot{background:rgba(255,106,106,0.15);color:var(--accent2);border:1px solid rgba(255,106,106,0.3);}
+  .badge-warm{background:rgba(255,209,102,0.12);color:var(--yellow);border:1px solid rgba(255,209,102,0.3);}
+  .badge-core{background:rgba(79,255,176,0.1);color:var(--green);border:1px solid rgba(79,255,176,0.25);}
+  .pyq-count{font-family:var(--mono);font-size:0.7rem;color:var(--muted);}
+  .topic-subtopics{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+  .sidebar{display:flex;flex-direction:column;gap:1.5rem;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem;}
+  .card h3{font-family:var(--mono);font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem;}
+  .pyq-years{display:flex;flex-wrap:wrap;gap:0.4rem;}
+  .year-chip{font-family:var(--mono);font-size:0.7rem;padding:0.25rem 0.5rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);}
+  .year-chip.active{background:rgba(124,106,255,0.1);border-color:var(--accent);color:var(--accent);}
+  .predict-item{margin-bottom:1rem;}.predict-topic{font-size:0.85rem;font-weight:600;margin-bottom:0.3rem;display:flex;justify-content:space-between;}
+  .predict-prob{font-family:var(--mono);font-size:0.8rem;color:var(--green);}
+  .prob-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .prob-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--green));}
+  .formula{font-family:var(--mono);font-size:0.78rem;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:0.6rem 0.8rem;margin-bottom:0.5rem;color:var(--green);line-height:1.5;}
+  .quick-links{display:flex;flex-direction:column;gap:0.4rem;}
+  .quick-link{display:flex;align-items:center;gap:0.6rem;font-size:0.82rem;color:var(--muted);text-decoration:none;padding:0.4rem 0;border-bottom:1px solid var(--border);transition:color 0.2s;}.quick-link:last-child{border-bottom:none;}.quick-link:hover{color:var(--accent);}
+  .subject-nav{display:flex;justify-content:space-between;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);grid-column:1/-1;}
+  .subject-nav a{font-family:var(--mono);font-size:0.8rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:0.5rem 1rem;border-radius:4px;transition:all 0.2s;}.subject-nav a:hover{border-color:var(--accent);color:var(--accent);}
+  @media(max-width:768px){.main{grid-template-columns:1fr}.hero{flex-direction:column;gap:1rem;padding:2rem 1rem 1rem}nav{padding:0.8rem 1rem}.nav-links{gap:0.8rem}.main{padding:0 1rem 3rem}.weightage-bar-wrap{padding:0 1rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-links"><a class="nav-back" href="../index.html">← All Subjects</a><a href="#">PYQs</a><a href="#">Predict</a></div>
+</nav>
+<div class="hero">
+  <div class="hero-icon">🗄️</div>
+  <div class="hero-text">
+    <div class="subject-tag">Subject 04 · 11% Weightage</div>
+    <h1>DBMS</h1>
+    <p>Relational algebra, SQL, normalization, transactions, concurrency — DBMS tests both theoretical depth and ability to trace query execution.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-val">9</span><span class="stat-label">Core Topics</span></div>
+      <div class="stat"><span class="stat-val">~3–4</span><span class="stat-label">Qs per GATE</span></div>
+      <div class="stat"><span class="stat-val">230+</span><span class="stat-label">PYQs</span></div>
+      <div class="stat"><span class="stat-val">20 yr</span><span class="stat-label">Coverage</span></div>
+    </div>
+  </div>
+</div>
+<div class="weightage-bar-wrap">
+  <div class="weightage-bar-label"><span>GATE Weightage</span><span>11%</span></div>
+  <div class="weightage-bar"><div class="weightage-fill" style="width:11%"></div></div>
+</div>
+<div class="main">
+  <div>
+    <div class="section-title">Topics · 9 units</div>
+    <div class="topics-list"><div class="topic-card"><div class="topic-header"><div class="topic-name">1. Relational Model</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">30 PYQs</span></div></div><div class="topic-subtopics">Relations, tuples, attributes · Keys (Super, Candidate, Primary, Foreign) · Relational algebra (σ, π, ⋈, ∪, −, ×) · Relational calculus</div></div>
+<div class="topic-card"><div class="topic-header"><div class="topic-name">2. SQL</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">35 PYQs</span></div></div><div class="topic-subtopics">DDL/DML/DCL · Joins (inner, outer, cross) · Subqueries · Aggregation · GROUP BY / HAVING · Views · Nested queries</div></div>
+<div class="topic-card"><div class="topic-header"><div class="topic-name">3. Normalization</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">40 PYQs</span></div></div><div class="topic-subtopics">Functional dependencies · Armstrong axioms · Closure · 1NF, 2NF, 3NF, BCNF · Decomposition (lossless, dependency preserving) · 4NF, 5NF</div></div>
+<div class="topic-card"><div class="topic-header"><div class="topic-name">4. ER Modeling</div><div class="topic-meta"><span class="badge badge-warm">⚡ WARM</span><span class="pyq-count">18 PYQs</span></div></div><div class="topic-subtopics">Entities & Attributes · Relationships · Cardinality · Weak entities · ER to Relational mapping · EER model</div></div>
+<div class="topic-card"><div class="topic-header"><div class="topic-name">5. Transactions & ACID</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">28 PYQs</span></div></div><div class="topic-subtopics">ACID properties · Transaction states · Schedules · Serializability · Conflict serializable · View serializable</div></div>
+<div class="topic-card"><div class="topic-header"><div class="topic-name">6. Concurrency Control</div><div class="topic-meta"><span class="badge badge-hot">🔥 HOT</span><span class="pyq-count">32 PYQs</span></div></div><div class="topic-subtopics">2PL (basic, strict, rigorous) · Lock-based protocols · Timestamp ordering · MVCC · Deadlock in transactions</div></div>
+<div class="topic-card"><div class="topic-header"><div class="topic-name">7. Indexing & Hashing</div><div class="topic-meta"><span class="badge badge-warm">⚡ WARM</span><span class="pyq-count">22 PYQs</span></div></div><div class="topic-subtopics">Dense vs Sparse indexes · B-Tree · B+ Tree (insert, delete, search) · Dynamic hashing · Multilevel indexing</div></div>
+<div class="topic-card"><div class="topic-header"><div class="topic-name">8. Query Processing</div><div class="topic-meta"><span class="badge badge-core">● CORE</span><span class="pyq-count">14 PYQs</span></div></div><div class="topic-subtopics">Query parsing · Optimization · Cost estimation · Join algorithms (nested loop, sort-merge, hash join) · Pipelining</div></div>
+<div class="topic-card"><div class="topic-header"><div class="topic-name">9. Recovery</div><div class="topic-meta"><span class="badge badge-core">● CORE</span><span class="pyq-count">11 PYQs</span></div></div><div class="topic-subtopics">Log-based recovery · Undo/Redo · ARIES · Checkpointing · Shadow paging · Immediate vs Deferred modification</div></div></div>
+  </div>
+  <div class="sidebar">
+    <div class="card"><h3>🎯 2027 Predictions</h3><div class="predict-item"><div class="predict-topic"><span>MVCC & Isolation Levels</span><span class="predict-prob">65%</span></div><div class="prob-bar"><div class="prob-fill" style="width:65%"></div></div></div>
+<div class="predict-item"><div class="predict-topic"><span>BCNF Decomposition</span><span class="predict-prob">78%</span></div><div class="prob-bar"><div class="prob-fill" style="width:78%"></div></div></div>
+<div class="predict-item"><div class="predict-topic"><span>2PL & Serializability</span><span class="predict-prob">70%</span></div><div class="prob-bar"><div class="prob-fill" style="width:70%"></div></div></div>
+<div class="predict-item"><div class="predict-topic"><span>B+ Tree Operations</span><span class="predict-prob">61%</span></div><div class="prob-bar"><div class="prob-fill" style="width:61%"></div></div></div>
+<div class="predict-item"><div class="predict-topic"><span>SQL Nested Queries</span><span class="predict-prob">55%</span></div><div class="prob-bar"><div class="prob-fill" style="width:55%"></div></div></div></div>
+    <div class="card"><h3>📐 Key Formulas</h3><div class="formula">F⁺ = closure of FD set F (Armstrong axioms)</div>
+<div class="formula">BCNF: for all X→Y, X is superkey</div>
+<div class="formula">3NF: X→Y where X is superkey OR Y is prime</div>
+<div class="formula">B+ Tree height: ⌈log_⌈n/2⌉(K)⌉ levels</div></div>
+    <div class="card"><h3>📅 PYQ Years</h3><div class="pyq-years"><span class="year-chip active">2024</span><span class="year-chip active">2023</span><span class="year-chip active">2022</span><span class="year-chip active">2021</span><span class="year-chip active">2020</span><span class="year-chip">2019</span><span class="year-chip">2018</span><span class="year-chip">2017</span><span class="year-chip">2016</span><span class="year-chip">2015</span><span class="year-chip">2014</span><span class="year-chip">2013</span><span class="year-chip">2012</span><span class="year-chip">2011</span><span class="year-chip">2010</span><span class="year-chip">2009</span><span class="year-chip">2008</span><span class="year-chip">2007</span><span class="year-chip">2006</span><span class="year-chip">2005</span></div></div>
+    <div class="card"><h3>🔗 Quick Access</h3><div class="quick-links"><a class="quick-link" href="#"><span>📄</span> Cheat Sheet PDF</a><a class="quick-link" href="#"><span>🧩</span> PYQ Practice Bank</a><a class="quick-link" href="#"><span>🎲</span> Mock Quiz</a><a class="quick-link" href="#"><span>🗺️</span> Topic Mind Map</a></div></div>
+  </div>
+  <div class="subject-nav">
+    <a href="algo.html">← Algorithms</a>
+    <a href="cn.html">Computer Networks →</a>
+  </div>
+</div>
+</body>
+</html>
