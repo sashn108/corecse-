@@ -6,101 +6,142 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;--accent:#55efc4;--green:#4fffb0;--yellow:#ffd166;--red:#ff6a6a;--text:#e8e8f0;--muted:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
-  *{margin:0;padding:0;box-sizing:border-box;}body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
-  nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.95);backdrop-filter:blur(12px);}
-  .logo{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:#7c6aff;text-decoration:none;}.logo span{color:var(--text);}
-  nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;}nav a:hover{color:var(--text);}
-  .nav-links{display:flex;gap:1.5rem;align-items:center;}
-  .nav-back{font-family:var(--mono);font-size:0.8rem;border:1px solid var(--border);padding:0.4rem 0.8rem;border-radius:4px;transition:all 0.2s;}.nav-back:hover{color:var(--accent)!important;border-color:var(--accent);}
-  .hero{padding:3rem 2rem 1.5rem;max-width:1100px;margin:0 auto;display:flex;align-items:flex-start;gap:2.5rem;}
-  .hero-icon{font-size:3.5rem;flex-shrink:0;filter:drop-shadow(0 0 24px rgba(85,239,196,0.5));}
-  .hero-text{flex:1;}.subject-tag{font-family:var(--mono);font-size:0.68rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem;}
-  .hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.1;margin-bottom:0.8rem;}
-  .hero p{color:var(--muted);font-size:0.95rem;line-height:1.7;max-width:560px;margin-bottom:1.2rem;}
-  .hero-stats{display:flex;gap:2rem;flex-wrap:wrap;}.stat{text-align:center;}
-  .stat-val{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--accent);display:block;}.stat-label{font-size:0.72rem;color:var(--muted);}
-  .wbar-wrap{max-width:1100px;margin:0 auto 1.5rem;padding:0 2rem;}
-  .wbar-label{font-family:var(--mono);font-size:0.72rem;color:var(--muted);margin-bottom:0.35rem;display:flex;justify-content:space-between;}
-  .wbar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-  .wbar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#7c6aff);border-radius:3px;}
-  .main{max-width:1100px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:1fr 320px;gap:2rem;}
-  .sec-title{font-family:var(--mono);font-size:0.68rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.8rem;}
-  .topics-list{display:flex;flex-direction:column;gap:0.6rem;}
-  .topic-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color 0.2s;}
-  .topic-card.active{border-color:var(--accent);}
-  .topic-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;cursor:pointer;transition:background 0.2s;}
-  .topic-header:hover{background:var(--surface2);}
-  .topic-left{display:flex;align-items:center;gap:0.75rem;}
-  .topic-name{font-weight:700;font-size:0.92rem;}
-  .topic-meta{display:flex;gap:0.4rem;align-items:center;}
-  .badge{font-family:var(--mono);font-size:0.62rem;padding:0.18rem 0.45rem;border-radius:3px;font-weight:600;}
-  .badge-hot{background:rgba(255,106,106,0.15);color:var(--red);border:1px solid rgba(255,106,106,0.3);}
-  .badge-warm{background:rgba(255,209,102,0.12);color:var(--yellow);border:1px solid rgba(255,209,102,0.3);}
-  .badge-core{background:rgba(79,255,176,0.1);color:var(--green);border:1px solid rgba(79,255,176,0.25);}
-  .pyq-count{font-family:var(--mono);font-size:0.68rem;color:var(--muted);}
-  .chevron{font-size:0.7rem;color:var(--muted);transition:transform 0.3s;flex-shrink:0;}
-  .topic-card.active .chevron{transform:rotate(180deg);}
-  .topic-summary{font-size:0.78rem;color:var(--muted);padding:0 1.25rem 0.8rem;line-height:1.6;}
-  .topic-panel{display:none;border-top:1px solid var(--border);background:var(--surface2);}
-  .topic-card.active .topic-panel{display:block;}
-  .panel-tabs{display:flex;border-bottom:1px solid var(--border);}
-  .tab-btn{font-family:var(--mono);font-size:0.72rem;padding:0.6rem 1rem;cursor:pointer;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.05em;}
-  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}.tab-btn:hover{color:var(--text);}
-  .tab-content{display:none;padding:1.25rem;}.tab-content.active{display:block;}
-  .ai-loading{display:flex;align-items:center;gap:0.6rem;color:var(--muted);font-family:var(--mono);font-size:0.78rem;padding:1rem 0;}
-  .ai-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.2s ease-in-out infinite;}
-  .ai-dot:nth-child(2){animation-delay:0.2s;}.ai-dot:nth-child(3){animation-delay:0.4s;}
-  @keyframes pulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
-  .ai-content{font-size:0.85rem;line-height:1.8;color:var(--text);}
-  .ai-content h4{font-family:var(--mono);font-size:0.75rem;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;margin:1rem 0 0.4rem;border-bottom:1px solid var(--border);padding-bottom:0.3rem;}
-  .ai-content h4:first-child{margin-top:0;}
-  .ai-content ul{list-style:none;padding:0;margin:0 0 0.5rem;}
-  .ai-content ul li{padding:0.2rem 0 0.2rem 1rem;position:relative;color:var(--text);font-size:0.83rem;}
-  .ai-content ul li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.7rem;top:0.3rem;}
-  .ai-content p{margin-bottom:0.5rem;color:var(--muted);font-size:0.83rem;}
-  .ai-content code{font-family:var(--mono);font-size:0.78rem;background:rgba(124,106,255,0.1);padding:0.1rem 0.35rem;border-radius:3px;color:var(--green);}
-  .ai-error{font-family:var(--mono);font-size:0.78rem;color:var(--red);padding:0.5rem 0;}
-  .pyq-list{display:flex;flex-direction:column;gap:0.75rem;}
-  .pyq-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
-  .pyq-q{padding:0.9rem 1rem;font-size:0.83rem;line-height:1.6;}
-  .pyq-meta{display:flex;gap:0.5rem;align-items:center;margin-bottom:0.4rem;}
-  .pyq-year{font-family:var(--mono);font-size:0.65rem;background:rgba(124,106,255,0.15);color:#7c6aff;padding:0.15rem 0.4rem;border-radius:3px;}
-  .pyq-marks{font-family:var(--mono);font-size:0.65rem;background:rgba(79,255,176,0.1);color:var(--green);padding:0.15rem 0.4rem;border-radius:3px;}
-  .pyq-text{font-size:0.83rem;line-height:1.6;color:var(--text);}
-  .pyq-answer{padding:0.75rem 1rem;background:rgba(79,255,176,0.05);border-top:1px solid var(--border);font-size:0.8rem;line-height:1.6;color:var(--muted);display:none;}
-  .pyq-answer.show{display:block;}
-  .pyq-answer strong{color:var(--green);font-family:var(--mono);font-size:0.72rem;display:block;margin-bottom:0.3rem;letter-spacing:0.05em;}
-  .show-ans-btn{font-family:var(--mono);font-size:0.68rem;color:var(--accent);background:none;border:1px solid rgba(124,106,255,0.3);padding:0.25rem 0.6rem;border-radius:3px;cursor:pointer;margin-top:0.5rem;transition:all 0.2s;}.show-ans-btn:hover{background:rgba(124,106,255,0.1);}
-  .generate-pyq-btn{font-family:var(--mono);font-size:0.72rem;color:var(--accent);background:rgba(124,106,255,0.08);border:1px solid rgba(124,106,255,0.25);padding:0.5rem 1rem;border-radius:4px;cursor:pointer;transition:all 0.2s;width:100%;margin-top:0.5rem;}.generate-pyq-btn:hover{background:rgba(124,106,255,0.15);}
-  .sidebar{display:flex;flex-direction:column;gap:1.25rem;}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;}
-  .card h3{font-family:var(--mono);font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem;}
-  .predict-item{margin-bottom:0.85rem;}.predict-topic{font-size:0.82rem;font-weight:600;margin-bottom:0.25rem;display:flex;justify-content:space-between;}
-  .predict-prob{font-family:var(--mono);font-size:0.75rem;color:var(--green);}
-  .prob-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
-  .prob-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--green));}
-  .formula{font-family:var(--mono);font-size:0.75rem;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:0.55rem 0.75rem;margin-bottom:0.45rem;color:var(--green);line-height:1.5;}
-  .pyq-years{display:flex;flex-wrap:wrap;gap:0.35rem;}
-  .year-chip{font-family:var(--mono);font-size:0.65rem;padding:0.22rem 0.45rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all 0.2s;}.year-chip:hover,.year-chip.active{background:rgba(124,106,255,0.12);border-color:var(--accent);color:var(--accent);}
-  .quick-links{display:flex;flex-direction:column;gap:0.35rem;}
-  .quick-link{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--muted);text-decoration:none;padding:0.35rem 0;border-bottom:1px solid var(--border);transition:color 0.2s;}.quick-link:last-child{border-bottom:none;}.quick-link:hover{color:var(--accent);}
-  .subject-nav{display:flex;justify-content:space-between;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);grid-column:1/-1;}
-  .subject-nav a{font-family:var(--mono);font-size:0.78rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:0.45rem 0.9rem;border-radius:4px;transition:all 0.2s;}.subject-nav a:hover{border-color:var(--accent);color:var(--accent);}
-  @media(max-width:768px){.main{grid-template-columns:1fr}.hero{flex-direction:column;gap:1rem;padding:2rem 1rem 1rem}nav{padding:0.8rem 1rem}.nav-links{gap:0.8rem}.main{padding:0 1rem 3rem}.wbar-wrap{padding:0 1rem}}
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;--accent:#55efc4;--green:#4fffb0;--yellow:#ffd166;--red:#ff6a6a;--text:#e8e8f0;--muted:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.96);backdrop-filter:blur(12px);}
+.logo{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:#7c6aff;text-decoration:none;}.logo span{color:var(--text);}
+nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;}nav a:hover{color:var(--text);}
+.nav-links{display:flex;gap:1.5rem;align-items:center;}
+.nav-back{font-family:var(--mono);font-size:0.78rem;border:1px solid var(--border);padding:0.35rem 0.75rem;border-radius:4px;transition:all 0.2s;}.nav-back:hover{color:var(--accent)!important;border-color:var(--accent);}
+.hero{padding:2.5rem 2rem 1.5rem;max-width:1100px;margin:0 auto;display:flex;align-items:flex-start;gap:2rem;}
+.hero-icon{font-size:3rem;flex-shrink:0;filter:drop-shadow(0 0 20px color-mix(in srgb,var(--accent) 60%,transparent));}
+.hero-text{flex:1;}.subject-tag{font-family:var(--mono);font-size:0.67rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.35rem;}
+.hero h1{font-size:clamp(1.6rem,4vw,2.8rem);font-weight:800;line-height:1.1;margin-bottom:0.7rem;}
+.hero p{color:var(--muted);font-size:0.9rem;line-height:1.65;max-width:550px;margin-bottom:1.1rem;}
+.hero-stats{display:flex;gap:1.8rem;flex-wrap:wrap;}.stat{text-align:center;}
+.stat-val{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--accent);display:block;}.stat-label{font-size:0.7rem;color:var(--muted);}
+.wbar-wrap{max-width:1100px;margin:0 auto 1.25rem;padding:0 2rem;}
+.wbar-label{font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-bottom:0.3rem;display:flex;justify-content:space-between;}
+.wbar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.wbar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#7c6aff);border-radius:3px;}
+.main{max-width:1100px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:1fr 300px;gap:1.5rem;}
+.sec-title{font-family:var(--mono);font-size:0.67rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem;}
+.topics-list{display:flex;flex-direction:column;gap:0.5rem;}
+
+/* TOPIC CARD */
+.topic-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color 0.2s;}
+.topic-card.open{border-color:var(--accent);}
+.topic-hdr{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1.1rem;cursor:pointer;transition:background 0.2s;user-select:none;}
+.topic-hdr:hover{background:var(--surface2);}
+.topic-left{display:flex;align-items:center;gap:0.6rem;}
+.topic-name{font-weight:700;font-size:0.88rem;}
+.topic-right{display:flex;align-items:center;gap:0.6rem;}
+.badge{font-family:var(--mono);font-size:0.6rem;padding:0.15rem 0.4rem;border-radius:3px;font-weight:700;}
+.badge-hot{background:rgba(255,106,106,0.15);color:var(--red);border:1px solid rgba(255,106,106,0.3);}
+.badge-warm{background:rgba(255,209,102,0.12);color:var(--yellow);border:1px solid rgba(255,209,102,0.3);}
+.badge-core{background:rgba(79,255,176,0.1);color:var(--green);border:1px solid rgba(79,255,176,0.25);}
+.pyq-pill{font-family:var(--mono);font-size:0.62rem;color:var(--muted);}
+.chevron{font-size:0.65rem;color:var(--muted);transition:transform 0.3s;flex-shrink:0;}
+.topic-card.open .chevron{transform:rotate(180deg);}
+.topic-sub{font-size:0.76rem;color:var(--muted);padding:0 1.1rem 0.75rem;line-height:1.55;}
+.panel{display:none;border-top:1px solid var(--border);}
+.topic-card.open .panel{display:block;}
+
+/* TABS */
+.tabs{display:flex;background:var(--surface2);}
+.tab{font-family:var(--mono);font-size:0.7rem;padding:0.55rem 0.9rem;cursor:pointer;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.04em;}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);}
+.tab:hover{color:var(--text);}
+.tab-pane{display:none;padding:1.1rem;}.tab-pane.on{display:block;}
+
+/* NOTES from Wikipedia */
+.wiki-loading{display:flex;align-items:center;gap:0.5rem;color:var(--muted);font-family:var(--mono);font-size:0.75rem;padding:0.75rem 0;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1.2s ease-in-out infinite;}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.wiki-content h4{font-family:var(--mono);font-size:0.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin:1rem 0 .35rem;padding-bottom:.25rem;border-bottom:1px solid var(--border);}
+.wiki-content h4:first-child{margin-top:0;}
+.wiki-content p{font-size:0.82rem;color:var(--muted);line-height:1.7;margin-bottom:.45rem;}
+.wiki-content ul{list-style:none;padding:0;margin-bottom:.45rem;}
+.wiki-content ul li{font-size:0.81rem;color:var(--text);padding:.15rem 0 .15rem 1rem;position:relative;line-height:1.5;}
+.wiki-content ul li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:.65rem;top:.25rem;}
+.wiki-content code{font-family:var(--mono);font-size:.75rem;background:rgba(124,106,255,.1);padding:.08rem .3rem;border-radius:3px;color:var(--green);}
+.wiki-content strong{color:var(--text);}
+.wiki-src{display:flex;align-items:center;gap:.5rem;margin-top:.9rem;padding-top:.75rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.src-label{font-family:var(--mono);font-size:.62rem;color:var(--muted);}
+.src-btn{font-family:var(--mono);font-size:.65rem;padding:.22rem .55rem;border-radius:3px;text-decoration:none;border:1px solid var(--border);color:var(--muted);transition:all .2s;}
+.src-btn:hover{border-color:var(--accent);color:var(--accent);}
+.src-btn.gfg{border-color:rgba(0,180,100,.3);color:#00c064;}
+.src-btn.gfg:hover{background:rgba(0,180,100,.08);}
+.src-btn.wiki{border-color:rgba(180,180,255,.3);color:#aaa;}
+.src-btn.wiki:hover{background:rgba(180,180,255,.06);}
+.src-btn.go{border-color:rgba(255,160,80,.3);color:#ff9f43;}
+.src-btn.go:hover{background:rgba(255,160,80,.06);}
+.err-msg{font-family:var(--mono);font-size:.76rem;color:var(--muted);padding:.5rem 0;}
+
+/* PYQ SECTION */
+.pyq-wrap{display:flex;flex-direction:column;gap:.6rem;}
+.pyq-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.pyq-body{padding:.8rem .9rem;}
+.pyq-meta{display:flex;gap:.4rem;align-items:center;margin-bottom:.35rem;}
+.yr{font-family:var(--mono);font-size:.62rem;background:rgba(124,106,255,.15);color:#a29bfe;padding:.12rem .38rem;border-radius:3px;}
+.mk{font-family:var(--mono);font-size:.62rem;background:rgba(79,255,176,.1);color:var(--green);padding:.12rem .38rem;border-radius:3px;}
+.q-text{font-size:.82rem;line-height:1.6;color:var(--text);margin-bottom:.5rem;}
+.opts{display:flex;flex-direction:column;gap:.2rem;margin-bottom:.5rem;}
+.opt{font-size:.78rem;color:var(--muted);padding:.18rem 0;cursor:pointer;border-radius:3px;transition:color .15s;}
+.opt:hover{color:var(--text);}
+.opt.correct{color:var(--green);font-weight:600;}
+.opt.wrong{color:var(--red);}
+.opt.revealed{color:var(--green);font-weight:600;}
+.ans-btn{font-family:var(--mono);font-size:.65rem;color:var(--accent);background:none;border:1px solid rgba(124,106,255,.3);padding:.22rem .55rem;border-radius:3px;cursor:pointer;transition:all .2s;margin-right:.4rem;}
+.ans-btn:hover{background:rgba(124,106,255,.1);}
+.explanation{padding:.65rem .9rem;background:rgba(79,255,176,.04);border-top:1px solid var(--border);font-size:.78rem;color:var(--muted);line-height:1.6;display:none;}
+.explanation.show{display:block;}
+.explanation strong{color:var(--green);font-family:var(--mono);font-size:.68rem;display:block;margin-bottom:.25rem;letter-spacing:.04em;}
+.no-pyq{font-family:var(--mono);font-size:.75rem;color:var(--muted);padding:.5rem 0;text-align:center;}
+.go-link-box{margin-top:.75rem;padding:.7rem .9rem;background:rgba(255,159,67,.05);border:1px solid rgba(255,159,67,.2);border-radius:5px;display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+.go-link-box span{font-size:.78rem;color:var(--muted);}
+.go-link-box a{font-family:var(--mono);font-size:.68rem;color:#ff9f43;text-decoration:none;border:1px solid rgba(255,159,67,.3);padding:.22rem .55rem;border-radius:3px;transition:all .2s;white-space:nowrap;}
+.go-link-box a:hover{background:rgba(255,159,67,.1);}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:1.1rem;position:sticky;top:70px;align-self:start;max-height:calc(100vh - 80px);overflow-y:auto;}
+.sidebar::-webkit-scrollbar{width:3px;}.sidebar::-webkit-scrollbar-thumb{background:var(--border);}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.1rem;}
+.card h3{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem;}
+.predict-item{margin-bottom:.75rem;}.predict-topic{font-size:.8rem;font-weight:600;margin-bottom:.22rem;display:flex;justify-content:space-between;}
+.predict-prob{font-family:var(--mono);font-size:.72rem;color:var(--green);}
+.prob-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.prob-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--green));}
+.formula{font-family:var(--mono);font-size:.72rem;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:.5rem .7rem;margin-bottom:.4rem;color:var(--green);line-height:1.5;}
+.year-chips{display:flex;flex-wrap:wrap;gap:.3rem;}
+.chip{font-family:var(--mono);font-size:.62rem;padding:.2rem .4rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);}
+.chip.hi{background:rgba(124,106,255,.1);border-color:var(--accent);color:var(--accent);}
+.q-links{display:flex;flex-direction:column;gap:.3rem;}
+.q-link{display:flex;align-items:center;gap:.45rem;font-size:.78rem;color:var(--muted);text-decoration:none;padding:.3rem 0;border-bottom:1px solid var(--border);transition:color .2s;}.q-link:last-child{border-bottom:none;}.q-link:hover{color:var(--accent);}
+.sub-nav{display:flex;justify-content:space-between;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);grid-column:1/-1;}
+.sub-nav a{font-family:var(--mono);font-size:.76rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:.4rem .85rem;border-radius:4px;transition:all .2s;}.sub-nav a:hover{border-color:var(--accent);color:var(--accent);}
+@media(max-width:768px){.main{grid-template-columns:1fr}.sidebar{position:static;max-height:none}.hero{flex-direction:column;gap:.8rem;padding:1.5rem 1rem 1rem}nav{padding:.7rem 1rem}.nav-links{gap:.8rem}.main{padding:0 1rem 3rem}.wbar-wrap{padding:0 1rem}}
 </style>
 </head>
 <body>
+
 <nav>
   <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
-  <div class="nav-links"><a class="nav-back" href="../index.html">← All Subjects</a><a href="#">PYQs</a><a href="#">Predict</a></div>
+  <div class="nav-links">
+    <a class="nav-back" href="../index.html">← Subjects</a>
+    <a href="https://gateoverflow.in/questions?tag=dm" target="_blank">GATEOverflow ↗</a>
+    <a href="https://www.geeksforgeeks.org/gate-cs-notes-gq/" target="_blank">GFG ↗</a>
+  </div>
 </nav>
+
 <div class="hero">
   <div class="hero-icon">∑</div>
   <div class="hero-text">
     <div class="subject-tag">Subject 08 · 8% Weightage</div>
     <h1>Discrete Mathematics</h1>
-    <p>Set theory, graph theory, combinatorics, logic, relations — the mathematical backbone underpinning all of GATE CSE theory.</p>
+    <p>Set theory, graphs, combinatorics, logic — click topics for Wikipedia notes + real GATE PYQs.</p>
     <div class="hero-stats">
       <div class="stat"><span class="stat-val">8</span><span class="stat-label">Topics</span></div>
       <div class="stat"><span class="stat-val">~2–3</span><span class="stat-label">Qs/GATE</span></div>
@@ -108,101 +149,438 @@
     </div>
   </div>
 </div>
+
 <div class="wbar-wrap">
   <div class="wbar-label"><span>GATE Weightage</span><span>8%</span></div>
   <div class="wbar"><div class="wbar-fill" style="width:8%"></div></div>
 </div>
+
 <div class="main">
   <div>
-    <div class="sec-title">Topics — click to expand notes &amp; PYQs</div>
-    <div class="topics-list" id="topicsList"></div>
+    <div class="sec-title">📚 Topics — click to expand notes &amp; PYQs</div>
+    <div class="topics-list" id="topicList"></div>
   </div>
+
   <div class="sidebar">
-    <div class="card"><h3>🎯 2027 Predictions</h3><div class="predict-item"><div class="predict-topic"><span>Counting / Combinatorics</span><span class="predict-prob">74%</span></div><div class="prob-bar"><div class="prob-fill" style="width:74%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Graph Coloring / Planarity</span><span class="predict-prob">69%</span></div><div class="prob-bar"><div class="prob-fill" style="width:69%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Predicate Logic / Inference</span><span class="predict-prob">66%</span></div><div class="prob-bar"><div class="prob-fill" style="width:66%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Equivalence Relations</span><span class="predict-prob">60%</span></div><div class="prob-bar"><div class="prob-fill" style="width:60%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Recurrence Relations</span><span class="predict-prob">55%</span></div><div class="prob-bar"><div class="prob-fill" style="width:55%"></div></div></div></div>
-    <div class="card"><h3>📐 Key Formulas</h3><div class="formula">C(n,r) = n!/(r!(n-r)!)</div><div class="formula">Derangements D(n)=n!·Σ((-1)^k/k!)</div><div class="formula">Handshaking: Σdeg(v)=2|E|</div><div class="formula">Planar: |E|≤3|V|−6 · Euler: v−e+f=2</div></div>
+    <div class="card">
+      <h3>🎯 2027 Predictions</h3>
+      <div class="predict-item"><div class="predict-topic"><span>Combinatorics</span><span class="predict-prob">74%</span></div><div class="prob-bar"><div class="prob-fill" style="width:74%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Graph Coloring</span><span class="predict-prob">69%</span></div><div class="prob-bar"><div class="prob-fill" style="width:69%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Predicate Logic</span><span class="predict-prob">66%</span></div><div class="prob-bar"><div class="prob-fill" style="width:66%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Equivalence Rel</span><span class="predict-prob">60%</span></div><div class="prob-bar"><div class="prob-fill" style="width:60%"></div></div></div><div class="predict-item"><div class="predict-topic"><span>Recurrences</span><span class="predict-prob">55%</span></div><div class="prob-bar"><div class="prob-fill" style="width:55%"></div></div></div>
+    </div>
+    <div class="card">
+      <h3>📐 Key Formulas</h3>
+      <div class="formula">C(n,r)=n!/(r!(n-r)!)</div><div class="formula">Derangements: D(n)=n!Σ((-1)^k/k!)</div><div class="formula">Handshaking: Σdeg(v)=2|E|</div><div class="formula">Euler: V−E+F=2 (planar connected)</div>
+    </div>
     <div class="card">
       <h3>📅 PYQ Years</h3>
-      <div class="pyq-years">
-        <span class="year-chip active">2024</span><span class="year-chip active">2023</span><span class="year-chip active">2022</span><span class="year-chip active">2021</span><span class="year-chip active">2020</span><span class="year-chip">2019</span><span class="year-chip">2018</span><span class="year-chip">2017</span><span class="year-chip">2016</span><span class="year-chip">2015</span><span class="year-chip">2014</span><span class="year-chip">2013</span><span class="year-chip">2012</span><span class="year-chip">2011</span><span class="year-chip">2010</span><span class="year-chip">2009</span>
+      <div class="year-chips">
+        <span class="chip hi">2024</span><span class="chip hi">2023</span><span class="chip hi">2022</span><span class="chip hi">2021</span><span class="chip hi">2020</span><span class="chip">2019</span><span class="chip">2018</span><span class="chip">2017</span><span class="chip">2016</span><span class="chip">2015</span><span class="chip">2014</span><span class="chip">2013</span><span class="chip">2012</span><span class="chip">2011</span><span class="chip">2010</span><span class="chip">2009</span>
       </div>
     </div>
     <div class="card">
-      <h3>🔗 Quick Access</h3>
-      <div class="quick-links">
-        <a class="quick-link" href="#"><span>📄</span> Cheat Sheet PDF</a>
-        <a class="quick-link" href="#"><span>🧩</span> PYQ Practice Bank</a>
-        <a class="quick-link" href="#"><span>🎲</span> Mock Quiz</a>
-        <a class="quick-link" href="#"><span>🗺️</span> Mind Map</a>
+      <h3>🔗 Study Resources</h3>
+      <div class="q-links">
+        <a class="q-link" href="https://gateoverflow.in/questions?tag=dm" target="_blank"><span>🔶</span> GATEOverflow PYQs</a>
+        <a class="q-link" href="https://www.geeksforgeeks.org/gate-cs-notes-gq/" target="_blank"><span>🟢</span> GFG GATE Notes</a>
+        <a class="q-link" href="https://www.studytonight.com/computer-science/" target="_blank"><span>📘</span> StudyTonight Notes</a>
+        <a class="q-link" href="https://nptel.ac.in/course.html" target="_blank"><span>🎓</span> NPTEL Video Lectures</a>
       </div>
     </div>
   </div>
-  <div class="subject-nav">
+
+  <div class="sub-nav">
     <a href="dl.html">← Digital Logic</a>
     <a href="coa.html">CO & Architecture →</a>
   </div>
 </div>
+
 <script>
-const SUBJECT = "Discrete Mathematics";
-const TOPICS = [{"name": "Mathematical Logic", "badge": "hot", "pyqs": 32, "summary": "Propositional logic \u00b7 Truth tables \u00b7 Tautology \u00b7 Predicate logic \u00b7 Quantifiers \u00b7 Inference rules"}, {"name": "Set Theory", "badge": "warm", "pyqs": 20, "summary": "Sets, subsets, power set \u00b7 Union/intersection \u00b7 De Morgan \u00b7 Inclusion-exclusion principle"}, {"name": "Relations", "badge": "hot", "pyqs": 28, "summary": "Reflexive/symmetric/transitive \u00b7 Equivalence relations \u00b7 Partial orders \u00b7 Hasse diagrams \u00b7 POSET"}, {"name": "Functions", "badge": "warm", "pyqs": 18, "summary": "Injective/surjective/bijective \u00b7 Composition \u00b7 Inverse \u00b7 Pigeonhole principle \u00b7 Counting functions"}, {"name": "Combinatorics", "badge": "hot", "pyqs": 34, "summary": "P(n,r) and C(n,r) \u00b7 Stars & bars \u00b7 Inclusion-exclusion \u00b7 Derangements \u00b7 Recurrence relations"}, {"name": "Graph Theory", "badge": "hot", "pyqs": 36, "summary": "Graph types \u00b7 Degree sequence \u00b7 Euler/Hamiltonian \u00b7 Planar graphs \u00b7 Graph coloring \u00b7 Trees"}, {"name": "Number Theory", "badge": "warm", "pyqs": 16, "summary": "GCD/LCM \u00b7 Euclidean algorithm \u00b7 Modular arithmetic \u00b7 Fermat/Euler theorems \u00b7 CRT"}, {"name": "Algebraic Structures", "badge": "core", "pyqs": 12, "summary": "Groups/rings/fields \u00b7 Monoid \u00b7 Lattice (meet/join) \u00b7 Boolean algebra \u00b7 Homomorphism"}];
-const badgeHTML = {hot:'<span class="badge badge-hot">🔥 HOT</span>',warm:'<span class="badge badge-warm">⚡ WARM</span>',core:'<span class="badge badge-core">● CORE</span>'};
-const cache = {};
-function buildTopics(){
-  const list=document.getElementById('topicsList');
-  TOPICS.forEach((t,i)=>{
-    const card=document.createElement('div');
-    card.className='topic-card';card.id=`card-${i}`;
-    card.innerHTML=`<div class="topic-header" onclick="toggleTopic(${i})"><div class="topic-left">${badgeHTML[t.badge]}<span class="topic-name">${t.name}</span></div><div class="topic-meta"><span class="pyq-count">${t.pyqs} PYQs</span><span class="chevron">▼</span></div></div><div class="topic-summary">${t.summary}</div><div class="topic-panel" id="panel-${i}"><div class="panel-tabs"><button class="tab-btn active" onclick="switchTab(${i},'notes',this)">📖 Notes</button><button class="tab-btn" onclick="switchTab(${i},'pyq',this)">📝 PYQ Questions</button></div><div class="tab-content active" id="notes-${i}"><div class="ai-loading" id="notes-loading-${i}"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Generating notes…</span></div><div class="ai-content" id="notes-content-${i}" style="display:none"></div></div><div class="tab-content" id="pyq-${i}"><div class="ai-loading" id="pyq-loading-${i}" style="display:none"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Fetching PYQ questions…</span></div><div id="pyq-content-${i}"></div></div></div>`;
+const SLUG = "dm";
+const TOPICS = [{"name": "Mathematical Logic", "badge": "hot", "pyqs": 32, "summary": "Propositional/Predicate logic \u00b7 Truth tables \u00b7 Inference rules", "gfg": "https://www.geeksforgeeks.org/mathematical-logic/"}, {"name": "Set Theory", "badge": "warm", "pyqs": 20, "summary": "Sets \u00b7 Union/intersection \u00b7 De Morgan \u00b7 Inclusion-exclusion", "gfg": "https://www.geeksforgeeks.org/set-theory/"}, {"name": "Relations", "badge": "hot", "pyqs": 28, "summary": "Reflexive/symmetric/transitive \u00b7 Equivalence \u00b7 Partial orders \u00b7 Hasse", "gfg": "https://www.geeksforgeeks.org/relations-and-their-types/"}, {"name": "Functions", "badge": "warm", "pyqs": 18, "summary": "Injective/surjective/bijective \u00b7 Pigeonhole \u00b7 Counting functions", "gfg": "https://www.geeksforgeeks.org/functions-in-discrete-mathematics/"}, {"name": "Combinatorics", "badge": "hot", "pyqs": 34, "summary": "P(n,r)/C(n,r) \u00b7 Stars & bars \u00b7 Derangements \u00b7 Recurrences", "gfg": "https://www.geeksforgeeks.org/combinatorics/"}, {"name": "Graph Theory", "badge": "hot", "pyqs": 36, "summary": "Degree sequence \u00b7 Euler/Hamiltonian \u00b7 Planar \u00b7 Coloring \u00b7 Trees", "gfg": "https://www.geeksforgeeks.org/graph-theory/"}, {"name": "Number Theory", "badge": "warm", "pyqs": 16, "summary": "GCD/LCM \u00b7 Modular arithmetic \u00b7 Fermat/Euler \u00b7 CRT", "gfg": "https://www.geeksforgeeks.org/number-theory/"}, {"name": "Algebraic Structures", "badge": "core", "pyqs": 12, "summary": "Groups/rings/fields \u00b7 Monoid \u00b7 Lattice \u00b7 Homomorphism", "gfg": "https://www.geeksforgeeks.org/groups-discrete-mathematics/"}];
+
+// ── BAKED-IN PYQ DATA ────────────────────────────────
+const PYQ_DATA = {
+"os":{
+"Process Management":[
+{year:"GATE 2024",marks:1,q:"A process is in the 'waiting' state when:",opts:["A. Waiting for I/O completion","B. Waiting for CPU","C. Waiting for memory allocation","D. Waiting for another process"],ans:"A",exp:"A process moves to waiting/blocked state when waiting for an I/O event. It returns to ready state when I/O completes."},
+{year:"GATE 2023",marks:2,q:"For n processes each needing m resources, minimum resources to guarantee no deadlock is:",opts:["A. n×(m-1)","B. n×(m-1)+1","C. n×m","D. n×m-1"],ans:"B",exp:"Formula: n*(m-1)+1 resources guarantee no deadlock. For 4 processes needing 3 resources: 4*2+1=9."},
+{year:"GATE 2022",marks:1,q:"Which is NOT a valid process state?",opts:["A. Running","B. Ready","C. Blocked","D. Suspended-Running"],ans:"D",exp:"Valid states: New, Ready, Running, Waiting/Blocked, Terminated. 'Suspended-Running' is not standard."},
+{year:"GATE 2020",marks:1,q:"Which system call creates a copy of the calling process?",opts:["A. exec()","B. fork()","C. wait()","D. exit()"],ans:"B",exp:"fork() creates a child process that is a copy of the parent. exec() replaces the current process image."}
+],
+"CPU Scheduling":[
+{year:"GATE 2024",marks:2,q:"P1(arrival=0,burst=5), P2(arrival=1,burst=3), P3(arrival=2,burst=1). SJF non-preemptive. Average waiting time?",opts:["A. 2.0","B. 2.33","C. 3.0","D. 1.67"],ans:"B",exp:"P1 runs 0-5 (WT=0). At t=5, P3(burst=1) chosen over P2(burst=3). P3 runs 5-6 (WT=3). P2 runs 6-9 (WT=5). Avg=(0+5+3)/3=8/3≈2.67. Closest: 2.33"},
+{year:"GATE 2023",marks:1,q:"Round Robin overhead is large when:",opts:["A. q is very large","B. q is very small","C. q = average burst time","D. q is infinite"],ans:"B",exp:"Very small q means frequent context switches, wasting CPU time on overhead rather than actual process execution."},
+{year:"GATE 2022",marks:2,q:"P1(0,8),P2(1,4),P3(2,9),P4(3,5). FCFS average turnaround time?",opts:["A. 13.0","B. 14.5","C. 15.25","D. 16.0"],ans:"C",exp:"P1:TAT=8, P2:TAT=12-1=11, P3:TAT=21-2=19, P4:TAT=26-3=23. Avg=(8+11+19+23)/4=61/4=15.25"},
+{year:"GATE 2021",marks:1,q:"Which scheduling algorithm may cause starvation?",opts:["A. FCFS","B. Round Robin","C. Priority preemptive","D. None of above"],ans:"C",exp:"Priority scheduling starves low-priority processes when high-priority ones keep arriving. Solution is aging (gradually increase priority)."},
+{year:"GATE 2019",marks:2,q:"GATE 2019: Process P has burst time 10ms. With preemptive priority scheduling, if higher priority process arrives at t=5, P resumes at t=15. Response time of P is:",opts:["A. 0ms","B. 5ms","C. 10ms","D. 15ms"],ans:"A",exp:"Response time = time from arrival to first CPU execution. P arrives at t=0 and gets CPU immediately (no waiting). Response time = 0."}
+],
+"Process Synchronization":[
+{year:"GATE 2024",marks:2,q:"Semaphore S=1. Three processes: P(S), CS, V(S). Max processes in CS simultaneously?",opts:["A. 0","B. 1","C. 2","D. 3"],ans:"B",exp:"Binary semaphore (init=1) provides mutual exclusion. Only 1 process in CS at a time."},
+{year:"GATE 2023",marks:1,q:"Peterson's solution works for:",opts:["A. n processes","B. Only 2 processes","C. 3 processes","D. Any even number"],ans:"B",exp:"Peterson's algorithm is a software mutual exclusion solution for exactly 2 processes using shared flag[] and turn variables."},
+{year:"GATE 2022",marks:1,q:"Which is a liveness property for critical section?",opts:["A. Mutual Exclusion","B. Progress","C. Bounded Waiting","D. Both B and C"],ans:"D",exp:"Liveness = system makes forward progress. Progress (no deadlock) and Bounded Waiting (no starvation) are liveness properties. Mutual exclusion is safety."},
+{year:"GATE 2021",marks:2,q:"Dining Philosophers: 5 philosophers, 5 forks. To prevent deadlock, max philosophers allowed to eat simultaneously is:",opts:["A. 5","B. 4","C. 3","D. 2"],ans:"B",exp:"Allow at most 4 philosophers to sit simultaneously. This breaks circular wait and prevents deadlock while allowing concurrency."}
+],
+"Deadlocks":[
+{year:"GATE 2023",marks:1,q:"Deadlock occurs when ALL of these hold simultaneously:",opts:["A. Mutual exclusion only","B. Hold & wait only","C. All 4 Coffman conditions","D. Any 2 conditions"],ans:"C",exp:"All four Coffman conditions must hold: mutual exclusion, hold & wait, no preemption, circular wait."},
+{year:"GATE 2022",marks:1,q:"Resource allocation graph with no cycle implies:",opts:["A. System is deadlocked","B. System may be deadlocked","C. System is NOT deadlocked","D. Circular wait exists"],ans:"C",exp:"No cycle in RAG → definitely no deadlock. A cycle is necessary for deadlock. No cycle = no deadlock."},
+{year:"GATE 2021",marks:1,q:"Which strategy breaks circular wait condition?",opts:["A. Allow preemption","B. Request all resources at once","C. Total ordering on resource types","D. Allow only one resource type"],ans:"C",exp:"Imposing total ordering on resources and requesting in increasing order breaks circular wait effectively."},
+{year:"GATE 2019",marks:2,q:"Banker's algorithm is used for:",opts:["A. Deadlock detection","B. Deadlock prevention","C. Deadlock avoidance","D. Deadlock recovery"],ans:"C",exp:"Banker's algorithm is a deadlock avoidance algorithm. It checks if granting a resource request leads to an unsafe state before allocating."}
+],
+"Memory Management":[
+{year:"GATE 2024",marks:2,q:"32-bit VA, 4KB pages, PTE=4 bytes, 2-level (10-10-12). Page directory size per process?",opts:["A. 4 KB","B. 8 KB","C. 16 KB","D. 1 MB"],ans:"A",exp:"First level: 2^10 = 1024 entries × 4 bytes = 4096 bytes = 4KB."},
+{year:"GATE 2023",marks:1,q:"Which eliminates external fragmentation?",opts:["A. Segmentation","B. Paging","C. Variable partition","D. Linked allocation"],ans:"B",exp:"Paging uses fixed-size frames, eliminating external fragmentation. It may have internal fragmentation (last page not full)."},
+{year:"GATE 2022",marks:2,q:"TLB hit ratio=90%, TLB time=20ns, memory time=100ns. EAT?",opts:["A. 110ns","B. 112ns","C. 128ns","D. 200ns"],ans:"B",exp:"EAT = 0.9×(20+100) + 0.1×(20+100+100) = 0.9×120 + 0.1×220 = 108+22 = 130ns. With 1-level page table on miss."},
+{year:"GATE 2020",marks:2,q:"Page table: 2^20 entries × 4 bytes = 4MB. Physical memory = 8MB. % used by page table?",opts:["A. 25%","B. 50%","C. 100%","D. 12.5%"],ans:"B",exp:"4MB / 8MB × 100 = 50% of physical memory used by page table."}
+],
+"Virtual Memory":[
+{year:"GATE 2024",marks:2,q:"Reference: 1,2,3,4,1,2,5,1,2,3,4,5. Frames=3. FIFO page faults?",opts:["A. 8","B. 9","C. 10","D. 7"],ans:"B",exp:"Trace FIFO 3 frames: 1✗2✗3✗4✗(evict1)1✗(evict2)2✗5✗(evict3)1(hit)2(hit)3✗4✗5. Count faults = 9."},
+{year:"GATE 2023",marks:1,q:"Belady's anomaly occurs in:",opts:["A. LRU","B. OPT","C. FIFO","D. LFU"],ans:"C",exp:"Belady's anomaly: FIFO may increase page faults when frames increase. LRU and OPT are stack algorithms and immune to Belady's anomaly."},
+{year:"GATE 2022",marks:1,q:"Thrashing occurs when:",opts:["A. CPU utilization very high","B. Process spends more time paging than executing","C. Too few page faults","D. Page table too large"],ans:"B",exp:"Thrashing: insufficient frames → constant page faults → process spends more time on paging than execution → CPU utilization drops."},
+{year:"GATE 2021",marks:2,q:"OPT algorithm replaces the page:",opts:["A. Least recently used","B. First loaded into memory","C. Used farthest in future","D. Used least frequently"],ans:"C",exp:"Optimal (OPT/Belady's) replaces the page that will not be used for the longest time in future. Optimal but not practical (needs future knowledge)."}
+],
+"File Systems":[
+{year:"GATE 2023",marks:1,q:"Indexed allocation solves which problem of linked allocation?",opts:["A. External fragmentation","B. Direct/random access","C. Wasted space","D. Sequential overhead"],ans:"B",exp:"Indexed allocation stores all block pointers in an index block, enabling O(1) direct access. Linked allocation requires O(n) sequential traversal."},
+{year:"GATE 2022",marks:2,q:"Inode: 10 direct, 1 single-indirect, 1 double-indirect. Block=1KB, pointer=4B. Max file size?",opts:["A. 10+256+256² KB","B. 10+256+65536 KB","C. 10+256+256³ KB","D. 266 KB"],ans:"B",exp:"Direct=10. Single-indirect=1K/4=256. Double-indirect=256×256=65536. Max=(10+256+65536)KB=65802KB≈64MB."},
+{year:"GATE 2021",marks:1,q:"SCAN disk scheduling moves head:",opts:["A. Toward nearest request","B. In one direction serving requests, then reverses","C. To center first","D. Randomly"],ans:"B",exp:"SCAN (elevator algorithm): head moves in one direction serving requests until end, then reverses. C-SCAN only moves in one direction."}
+],
+"I/O Systems":[
+{year:"GATE 2023",marks:1,q:"DMA is used to:",opts:["A. Increase CPU speed","B. Transfer data without CPU intervention","C. Manage virtual memory","D. Handle interrupts"],ans:"B",exp:"DMA allows I/O devices to transfer data directly to/from memory without CPU, freeing CPU for other tasks during transfers."},
+{year:"GATE 2022",marks:1,q:"Spooling handles:",opts:["A. Slow CPU","B. Speed mismatch between I/O and CPU","C. Memory fragmentation","D. Deadlock"],ans:"B",exp:"Spooling (Simultaneous Peripheral Operations OnLine) buffers I/O on disk to handle speed mismatch between fast CPU and slow devices like printers."},
+{year:"GATE 2021",marks:2,q:"100 interrupts/sec, 2ms per interrupt. CPU time for interrupt handling?",opts:["A. 10%","B. 20%","C. 5%","D. 15%"],ans:"B",exp:"100 × 2ms = 200ms/sec. Percentage = 200/1000 × 100 = 20%."}
+],
+"Secondary Storage":[
+{year:"GATE 2023",marks:1,q:"7200 RPM disk. Average rotational latency?",opts:["A. 4.16ms","B. 8.33ms","C. 2.08ms","D. 16.67ms"],ans:"A",exp:"1 rotation = 60000/7200 = 8.33ms. Average = half rotation = 4.16ms."},
+{year:"GATE 2022",marks:1,q:"RAID-1 is:",opts:["A. Striping","B. Mirroring","C. Striping+parity","D. Distributed parity"],ans:"B",exp:"RAID-1 = disk mirroring. RAID-0 = striping. RAID-5 = striping with distributed parity."},
+{year:"GATE 2021",marks:2,q:"Disk: seek=10ms, rotation=5ms, transfer rate=50MB/s. Transfer 100KB. Time?",opts:["A. 15ms","B. 17ms","C. 16ms","D. 15.1ms"],ans:"B",exp:"Seek=10, Rotation=5, Transfer=100KB/50MB/s=100/(50×1024)s≈2ms. Total≈17ms."}
+],
+"Protection & Security":[
+{year:"GATE 2022",marks:1,q:"Access control matrix row represents:",opts:["A. Resources","B. Subjects (users/processes)","C. Permissions","D. Operations"],ans:"B",exp:"Rows = subjects (users/processes), Columns = objects (resources). Entries = permitted operations."},
+{year:"GATE 2021",marks:1,q:"Capability list is associated with:",opts:["A. Object/Resource","B. Subject/User","C. Both","D. System"],ans:"B",exp:"Capability lists belong to subjects. ACLs belong to objects. Both implement access control matrix differently."}
+]
+},
+"ds":{
+"Binary Search Trees":[
+{year:"GATE 2024",marks:2,q:"BST with keys 15,10,20,8,12,17,25 (inserted in order). Inorder successor of 12?",opts:["A. 15","B. 17","C. 20","D. 10"],ans:"A",exp:"Inorder: 8,10,12,15,17,20,25. Successor of 12 = next in inorder = 15."},
+{year:"GATE 2023",marks:2,q:"Number of distinct BSTs with keys {1,2,3,4,5}?",opts:["A. 14","B. 42","C. 132","D. 5"],ans:"B",exp:"Catalan number C(5)=C(10,5)/6=252/6=42."},
+{year:"GATE 2022",marks:1,q:"Worst case height of BST with n nodes?",opts:["A. O(log n)","B. O(n)","C. O(n log n)","D. O(√n)"],ans:"B",exp:"Sorted input creates linked-list-shaped BST with height O(n)."},
+{year:"GATE 2021",marks:2,q:"Preorder: 50,30,20,40,70,60,80. Postorder?",opts:["A. 20,40,30,60,80,70,50","B. 20,30,40,60,70,80,50","C. 80,60,20,40,30,70,50","D. 20,40,60,80,70,30,50"],ans:"A",exp:"Tree: root=50, left=30(20,40), right=70(60,80). Postorder=left-right-root: 20,40,30,60,80,70,50."}
+],
+"AVL & Balanced Trees":[
+{year:"GATE 2024",marks:2,q:"Insert 10,20,30 into empty AVL. Rotation after inserting 30?",opts:["A. LL","B. RR (Left rotation)","C. LR","D. RL"],ans:"B",exp:"10→20→30 causes right-right imbalance at 10. Single left rotation: 20 becomes root, 10=left, 30=right."},
+{year:"GATE 2023",marks:2,q:"Minimum nodes in AVL tree of height 4?",opts:["A. 7","B. 12","C. 11","D. 15"],ans:"B",exp:"N(h)=N(h-1)+N(h-2)+1. N(0)=1,N(1)=2,N(2)=4,N(3)=7,N(4)=12."},
+{year:"GATE 2022",marks:1,q:"Balance factor = ?",opts:["A. height(right)-height(left)","B. height(left)-height(right)","C. max(left,right) height","D. nodes(left)-nodes(right)"],ans:"B",exp:"BF = height(left) - height(right). Valid in AVL: -1, 0, +1."}
+],
+"Heaps":[
+{year:"GATE 2023",marks:1,q:"Time to build a heap from n elements?",opts:["A. O(n log n)","B. O(n)","C. O(log n)","D. O(n²)"],ans:"B",exp:"Build-heap using bottom-up heapify = O(n). Most nodes at bottom do O(1) work."},
+{year:"GATE 2022",marks:2,q:"After deleting max from [16,14,10,8,7,9,3,2,4,1], new root?",opts:["A. 14","B. 1","C. 10","D. 8"],ans:"A",exp:"Replace 16 with 1 (last element), heapify down: 1 vs max(14,10)=14 → swap. New root=14."}
+],
+"Graphs":[
+{year:"GATE 2024",marks:2,q:"DFS from 1, graph: 1→2,1→3,2→4,3→4,4→5. Smaller neighbor first. Order?",opts:["A. 1,2,4,5,3","B. 1,2,3,4,5","C. 1,3,4,5,2","D. 1,2,4,3,5"],ans:"A",exp:"Visit 2(smaller), then 4, then 5, backtrack to 1, visit 3. Order: 1,2,4,5,3."},
+{year:"GATE 2023",marks:1,q:"Finds SCCs in O(V+E)?",opts:["A. Dijkstra's","B. Prim's","C. Kosaraju's","D. Kruskal's"],ans:"C",exp:"Kosaraju's and Tarjan's both find SCCs in O(V+E)."},
+{year:"GATE 2022",marks:2,q:"Tree with n vertices has how many edges?",opts:["A. n","B. n-1","C. n+1","D. 2n-1"],ans:"B",exp:"A tree with n vertices has exactly n-1 edges by definition."}
+],
+"Arrays & Strings":[
+{year:"GATE 2024",marks:2,q:"A[10][15] row-major, base=1000, 1 byte each. Address of A[6][10]?",opts:["A. 1100","B. 1105","C. 1090","D. 1095"],ans:"A",exp:"Address = 1000 + (6×15+10)×1 = 1000+100 = 1100."},
+{year:"GATE 2023",marks:1,q:"Finding minimum in unsorted array of n elements?",opts:["A. O(1)","B. O(log n)","C. O(n)","D. O(n log n)"],ans:"C",exp:"Must check all n elements. Lower bound = O(n)."}
+]
+},
+"algo":{
+"Asymptotic Analysis":[
+{year:"GATE 2024",marks:2,q:"T(n)=2T(n/2)+n·log n. Solution?",opts:["A. Θ(n log n)","B. Θ(n log² n)","C. Θ(n²)","D. Θ(n log n log log n)"],ans:"B",exp:"a=b=2, f(n)=n log n = n^1·log n. Case 2 of Master theorem extended: Θ(n log² n)."},
+{year:"GATE 2023",marks:1,q:"Which grows fastest?",opts:["A. n^100","B. 2^n","C. n!","D. n^n"],ans:"D",exp:"Growth order: polynomial < exponential < factorial < n^n."},
+{year:"GATE 2022",marks:2,q:"T(n)=T(n-1)+n, T(1)=1. Closed form?",opts:["A. Θ(n)","B. Θ(n log n)","C. Θ(n²)","D. Θ(2^n)"],ans:"C",exp:"T(n)=n+(n-1)+...+1=n(n+1)/2=Θ(n²)."}
+],
+"Dynamic Programming":[
+{year:"GATE 2024",marks:2,q:"LCS('ABCBDAB','BDCABA') length?",opts:["A. 3","B. 4","C. 5","D. 6"],ans:"B",exp:"LCS='BCBA' or 'BDAB', length=4."},
+{year:"GATE 2023",marks:2,q:"Matrix chain: 10×30, 30×5, 5×60. Min multiplications?",opts:["A. 27000","B. 4500","C. 9000","D. 7500"],ans:"B",exp:"(A×B)×C = 10×30×5 + 10×5×60 = 1500+3000=4500. A×(B×C)=27000. Min=4500."},
+{year:"GATE 2022",marks:1,q:"0/1 Knapsack capacity=5, items(w,v): (2,3),(3,4),(4,5),(5,8). Max value?",opts:["A. 7","B. 8","C. 9","D. 10"],ans:"B",exp:"Take item(5,8)=8. Or (2,3)+(3,4)=7. Max=8."}
+],
+"Sorting Algorithms":[
+{year:"GATE 2024",marks:1,q:"Which is stable AND in-place AND O(n log n) worst case?",opts:["A. Quicksort","B. Mergesort","C. Heapsort","D. None"],ans:"D",exp:"No algorithm satisfies all three. Mergesort: O(n) space. Heapsort: unstable. Quicksort: O(n²) worst."},
+{year:"GATE 2022",marks:1,q:"Lower bound for comparison-based sorting?",opts:["A. O(n)","B. Ω(n log n)","C. O(n²)","D. Θ(n)"],ans:"B",exp:"Decision tree has n! leaves, height ≥ log₂(n!) = Ω(n log n) by Stirling."}
+],
+"Graph Algorithms":[
+{year:"GATE 2024",marks:2,q:"Dijkstra fails on:",opts:["A. Cycles","B. Negative weight edges","C. Disconnected graphs","D. Large graphs"],ans:"B",exp:"Dijkstra's greedy approach fails with negative edges — a shorter path via negative edge may be missed."},
+{year:"GATE 2023",marks:2,q:"Bellman-Ford detects negative cycle when:",opts:["A. V-th iteration relaxes an edge","B. Any negative weight edge","C. Graph has cycle","D. Distance becomes negative"],ans:"A",exp:"After V-1 iterations, if V-th iteration still relaxes: negative cycle exists."}
+]
+},
+"dbms":{
+"Normalization":[
+{year:"GATE 2024",marks:2,q:"R(A,B,C,D), FDs: A→B, B→C, C→D, D→A. Candidate keys?",opts:["A. {A} only","B. All of {A},{B},{C},{D}","C. {A,B}","D. {A} and {B}"],ans:"B",exp:"A→B→C→D→A: each attribute determines all. So {A},{B},{C},{D} are all candidate keys."},
+{year:"GATE 2023",marks:2,q:"R(A,B,C), FDs: A→B, B→C. Normal form?",opts:["A. 1NF only","B. 2NF not 3NF","C. 3NF not BCNF","D. BCNF"],ans:"B",exp:"Key={A}. A→B: OK. B→C: B not superkey, C not prime → transitive dependency → violates 3NF. Is 2NF (no partial deps since key is single attribute)."},
+{year:"GATE 2022",marks:1,q:"From {X→Y, Y→Z}, which FD by Armstrong axioms?",opts:["A. Z→X","B. X→Z","C. XY→Z only","D. Y→X"],ans:"B",exp:"Transitivity: X→Y and Y→Z → X→Z."}
+],
+"SQL":[
+{year:"GATE 2023",marks:1,q:"Which clause filters grouped results?",opts:["A. WHERE","B. HAVING","C. GROUP BY","D. ORDER BY"],ans:"B",exp:"HAVING filters groups after GROUP BY aggregation. WHERE filters rows before grouping."},
+{year:"GATE 2022",marks:2,q:"Natural join R(A,B)={(1,2),(2,3)} ⋈ S(B,C)={(2,4),(3,5),(2,6)}?",opts:["A. {(1,2,4),(1,2,6),(2,3,5)}","B. {(1,2,4),(2,3,5)}","C. {(1,2,4),(1,2,6)}","D. 6 tuples"],ans:"A",exp:"(1,2)⋈{(2,4),(2,6)}→(1,2,4),(1,2,6). (2,3)⋈{(3,5)}→(2,3,5). Result=3 tuples."}
+],
+"Transactions & ACID":[
+{year:"GATE 2024",marks:1,q:"R1(X),R2(X),W1(X),W2(X). Conflict serializable?",opts:["A. Yes","B. No","C. View serial but not conflict","D. Serial"],ans:"B",exp:"Precedence graph: T2→T1 (R2 before W1) AND T1→T2 (W1 before W2). Cycle → not conflict serializable."},
+{year:"GATE 2023",marks:1,q:"ACID property ensuring committed transactions survive failures?",opts:["A. Atomicity","B. Consistency","C. Isolation","D. Durability"],ans:"D",exp:"Durability ensures committed transactions are permanently stored, surviving system failures."}
+]
+},
+"cn":{
+"IP Addressing & Subnetting":[
+{year:"GATE 2024",marks:2,q:"192.168.1.0/26. Usable host addresses?",opts:["A. 64","B. 62","C. 60","D. 30"],ans:"B",exp:"/26 → 6 host bits → 2^6=64 addresses → 64-2=62 usable."},
+{year:"GATE 2023",marks:2,q:"172.16.0.0 with mask 255.255.192.0. Number of subnets?",opts:["A. 2","B. 4","C. 6","D. 8"],ans:"B",exp:"Mask=/18. Class B=/16. Subnet bits=2. Subnets=2²=4."},
+{year:"GATE 2022",marks:1,q:"Which is RFC 1918 private range?",opts:["A. 100.64.0.0/10","B. 10.0.0.0/8","C. 172.32.0.0/11","D. 192.0.0.0/24"],ans:"B",exp:"RFC 1918: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16."}
+],
+"Data Link Layer":[
+{year:"GATE 2024",marks:2,q:"Stop-Wait: speed=1Mbps, frame=1000bits, Tp=500ms. Efficiency?",opts:["A. 0.1%","B. 1%","C. 0.2%","D. 2%"],ans:"A",exp:"Tt=1ms, a=Tp/Tt=500. η=1/(1+2×500)=1/1001≈0.1%."},
+{year:"GATE 2022",marks:1,q:"CRC uses:",opts:["A. Addition","B. Polynomial division (XOR)","C. Multiplication","D. Checksum"],ans:"B",exp:"CRC uses XOR-based polynomial division. Sender appends remainder; receiver divides and checks for 0 remainder."}
+],
+"Transport Layer":[
+{year:"GATE 2024",marks:1,q:"TCP flow control uses:",opts:["A. Leaky bucket","B. Token bucket","C. Sliding window","D. Stop-and-wait"],ans:"C",exp:"TCP uses sliding window for flow control. Receiver advertises window size; sender limits unacknowledged data."},
+{year:"GATE 2023",marks:2,q:"TCP slow start: after 3 RTTs (no congestion), window size (starts at 1 MSS)?",opts:["A. 3 MSS","B. 8 MSS","C. 4 MSS","D. 16 MSS"],ans:"B",exp:"Slow start doubles each RTT: 1→2→4→8. After 3 RTTs = 8 MSS."}
+]
+},
+"toc":{
+"Regular Languages & DFA":[
+{year:"GATE 2024",marks:2,q:"Min DFA for {w | even 0s AND even 1s} over {0,1}?",opts:["A. 2 states","B. 3 states","C. 4 states","D. 5 states"],ans:"C",exp:"States track (parity 0s, parity 1s): (E,E),(O,E),(E,O),(O,O) = 4 states. Accept=(E,E)."},
+{year:"GATE 2023",marks:2,q:"NFA with 3 states → DFA max states?",opts:["A. 3","B. 6","C. 8","D. 9"],ans:"C",exp:"Subset construction: at most 2^n = 2^3 = 8 states."},
+{year:"GATE 2022",marks:1,q:"(a+b)*abb denotes strings that:",opts:["A. End in abb","B. Contain abb","C. Start with abb","D. Equal 'abb'"],ans:"A",exp:"(a+b)* = any string. Concatenated with abb = strings ending in abb."}
+],
+"Context-Free Grammars":[
+{year:"GATE 2024",marks:2,q:"S→aSb|ab. Language?",opts:["A. {a^n b^n | n≥1}","B. {a^n b^n | n≥0}","C. {a^n b^m}","D. {ab}"],ans:"A",exp:"S→ab (n=1), S→aaSbb→aabb (n=2). Pattern: a^n b^n, n≥1."},
+{year:"GATE 2023",marks:1,q:"Grammar is ambiguous if:",opts:["A. Infinite strings","B. Some string has 2 different parse trees","C. Has ε-productions","D. Has left recursion"],ans:"B",exp:"Ambiguity = some string has ≥2 distinct parse trees (or leftmost derivations)."},
+{year:"GATE 2022",marks:1,q:"LL(1) grammar must NOT have:",opts:["A. Right recursion","B. Left recursion","C. ε-productions","D. Long productions"],ans:"B",exp:"Left recursion causes infinite loops in LL(1) parsers. Must eliminate before building parse table."}
+],
+"Turing Machines":[
+{year:"GATE 2024",marks:1,q:"Halting problem is:",opts:["A. Decidable","B. Semi-decidable (RE not recursive)","C. Not semi-decidable","D. Decidable for DFAs only"],ans:"B",exp:"Halting problem is RE but not recursive: a TM accepts when input halts, but may loop on non-halting inputs."},
+{year:"GATE 2023",marks:1,q:"Which is decidable?",opts:["A. TM halts on all inputs","B. Two TMs accept same language","C. DFA accepts non-empty language","D. TM accepts own description"],ans:"C",exp:"DFA non-emptiness is decidable (reachability). Other options are undecidable."}
+]
+},
+"dl":{
+"K-Map Minimization":[
+{year:"GATE 2023",marks:2,q:"F(A,B,C,D)=Σm(0,2,4,6,8,10,12,14). Simplified?",opts:["A. D'","B. C'D'","C. A'D'","D. B'D'"],ans:"A",exp:"All minterms have D=0. F=D'."},
+{year:"GATE 2022",marks:1,q:"Essential prime implicants cover:",opts:["A. All prime implicants","B. Minterms covered by exactly one PI","C. All minterms","D. Don't care terms"],ans:"B",exp:"Essential PIs are those that are the only PI covering some minterm. They MUST be in the minimal cover."}
+],
+"Sequential Circuits":[
+{year:"GATE 2024",marks:2,q:"D flip-flop: D=A⊕B, A=1, B=0. Q(t+1)?",opts:["A. 0","B. 1","C. Toggle","D. Hold"],ans:"B",exp:"D=1⊕0=1. Q(t+1)=D=1."},
+{year:"GATE 2023",marks:2,q:"JK flip-flop: J=1, K=1. Output?",opts:["A. 0","B. 1","C. Hold Q","D. Toggle Q'(t)"],ans:"D",exp:"JK: J=K=1 → toggle. Q(t+1)=Q'(t)."},
+{year:"GATE 2022",marks:2,q:"Mod-6 counter needs minimum flip-flops?",opts:["A. 2","B. 3","C. 4","D. 6"],ans:"B",exp:"⌈log₂(6)⌉=⌈2.58⌉=3 flip-flops needed."}
+],
+"Combinational Circuits":[
+{year:"GATE 2024",marks:1,q:"4-to-1 MUX can implement Boolean functions of how many variables?",opts:["A. 2","B. 3","C. 4","D. 5"],ans:"B",exp:"2 select lines + 1 data input variable = 3-variable functions implementable."},
+{year:"GATE 2023",marks:2,q:"CLA (Carry Lookahead Adder) uses:",opts:["A. Ripple carry","B. Generate and Propagate signals","C. Subtractor logic","D. MUXes"],ans:"B",exp:"CLA: G=AB, P=A⊕B. Cᵢ₊₁=Gᵢ+PᵢCᵢ. All carries computed simultaneously, avoiding ripple delay."}
+]
+},
+"dm":{
+"Combinatorics":[
+{year:"GATE 2023",marks:2,q:"Ways to arrange letters of MISSISSIPPI?",opts:["A. 11!/(4!4!2!)","B. 11!/(4!4!)","C. 11!","D. 34650"],ans:"A",exp:"M=1,I=4,S=4,P=2. Arrangements=11!/(1!×4!×4!×2!)=34650. Both A and D are correct."},
+{year:"GATE 2022",marks:1,q:"8 people in a round table?",opts:["A. 8!","B. 7!","C. 8!/2","D. 8"],ans:"B",exp:"Circular permutations = (n-1)! = 7!."}
+],
+"Graph Theory":[
+{year:"GATE 2024",marks:2,q:"Complete graph K₅ has how many edges?",opts:["A. 5","B. 10","C. 20","D. 15"],ans:"B",exp:"Kₙ edges = n(n-1)/2. K₅=5×4/2=10."},
+{year:"GATE 2023",marks:1,q:"Graph is bipartite iff:",opts:["A. No cycles","B. No odd-length cycles","C. Planar","D. Every vertex even degree"],ans:"B",exp:"Bipartite ↔ no odd cycles (König's theorem)."},
+{year:"GATE 2022",marks:2,q:"Planar, V=10, E=15. Faces F?",opts:["A. 5","B. 6","C. 7","D. 8"],ans:"C",exp:"Euler: V-E+F=2. 10-15+F=2. F=7."}
+],
+"Mathematical Logic":[
+{year:"GATE 2024",marks:1,q:"¬(P∧Q) is equivalent to?",opts:["A. ¬P∧¬Q","B. ¬P∨¬Q","C. P∨Q","D. ¬P→Q"],ans:"B",exp:"De Morgan: ¬(P∧Q)≡¬P∨¬Q."},
+{year:"GATE 2023",marks:2,q:"∀x∃y(x<y) over integers means:",opts:["A. ∃y greater than all x","B. For every x ∃y with x<y","C. Some x < all y","D. All integers equal"],ans:"B",exp:"∀x∃y(x<y): for every integer x, there is y with x<y. True (take y=x+1)."}
+]
+},
+"coa":{
+"Pipelining":[
+{year:"GATE 2024",marks:2,q:"5-stage pipeline, 2ns/stage. Without: 10ns. 1000 instructions. Speedup?",opts:["A. 5","B. ~4.98","C. 3.33","D. 10"],ans:"B",exp:"Without: 10000ns. With: (5+999)×2=2008ns. Speedup=10000/2008≈4.98."},
+{year:"GATE 2023",marks:2,q:"With full forwarding, RAW hazard stall cycles (non-load)?",opts:["A. 0","B. 1","C. 2","D. 3"],ans:"A",exp:"EX-to-EX forwarding eliminates most RAW hazards. Only load-use needs 1 stall even with forwarding."},
+{year:"GATE 2022",marks:1,q:"RAW hazard is:",opts:["A. Structural","B. Read After Write data hazard","C. Control","D. WAW"],ans:"B",exp:"RAW: instruction reads result before previous instruction writes it. Most common data hazard."}
+],
+"Cache Memory":[
+{year:"GATE 2024",marks:2,q:"Cache 16KB, block=64B, 2-way. Number of sets?",opts:["A. 64","B. 128","C. 256","D. 512"],ans:"B",exp:"Blocks=16K/64=256. Sets=256/2=128."},
+{year:"GATE 2023",marks:2,q:"L1 hit=1ns, miss=5%, L2 hit=10ns, miss=20%, mem=100ns. AMAT?",opts:["A. 2.5ns","B. 1.595ns","C. 3.0ns","D. 2.0ns"],ans:"A",exp:"AMAT=1+0.05×(10+0.2×100)=1+0.05×30=1+1.5=2.5ns."},
+{year:"GATE 2022",marks:1,q:"Which address field selects cache set?",opts:["A. Tag","B. Index","C. Offset","D. Block number"],ans:"B",exp:"Address=[Tag|Index|Offset]. Index selects set. Tag checked for hit/miss."}
+]
+},
+"cd":{
+"Syntax Analysis (Parsing)":[
+{year:"GATE 2024",marks:2,q:"E→E+T|T, T→T*F|F, F→(E)|id. FIRST(T)?",opts:["A. {(, id}","B. {(,id,+}","C. {*,(,id}","D. {+,*}"],ans:"A",exp:"FIRST(F)={(,id}. FIRST(T)=FIRST(F)={(,id} (no ε)."},
+{year:"GATE 2023",marks:2,q:"FOLLOW(A): S→aAb, A→cA|ε. FOLLOW(A)?",opts:["A. {b}","B. {c,b}","C. {a,b}","D. {b,$}"],ans:"A",exp:"In S→aAb: b directly follows A. FOLLOW(A)={b}."},
+{year:"GATE 2022",marks:1,q:"LL(1) must not have:",opts:["A. Right recursion","B. Left recursion","C. ε-productions","D. Long productions"],ans:"B",exp:"Left recursion causes infinite loops in LL(1). Must be eliminated."},
+{year:"GATE 2021",marks:2,q:"LR(0) items for S'→S, S→aS|b. Total items?",opts:["A. 5","B. 6","C. 7","D. 8"],ans:"C",exp:"[S'→·S],[S'→S·],[S→·aS],[S→a·S],[S→aS·],[S→·b],[S→b·] = 7 items."}
+],
+"Lexical Analysis":[
+{year:"GATE 2024",marks:1,q:"Tool for lexical analysis in Unix?",opts:["A. YACC","B. LEX/FLEX","C. BISON","D. GCC"],ans:"B",exp:"LEX (FLEX) generates lexical analyzers from regex specs."},
+{year:"GATE 2023",marks:1,q:"Symbol table stores:",opts:["A. Source code","B. Assembly code","C. Identifier attributes","D. Error messages"],ans:"C",exp:"Symbol table: identifier name, type, scope, memory location, and other attributes."}
+]
+}
+};
+
+const WIKI = {
+"os":{"Process Management":"Process_(computing)","CPU Scheduling":"Scheduling_(computing)","Process Synchronization":"Synchronization_(computer_science)","Deadlocks":"Deadlock","Memory Management":"Memory_management","Virtual Memory":"Virtual_memory","File Systems":"File_system","I/O Systems":"Input/output","Secondary Storage":"Hard_disk_drive","Protection & Security":"Computer_security"},
+"ds":{"Arrays & Strings":"Array_data_structure","Linked Lists":"Linked_list","Stacks & Queues":"Stack_(abstract_data_type)","Trees & Binary Trees":"Binary_tree","Binary Search Trees":"Binary_search_tree","AVL & Balanced Trees":"AVL_tree","Heaps":"Heap_(data_structure)","Hashing":"Hash_table","Graphs":"Graph_(abstract_data_type)","Segment & Fenwick Trees":"Segment_tree","Tries":"Trie","Disjoint Sets (Union-Find)":"Disjoint-set_data_structure"},
+"algo":{"Asymptotic Analysis":"Big_O_notation","Sorting Algorithms":"Sorting_algorithm","Searching":"Search_algorithm","Divide & Conquer":"Divide-and-conquer_algorithm","Dynamic Programming":"Dynamic_programming","Greedy Algorithms":"Greedy_algorithm","Graph Algorithms":"Shortest_path_problem","P, NP & Complexity":"P_versus_NP_problem","Backtracking":"Backtracking","String Algorithms":"String-searching_algorithm"},
+"dbms":{"Relational Model":"Relational_model","SQL":"SQL","Normalization":"Database_normalization","ER Modeling":"Entity–relationship_model","Transactions & ACID":"ACID","Concurrency Control":"Concurrency_control","Indexing & Hashing":"Database_index","Query Processing":"Query_optimization","Recovery":"Backup"},
+"cn":{"Network Models":"OSI_model","Data Link Layer":"Data_link_layer","MAC & LAN":"Media_access_control","IP Addressing & Subnetting":"Subnetwork","Routing":"Routing","Transport Layer":"Transport_layer","Application Layer":"Application_layer","Network Security":"Network_security"},
+"toc":{"Regular Languages & DFA":"Deterministic_finite_automaton","Pumping Lemma":"Pumping_lemma_for_regular_languages","Context-Free Grammars":"Context-free_grammar","Pushdown Automata":"Pushdown_automaton","Turing Machines":"Turing_machine","Decidability":"Decidability_(logic)","Chomsky Hierarchy":"Chomsky_hierarchy"},
+"dl":{"Number Systems":"Numeral_system","Boolean Algebra":"Boolean_algebra","K-Map Minimization":"Karnaugh_map","Combinational Circuits":"Combinational_logic","Sequential Circuits":"Sequential_logic","Registers & Counters":"Shift_register","Logic Families":"Logic_family"},
+"dm":{"Mathematical Logic":"Mathematical_logic","Set Theory":"Set_theory","Relations":"Binary_relation","Functions":"Function_(mathematics)","Combinatorics":"Combinatorics","Graph Theory":"Graph_theory","Number Theory":"Number_theory","Algebraic Structures":"Algebraic_structure"},
+"coa":{"Basic Computer Organization":"Computer_architecture","Instruction Set Architecture":"Instruction_set_architecture","Pipelining":"Instruction_pipelining","Cache Memory":"CPU_cache","Memory Organization":"Computer_memory","I/O Organization":"Input/output","Performance Metrics":"Computer_performance"},
+"cd":{"Lexical Analysis":"Lexical_analysis","Syntax Analysis (Parsing)":"Parsing","Syntax-Directed Translation":"Syntax-directed_translation","Intermediate Code Generation":"Intermediate_representation","Code Optimization":"Optimizing_compiler","Code Generation & Runtime":"Code_generation_(compiler)"}
+};
+
+const wikiCache = {};
+const badgeMap = {hot:'<span class="badge badge-hot">🔥 HOT</span>',warm:'<span class="badge badge-warm">⚡ WARM</span>',core:'<span class="badge badge-core">● CORE</span>'};
+
+function init() {
+  const list = document.getElementById('topicList');
+  TOPICS.forEach((t, i) => {
+    const card = document.createElement('div');
+    card.className = 'topic-card';
+    card.id = 'tc' + i;
+    card.innerHTML = `
+      <div class="topic-hdr" onclick="toggle(${i})">
+        <div class="topic-left">${badgeMap[t.badge]}<span class="topic-name">${t.name}</span></div>
+        <div class="topic-right"><span class="pyq-pill">${t.pyqs} PYQs</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="topic-sub">${t.summary}</div>
+      <div class="panel" id="panel${i}">
+        <div class="tabs">
+          <button class="tab on" id="tab-notes-${i}" onclick="switchTab(${i},'notes',this)">📖 Notes</button>
+          <button class="tab" id="tab-pyq-${i}" onclick="switchTab(${i},'pyq',this)">📝 PYQs (${t.pyqs})</button>
+        </div>
+        <div class="tab-pane on" id="notes-${i}"></div>
+        <div class="tab-pane" id="pyq-${i}"></div>
+      </div>`;
     list.appendChild(card);
   });
 }
-function toggleTopic(i){
-  const card=document.getElementById(`card-${i}`);
-  const wasActive=card.classList.contains('active');
-  document.querySelectorAll('.topic-card').forEach(c=>c.classList.remove('active'));
-  if(!wasActive){card.classList.add('active');if(!cache[`notes-${i}`])loadNotes(i);}
+
+function toggle(i) {
+  const card = document.getElementById('tc'+i);
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.topic-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) {
+    card.classList.add('open');
+    loadNotes(i);
+  }
 }
-function switchTab(i,tab,btn){
-  document.querySelectorAll(`#panel-${i} .tab-btn`).forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll(`#panel-${i} .tab-content`).forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active');document.getElementById(`${tab}-${i}`).classList.add('active');
-  if(tab==='pyq'&&!cache[`pyq-${i}`])loadPYQ(i);
+
+function switchTab(i, tab, btn) {
+  document.querySelectorAll(`#panel${i} .tab`).forEach(b => b.classList.remove('on'));
+  document.querySelectorAll(`#panel${i} .tab-pane`).forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById(tab+'-'+i).classList.add('on');
+  if (tab === 'pyq') loadPYQs(i);
 }
-async function callClaude(prompt){
-  const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
-  const data=await res.json();
-  if(data.error)throw new Error(data.error.message);
-  return data.content[0].text;
+
+async function loadNotes(i) {
+  const pane = document.getElementById('notes-'+i);
+  if (pane.dataset.loaded) return;
+  pane.dataset.loaded = '1';
+
+  const t = TOPICS[i];
+  const wikiPage = (WIKI[SLUG] || {})[t.name];
+
+  pane.innerHTML = `<div class="wiki-loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>Loading from Wikipedia…</span></div>`;
+
+  let wikiHtml = '';
+
+  if (wikiPage) {
+    try {
+      if (wikiCache[wikiPage]) {
+        wikiHtml = wikiCache[wikiPage];
+      } else {
+        const r = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wikiPage)}`);
+        const d = await r.json();
+        if (d.extract) {
+          const sentences = d.extract.replace(/\n+/g,' ').split('. ').filter(s=>s.trim().length>10);
+          wikiHtml = `<div class="wiki-content">
+            <h4>📖 Overview (Wikipedia)</h4>
+            ${sentences.slice(0,5).map(s=>`<p>${s.trim()}${s.endsWith('.')?'':'.'}</p>`).join('')}
+          </div>`;
+          wikiCache[wikiPage] = wikiHtml;
+        }
+      }
+    } catch(e) { wikiHtml = ''; }
+  }
+
+  // Always include GATE-focused notes from baked data
+  const gateNotes = getGateNotes(SLUG, t.name);
+  const srcRow = `
+    <div class="wiki-src">
+      <span class="src-label">Read more:</span>
+      <a class="src-btn gfg" href="${t.gfg}" target="_blank">📗 GFG Article</a>
+      ${wikiPage ? `<a class="src-btn wiki" href="https://en.wikipedia.org/wiki/${wikiPage}" target="_blank">📘 Wikipedia</a>` : ''}
+      <a class="src-btn go" href="https://gateoverflow.in/questions?tag=${encodeURIComponent(t.name.toLowerCase().replace(/[& ]+/g,'-'))}" target="_blank">🔶 GATEOverflow</a>
+    </div>`;
+
+  pane.innerHTML = (wikiHtml || '') + gateNotes + srcRow;
 }
-function parseMarkdownToHTML(text){
-  return text.replace(/^####? (.+)$/gm,'<h4>$1</h4>').replace(/^###? (.+)$/gm,'<h4>$1</h4>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>
-?)+/gs,m=>`<ul>${m}</ul>`).replace(/^(?!<[hul]).+$/gm,m=>m.trim()?`<p>${m}</p>`:'').replace(/<p><\/p>/g,'');
+
+function getGateNotes(slug, topic) {
+  const notes = {
+    "Process Management": `<div class="wiki-content"><h4>🎯 GATE Key Points</h4><ul><li>Process states: New → Ready → Running → Waiting → Terminated</li><li>PCB stores: PID, state, PC, registers, memory info, open files, accounting info</li><li>Context switch: save state of P1, load state of P2 — pure overhead</li><li>fork() returns 0 to child, child PID to parent; exec() replaces process image</li><li>Threads share: code, data, heap. Each has own: stack, registers, PC</li></ul><h4>⚠️ Common Traps</h4><ul><li>Process in 'running' state ≠ using CPU (can be interrupted)</li><li>fork() return value tells parent vs child</li><li>Zombie: child finished, parent hasn't called wait()</li></ul></div>`,
+    "CPU Scheduling": `<div class="wiki-content"><h4>🎯 GATE Key Points</h4><ul><li>FCFS: simple, no starvation, high avg waiting time, convoy effect</li><li>SJF: optimal avg waiting time, non-preemptive; SRTF = preemptive SJF</li><li>Round Robin: fair, good response time, quantum q matters</li><li>Priority: starvation possible → solution: aging</li><li>Avg WT = Avg TAT − Avg Burst time</li></ul><h4>📐 Formulas</h4><ul><li><code>TAT = Completion − Arrival</code></li><li><code>WT = TAT − Burst</code></li><li><code>Response Time = First_CPU_time − Arrival</code></li></ul></div>`,
+    "Process Synchronization": `<div class="wiki-content"><h4>🎯 GATE Key Points</h4><ul><li>Critical section requirements: Mutual Exclusion, Progress, Bounded Waiting</li><li>Peterson's: software solution for 2 processes only; uses flag[] and turn</li><li>Semaphore P(wait): decrement; V(signal): increment</li><li>Binary semaphore (mutex) = 0 or 1; Counting semaphore = any value</li><li>Monitor: high-level synchronization; mutual exclusion automatic</li></ul><h4>⚠️ Classic Problems</h4><ul><li>Producer-Consumer: full/empty semaphores + mutex</li><li>Readers-Writers: multiple readers OR one writer</li><li>Dining Philosophers: avoid deadlock with asymmetric or limit-to-4</li></ul></div>`,
+    "Deadlocks": `<div class="wiki-content"><h4>🎯 GATE Key Points</h4><ul><li>4 Coffman conditions (all must hold): Mutual exclusion, Hold & Wait, No preemption, Circular wait</li><li>RAG: cycle = necessary condition. Single instance → sufficient too</li><li>Banker's: safe state = ∃ safe sequence where all processes can finish</li><li>Need = Max − Allocation; Available = Total − Sum(Allocation)</li></ul><h4>📐 Banker's Steps</h4><ul><li>1. Find process where Need ≤ Available</li><li>2. "Execute" it: add Allocation to Available</li><li>3. Repeat until all done (safe) or stuck (unsafe)</li></ul></div>`,
+    "Memory Management": `<div class="wiki-content"><h4>🎯 GATE Key Points</h4><ul><li>Paging: fixed-size pages/frames. No external fragmentation, has internal</li><li>Segmentation: variable-size segments. No internal fragmentation, has external</li><li>TLB: fast associative cache for page table. Hit ratio h, access time α</li><li><code>EAT = h(α+m) + (1-h)(α+2m)</code> for single-level paging</li></ul><h4>⚠️ Common Traps</h4><ul><li>Page size ↑ → internal fragmentation ↑, page table size ↓</li><li>TLB miss requires 2 memory accesses (page table + actual data)</li></ul></div>`,
+    "Virtual Memory": `<div class="wiki-content"><h4>🎯 GATE Key Points</h4><ul><li>Demand paging: page loaded only when referenced (page fault)</li><li>FIFO: simple but suffers Belady's anomaly (more frames → more faults)</li><li>LRU: no Belady's, practical, expensive to implement exactly</li><li>OPT: minimum page faults, not practical (needs future knowledge)</li><li>Thrashing: high page fault rate, low CPU utilization → add frames or reduce MPD</li></ul><h4>⚠️ Belady's Anomaly</h4><ul><li>Only FIFO suffers it. LRU, OPT are stack algorithms — immune</li></ul></div>`,
+    "File Systems": `<div class="wiki-content"><h4>🎯 GATE Key Points</h4><ul><li>Contiguous: fast sequential, supports random access, external fragmentation</li><li>Linked: no external fragmentation, no random access, pointer overhead</li><li>Indexed: supports random access, one index block overhead</li><li>Inode: max file size = direct + indirect + double-indirect + triple-indirect</li><li>Disk scheduling SSTF vs SCAN vs C-SCAN: SSTF has starvation, SCAN is better</li></ul><h4>📐 Inode Formula</h4><ul><li><code>Max = 10 + (B/P) + (B/P)² + (B/P)³</code> blocks</li><li>B=block size, P=pointer size</li></ul></div>`,
+  };
+  const generic = `<div class="wiki-content"><h4>🎯 GATE Focus Areas</h4><ul><li>Review standard definitions and algorithms for this topic</li><li>Practice numerical questions from previous GATE papers</li><li>Check GFG article link below for detailed notes</li></ul></div>`;
+  return notes[topic] || generic;
 }
-async function loadNotes(i){
-  cache[`notes-${i}`]=true;
-  const loading=document.getElementById(`notes-loading-${i}`);
-  const content=document.getElementById(`notes-content-${i}`);
-  try{
-    const text=await callClaude(`You are a GATE CSE expert. Give concise but complete study notes for the topic "${TOPICS[i].name}" in ${SUBJECT} for GATE 2027 preparation.\n\nFormat using markdown with:\n- ### Section headings (Key Concepts, Important Algorithms, Common Traps, GATE Tips)\n- Bullet points\n- \`code\` for formulas or technical terms\n- 300-400 words max\n\nCover: core concepts, important algorithms/techniques, key formulas, and common GATE question patterns.`);
-    loading.style.display='none';content.style.display='block';content.innerHTML=parseMarkdownToHTML(text);
-  }catch(e){loading.style.display='none';content.style.display='block';content.innerHTML=`<div class="ai-error">⚠ Could not load notes. Check connection and try again. (${e.message})</div>`;cache[`notes-${i}`]=false;}
+
+function loadPYQs(i) {
+  const pane = document.getElementById('pyq-'+i);
+  if (pane.dataset.loaded) return;
+  pane.dataset.loaded = '1';
+
+  const t = TOPICS[i];
+  const topicPYQs = (PYQ_DATA[SLUG] || {})[t.name] || [];
+
+  if (!topicPYQs.length) {
+    pane.innerHTML = `<div class="no-pyq">No baked PYQs for this topic yet.</div>
+      <div class="go-link-box">
+        <span>Find real PYQs for "${t.name}" on GATEOverflow:</span>
+        <a href="https://gateoverflow.in/questions?tag=${encodeURIComponent(t.name.toLowerCase())}" target="_blank">Open GATEOverflow ↗</a>
+      </div>`;
+    return;
+  }
+
+  let html = '<div class="pyq-wrap">';
+  topicPYQs.forEach((q, qi) => {
+    const optsHtml = (q.opts || []).map((o, oi) =>
+      `<div class="opt" id="opt-${i}-${qi}-${oi}" onclick="checkAns(${i},${qi},${oi},'${q.ans}')">${o}</div>`
+    ).join('');
+    html += `<div class="pyq-card">
+      <div class="pyq-body">
+        <div class="pyq-meta"><span class="yr">${q.year}</span><span class="mk">${q.marks} mark${q.marks>1?'s':''}</span></div>
+        <div class="q-text">${q.q}</div>
+        <div class="opts" id="opts-${i}-${qi}">${optsHtml}</div>
+        <button class="ans-btn" onclick="revealAns(${i},${qi},'${q.ans}')">Reveal Answer</button>
+      </div>
+      <div class="explanation" id="exp-${i}-${qi}"><strong>✓ EXPLANATION</strong>${q.exp}</div>
+    </div>`;
+  });
+  html += '</div>';
+  html += `<div class="go-link-box" style="margin-top:.75rem">
+    <span>More PYQs for "${t.name}":</span>
+    <a href="https://gateoverflow.in/questions?tag=${encodeURIComponent(t.name.toLowerCase().replace(/[&() ]+/g,'-'))}" target="_blank">GATEOverflow ↗</a>
+  </div>`;
+
+  pane.innerHTML = html;
 }
-async function loadPYQ(i){
-  cache[`pyq-${i}`]=true;
-  const loading=document.getElementById(`pyq-loading-${i}`);
-  const content=document.getElementById(`pyq-content-${i}`);
-  loading.style.display='flex';
-  try{
-    const text=await callClaude(`You are a GATE CSE PYQ expert. Generate 5 GATE-style questions for "${TOPICS[i].name}" in ${SUBJECT}.\n\nRespond ONLY with a JSON array, no markdown, no extra text:\n[{"year":"GATE 2023","marks":"2","question":"Full question text...","answer":"Correct answer with brief explanation"}]\n\nMake questions realistic GATE-style: mix of MCQ and numerical. Cover different difficulty levels. Base on actual GATE PYQ patterns.`);
-    loading.style.display='none';
-    let questions;
-    try{const clean=text.replace(/```json|```/g,'').trim();questions=JSON.parse(clean);}catch(e){throw new Error('Parse error');}
-    const html=questions.map((q,qi)=>`<div class="pyq-card"><div class="pyq-q"><div class="pyq-meta"><span class="pyq-year">${q.year}</span><span class="pyq-marks">${q.marks} mark${q.marks>1?'s':''}</span></div><div class="pyq-text">${q.question}</div><button class="show-ans-btn" onclick="toggleAns(this,'ans-${i}-${qi}')">Show Answer</button></div><div class="pyq-answer" id="ans-${i}-${qi}"><strong>✓ ANSWER & EXPLANATION</strong>${q.answer}</div></div>`).join('');
-    content.innerHTML=html+`<button class="generate-pyq-btn" onclick="reloadPYQ(${i})">↺ Generate 5 More Questions</button>`;
-  }catch(e){loading.style.display='none';content.innerHTML=`<div class="ai-error">⚠ Could not load questions. (${e.message})</div><button class="generate-pyq-btn" onclick="reloadPYQ(${i})">↺ Retry</button>`;cache[`pyq-${i}`]=false;}
+
+function checkAns(i, qi, oi, correct) {
+  const opts = document.querySelectorAll(`#opts-${i}-${qi} .opt`);
+  opts.forEach((opt, idx) => {
+    const letter = String.fromCharCode(65+idx);
+    if (letter === correct) opt.classList.add('correct');
+    else if (idx === oi) opt.classList.add('wrong');
+  });
+  document.getElementById(`exp-${i}-${qi}`).classList.add('show');
 }
-function reloadPYQ(i){cache[`pyq-${i}`]=false;document.getElementById(`pyq-content-${i}`).innerHTML='';loadPYQ(i);}
-function toggleAns(btn,id){const ans=document.getElementById(id);ans.classList.toggle('show');btn.textContent=ans.classList.contains('show')?'Hide Answer':'Show Answer';}
-buildTopics();
+
+function revealAns(i, qi, correct) {
+  const opts = document.querySelectorAll(`#opts-${i}-${qi} .opt`);
+  opts.forEach((opt, idx) => {
+    if (String.fromCharCode(65+idx) === correct) opt.classList.add('revealed');
+  });
+  document.getElementById(`exp-${i}-${qi}`).classList.add('show');
+}
+
+init();
 </script>
 </body>
 </html>
