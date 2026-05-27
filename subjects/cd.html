@@ -131,7 +131,7 @@ nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color
   <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
   <div class="nav-links">
     <a class="nav-back" href="../index.html">← Subjects</a>
-    <a href="https://gateoverflow.in/questions?tag=cd" target="_blank">GATEOverflow ↗</a>
+    <a href="https://gateoverflow.in/questions?tag=compiler-design" target="_blank">GATEOverflow ↗</a>
     <a href="https://www.geeksforgeeks.org/gate-cs-notes-gq/" target="_blank">GFG ↗</a>
   </div>
 </nav>
@@ -179,10 +179,11 @@ nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color
     <div class="card">
       <h3>🔗 Study Resources</h3>
       <div class="q-links">
-        <a class="q-link" href="https://gateoverflow.in/questions?tag=cd" target="_blank"><span>🔶</span> GATEOverflow PYQs</a>
+        <a class="q-link" href="https://gateoverflow.in/questions?tag=compiler-design" target="_blank"><span>🔶</span> GATEOverflow PYQs</a>
         <a class="q-link" href="https://www.geeksforgeeks.org/gate-cs-notes-gq/" target="_blank"><span>🟢</span> GFG GATE Notes</a>
         <a class="q-link" href="https://www.studytonight.com/computer-science/" target="_blank"><span>📘</span> StudyTonight Notes</a>
-        <a class="q-link" href="https://nptel.ac.in/course.html" target="_blank"><span>🎓</span> NPTEL Video Lectures</a>
+        <a class="q-link" href="https://gate.nptel.ac.in/" target="_blank"><span>🎓</span> NPTEL GATE Prep</a>
+        <a class="q-link" href="../mindmaps/cd.html"><span>🗺️</span> Quick Revision Mind Map</a>
       </div>
     </div>
   </div>
@@ -196,6 +197,19 @@ nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color
 <script>
 const SLUG = "cd";
 const TOPICS = [{"name": "Lexical Analysis", "badge": "warm", "pyqs": 18, "summary": "Tokens/lexemes \u00b7 RE for tokens \u00b7 NFA/DFA \u00b7 LEX \u00b7 Symbol table", "gfg": "https://www.geeksforgeeks.org/introduction-of-lexical-analysis/"}, {"name": "Syntax Analysis (Parsing)", "badge": "hot", "pyqs": 44, "summary": "LL(1) \u00b7 LR/SLR/LALR/CLR \u00b7 FIRST/FOLLOW \u00b7 Parse table \u00b7 Conflicts", "gfg": "https://www.geeksforgeeks.org/introduction-to-syntax-analysis-in-compiler-design/"}, {"name": "Syntax-Directed Translation", "badge": "hot", "pyqs": 28, "summary": "Synthesized/inherited attributes \u00b7 S-attributed \u00b7 L-attributed", "gfg": "https://www.geeksforgeeks.org/syntax-directed-translation/"}, {"name": "Intermediate Code Generation", "badge": "warm", "pyqs": 20, "summary": "3-address code \u00b7 Quadruples \u00b7 DAG \u00b7 Backpatching", "gfg": "https://www.geeksforgeeks.org/three-address-code-compiler/"}, {"name": "Code Optimization", "badge": "warm", "pyqs": 18, "summary": "CSE \u00b7 Constant folding \u00b7 Dead code \u00b7 Loop invariant motion", "gfg": "https://www.geeksforgeeks.org/code-optimization-in-compiler-design/"}, {"name": "Code Generation & Runtime", "badge": "core", "pyqs": 14, "summary": "Activation records \u00b7 Register allocation \u00b7 Garbage collection", "gfg": "https://www.geeksforgeeks.org/code-generation-in-compiler-design/"}];
+
+const GO_TAGS = {
+"os":{"Process Management":"process-management","CPU Scheduling":"cpu-scheduling","Process Synchronization":"process-synchronization","Deadlocks":"deadlock","Memory Management":"memory-management","Virtual Memory":"virtual-memory","File Systems":"file-system","I/O Systems":"io-interface","Secondary Storage":"disk-scheduling","Protection & Security":"operating-system"},
+"ds":{"Arrays & Strings":"arrays","Linked Lists":"linked-list","Stacks & Queues":"stack","Trees & Binary Trees":"binary-tree","Binary Search Trees":"binary-search-tree","AVL & Balanced Trees":"avl-tree","Heaps":"heap","Hashing":"hashing","Graphs":"graph","Segment & Fenwick Trees":"segment-tree","Tries":"trie","Disjoint Sets (Union-Find)":"disjoint-set"},
+"algo":{"Asymptotic Analysis":"time-complexity","Sorting Algorithms":"sorting","Searching":"searching","Divide & Conquer":"divide-and-conquer","Dynamic Programming":"dynamic-programming","Greedy Algorithms":"greedy","Graph Algorithms":"graph-algorithms","P, NP & Complexity":"np-hard","Backtracking":"backtracking","String Algorithms":"string"},
+"dbms":{"Relational Model":"relational-algebra","SQL":"sql","Normalization":"normal-forms","ER Modeling":"er-diagram","Transactions & ACID":"transactions","Concurrency Control":"concurrency","Indexing & Hashing":"indexing","Query Processing":"dbms","Recovery":"dbms"},
+"cn":{"Network Models":"computer-networks","Data Link Layer":"data-link-layer","MAC & LAN":"mac","IP Addressing & Subnetting":"ip-address","Routing":"routing","Transport Layer":"tcp","Application Layer":"application-layer","Network Security":"network-security"},
+"toc":{"Regular Languages & DFA":"regular-language","Pumping Lemma":"pumping-lemma","Context-Free Grammars":"context-free-language","Pushdown Automata":"pushdown-automaton","Turing Machines":"turing-machine","Decidability":"decidability","Chomsky Hierarchy":"chomsky-hierarchy"},
+"dl":{"Number Systems":"number-representation","Boolean Algebra":"boolean-algebra","K-Map Minimization":"k-map","Combinational Circuits":"combinational-circuits","Sequential Circuits":"sequential-circuits","Registers & Counters":"digital-logic","Logic Families":"digital-logic"},
+"dm":{"Mathematical Logic":"mathematical-logic","Set Theory":"set-theory","Relations":"relations","Functions":"functions","Combinatorics":"combinatory","Graph Theory":"graph-theory","Number Theory":"number-theory","Algebraic Structures":"group-theory"},
+"coa":{"Basic Computer Organization":"co-and-architecture","Instruction Set Architecture":"instruction-set-architecture","Pipelining":"pipeline","Cache Memory":"cache-memory","Memory Organization":"co-and-architecture","I/O Organization":"co-and-architecture","Performance Metrics":"co-and-architecture"},
+"cd":{"Lexical Analysis":"compiler-design","Syntax Analysis (Parsing)":"parsing","Syntax-Directed Translation":"compiler-design","Intermediate Code Generation":"compiler-design","Code Optimization":"compiler-design","Code Generation & Runtime":"compiler-design"}
+};
 
 const BAKED_NOTES = {
 "os": {
@@ -607,7 +621,7 @@ async function loadNotes(i) {
       <span class="src-label">Read more:</span>
       <a class="src-btn gfg" href="${t.gfg}" target="_blank">📗 GFG Article</a>
       ${wikiPage ? `<a class="src-btn wiki" href="https://en.wikipedia.org/wiki/${wikiPage}" target="_blank">📘 Wikipedia</a>` : ''}
-      <a class="src-btn go" href="https://gateoverflow.in/questions?tag=${encodeURIComponent(t.name.toLowerCase().replace(/[& ]+/g,'-'))}" target="_blank">🔶 GATEOverflow</a>
+      <a class="src-btn go" href="https://gateoverflow.in/questions?tag=${(GO_TAGS[SLUG]||{})[t.name] || t.name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}" target="_blank">🔶 GATEOverflow</a>
     </div>`;
 
   pane.innerHTML = (wikiHtml || '') + gateNotes + srcRow;
@@ -632,7 +646,7 @@ function loadPYQs(i) {
     pane.innerHTML = `<div class="no-pyq">No baked PYQs for this topic yet.</div>
       <div class="go-link-box">
         <span>Find real PYQs for "${t.name}" on GATEOverflow:</span>
-        <a href="https://gateoverflow.in/questions?tag=${encodeURIComponent(t.name.toLowerCase())}" target="_blank">Open GATEOverflow ↗</a>
+        <a href="https://gateoverflow.in/questions?tag=${(GO_TAGS[SLUG]||{})[t.name] || t.name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}" target="_blank">Open GATEOverflow ↗</a>
       </div>`;
     return;
   }
@@ -655,7 +669,7 @@ function loadPYQs(i) {
   html += '</div>';
   html += `<div class="go-link-box" style="margin-top:.75rem">
     <span>More PYQs for "${t.name}":</span>
-    <a href="https://gateoverflow.in/questions?tag=${encodeURIComponent(t.name.toLowerCase().replace(/[&() ]+/g,'-'))}" target="_blank">GATEOverflow ↗</a>
+    <a href="https://gateoverflow.in/questions?tag=${(GO_TAGS[SLUG]||{})[t.name] || t.name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}" target="_blank">GATEOverflow ↗</a>
   </div>`;
 
   pane.innerHTML = html;
