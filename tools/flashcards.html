@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcards — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:800px;margin:0 auto;padding:2rem 1.5rem;}
+h1{font-size:1.8rem;font-weight:800;margin-bottom:.3rem;}
+.sub{color:var(--m);font-size:.88rem;margin-bottom:1.5rem;}
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;}
+.filter-btn{font-family:var(--mono);font-size:.72rem;padding:.35rem .75rem;border-radius:20px;border:1px solid var(--b);color:var(--m);background:var(--s);cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{border-color:var(--acc);color:var(--acc);background:rgba(124,106,255,.08);}
+.filter-sep{width:1px;height:20px;background:var(--b);margin:0 .3rem;}
+.filter-mode{font-family:var(--mono);font-size:.7rem;color:var(--m);margin-left:auto;}
+.fc-progress{display:flex;gap:1rem;margin-bottom:1.5rem;}
+.fc-stat{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:.7rem 1rem;flex:1;text-align:center;}
+.fc-v{font-family:var(--mono);font-size:1.2rem;font-weight:700;display:block;}
+.fc-l{font-size:.7rem;color:var(--m);margin-top:.1rem;}
+.card-scene{perspective:1000px;width:100%;height:280px;margin-bottom:1.2rem;cursor:pointer;}
+.card-3d{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+.card-3d.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;border:2px solid var(--b);}
+.card-front{background:var(--s);}.card-back{background:var(--s2);transform:rotateY(180deg);border-color:var(--acc);}
+.card-label{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem;opacity:.5;}
+.card-front .card-label{color:var(--acc);}.card-back .card-label{color:var(--g);}
+.card-content{font-size:1.05rem;font-weight:700;line-height:1.5;}
+.card-hint{font-family:var(--mono);font-size:.72rem;color:var(--m);margin-top:1rem;}
+.card-sub{font-family:var(--mono);font-size:.65rem;margin-top:.4rem;opacity:.7;}
+.code-ans{font-family:var(--mono);font-size:.85rem;background:rgba(124,106,255,.08);border:1px solid rgba(124,106,255,.2);border-radius:6px;padding:.6rem 1rem;color:var(--g);line-height:1.7;text-align:left;width:100%;white-space:pre-wrap;}
+.card-actions{display:flex;gap:.7rem;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap;}
+.act-btn{font-family:var(--mono);font-size:.78rem;padding:.6rem 1.2rem;border-radius:8px;cursor:pointer;border:1px solid var(--b);background:var(--s);color:var(--m);transition:all .2s;font-weight:600;}
+.act-btn:hover{background:var(--s2);}
+.btn-easy{border-color:rgba(79,255,176,.4);color:var(--g);}.btn-easy:hover{background:rgba(79,255,176,.08);}
+.btn-medium{border-color:rgba(255,209,102,.4);color:var(--y);}.btn-medium:hover{background:rgba(255,209,102,.08);}
+.btn-hard{border-color:rgba(255,106,106,.4);color:var(--r);}.btn-hard:hover{background:rgba(255,106,106,.08);}
+.btn-flip{background:var(--acc);color:#fff;border-color:var(--acc);}.btn-flip:hover{opacity:.85;}
+.deck-map{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:1.5rem;}
+.dm-dot{width:12px;height:12px;border-radius:3px;background:var(--b);cursor:pointer;transition:all .2s;}
+.dm-dot.current{background:var(--acc);box-shadow:0 0 6px rgba(124,106,255,.5);}
+.dm-dot.easy{background:var(--g);}.dm-dot.medium{background:var(--y);}.dm-dot.hard{background:var(--r);}.dm-dot.seen{background:var(--m);}
+.done-screen{display:none;text-align:center;padding:2rem;background:var(--s);border:1px solid var(--b);border-radius:16px;}
+.done-screen h2{font-size:1.5rem;font-weight:800;color:var(--g);margin-bottom:.5rem;}
+@media(max-width:600px){.card-content{font-size:.9rem}.card-scene{height:240px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="../index.html">← Home</a>
+    <a href="planner.html">📅 Planner</a>
+    <a href="daily.html">📅 Daily PYQ</a>
+    <a href="notes.html">📝 Notes</a>
+  </div>
+</nav>
+<div class="page">
+  <h1>🃏 Formula Flashcards</h1>
+  <p class="sub">Flip to reveal · Rate your confidence · Hard cards auto-prioritized</p>
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <div class="filter-sep"></div>
+    <button class="filter-btn" onclick="setFilter('os',this)" style="color:#7c6aff">OS</button>
+    <button class="filter-btn" onclick="setFilter('ds',this)" style="color:#4fffb0">DS</button>
+    <button class="filter-btn" onclick="setFilter('algo',this)" style="color:#ffd166">Algo</button>
+    <button class="filter-btn" onclick="setFilter('dbms',this)" style="color:#ff9f43">DBMS</button>
+    <button class="filter-btn" onclick="setFilter('cn',this)" style="color:#00cfe8">CN</button>
+    <button class="filter-btn" onclick="setFilter('toc',this)" style="color:#a29bfe">TOC</button>
+    <button class="filter-btn" onclick="setFilter('dl',this)" style="color:#fdcb6e">DL</button>
+    <button class="filter-btn" onclick="setFilter('dm',this)" style="color:#55efc4">DM</button>
+    <button class="filter-btn" onclick="setFilter('coa',this)" style="color:#fd79a8">COA</button>
+    <button class="filter-btn" onclick="setFilter('cd',this)" style="color:#e17055">CD</button>
+    <div class="filter-sep"></div>
+    <button class="filter-btn" onclick="setFilter('hard',this)" style="color:#ff6a6a">🔴 Hard only</button>
+    <span class="filter-mode" id="filterMode">All subjects</span>
+  </div>
+  <div class="fc-progress">
+    <div class="fc-stat"><span class="fc-v" id="fcTotal" style="color:var(--acc)">0</span><div class="fc-l">Total</div></div>
+    <div class="fc-stat"><span class="fc-v" id="fcEasy" style="color:var(--g)">0</span><div class="fc-l">Easy ✓</div></div>
+    <div class="fc-stat"><span class="fc-v" id="fcMedium" style="color:var(--y)">0</span><div class="fc-l">Medium</div></div>
+    <div class="fc-stat"><span class="fc-v" id="fcHard" style="color:var(--r)">0</span><div class="fc-l">Hard</div></div>
+    <div class="fc-stat"><span class="fc-v" id="fcUnseen" style="color:var(--m)">0</span><div class="fc-l">Unseen</div></div>
+  </div>
+  <div class="deck-map" id="deckMap"></div>
+  <div class="card-scene" onclick="flipCard()" id="cardScene">
+    <div class="card-3d" id="card3d">
+      <div class="card-face card-front">
+        <div class="card-label">❓ Question — click to flip</div>
+        <div class="card-content" id="cardFront">Loading...</div>
+        <div class="card-sub" id="cardSubTag"></div>
+        <div class="card-hint">👆 Tap card or press Space to flip</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-label">✓ Answer</div>
+        <div id="cardBack" style="width:100%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card-actions">
+    <button class="act-btn" onclick="prevCard()" style="color:var(--m)">← Back</button>
+    <button class="act-btn btn-flip" onclick="flipCard()">🔄 Flip</button>
+    <button class="act-btn btn-hard" onclick="rate('hard')">😤 Hard</button>
+    <button class="act-btn btn-medium" onclick="rate('medium')">🤔 OK</button>
+    <button class="act-btn btn-easy" onclick="rate('easy')">😊 Easy</button>
+  </div>
+  <div class="done-screen" id="doneScreen">
+    <h2>🎉 Deck Complete!</h2>
+    <p style="color:var(--m);margin:.5rem 0 1.2rem">All cards reviewed in this filter.</p>
+    <div style="display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;">
+      <button class="act-btn btn-easy" onclick="restartDeck()">↺ Restart</button>
+      <button class="act-btn btn-hard" onclick="setFilter('hard',null)">🔴 Review Hard Only</button>
+      <button class="act-btn" onclick="window.location.href='../index.html'">← Home</button>
+    </div>
+  </div>
+</div>
+<script>
+const COLORS={os:'#7c6aff',ds:'#4fffb0',algo:'#ffd166',dbms:'#ff9f43',cn:'#00cfe8',toc:'#a29bfe',dl:'#fdcb6e',dm:'#55efc4',coa:'#fd79a8',cd:'#e17055'};
+const CARDS=[
+{s:"os",q:"EAT formula with TLB (1-level paging)",a:"EAT = h·(t_TLB + t_mem) + (1-h)·(t_TLB + 2·t_mem)\nh = hit ratio"},
+{s:"os",q:"Deadlock: 4 Coffman Conditions",a:"1. Mutual Exclusion\n2. Hold & Wait\n3. No Preemption\n4. Circular Wait\nAll must hold simultaneously"},
+{s:"os",q:"Banker's Algorithm key formula",a:"Need[i] = Max[i] - Allocation[i]\nAvailable = Total - Sum(Allocation)\nSafe state = exists safe sequence"},
+{s:"os",q:"Average Waiting Time",a:"WT = TAT - Burst Time\nTAT = Completion - Arrival\nAvg WT = Sum(WT) / n"},
+{s:"os",q:"Which page replacement has Belady's anomaly?",a:"FIFO only!\nLRU and OPT are stack algorithms\nImmune to Belady's anomaly"},
+{s:"os",q:"fork() return values",a:"0 → child process\nchild PID → parent process\n-1 → error"},
+{s:"os",q:"Min resources to prevent deadlock",a:"n*(m-1) + 1\nn = processes, m = max each needs\nExample: 4 procs, 3 each → 9"},
+{s:"os",q:"Peterson's solution",a:"Works for exactly 2 processes\nUses: flag[] array + turn variable\nSoftware-only mutual exclusion"},
+{s:"os",q:"RAID levels",a:"RAID-0: Striping (no redundancy)\nRAID-1: Mirroring\nRAID-5: Striping + distributed parity\n(1 disk fault tolerance)"},
+{s:"os",q:"Average rotational latency at 7200 RPM",a:"1 rotation = 60000/7200 = 8.33ms\nAverage latency = 8.33/2 = 4.16ms"},
+{s:"os",q:"Inode max file size",a:"Blocks = 10 + B/P + (B/P)^2 + (B/P)^3\nB = block size, P = pointer size\n1KB block, 4B ptr → ~16GB"},
+{s:"os",q:"Semaphore P(S) and V(S)",a:"P(S): if S>0 then S-- else block\nV(S): if waiting→wake else S++\nBinary semaphore = 0 or 1"},
+{s:"ds",q:"Catalan number formula",a:"C(n) = C(2n,n) / (n+1)\nCounts distinct BSTs with n keys\nC(3)=5, C(4)=14, C(5)=42"},
+{s:"ds",q:"AVL min nodes at height h",a:"N(h) = N(h-1) + N(h-2) + 1\nN(0)=1, N(1)=2, N(2)=4\nN(3)=7, N(4)=12, N(5)=20"},
+{s:"ds",q:"AVL balance factor",a:"BF = height(left) - height(right)\nValid values: {-1, 0, +1}\nRebalance when |BF| = 2"},
+{s:"ds",q:"Heap build vs insert complexity",a:"Build-heap: O(n)  ← NOT O(n log n)!\nInsert: O(log n)\nExtract-max: O(log n)"},
+{s:"ds",q:"Row-major address formula",a:"A[i][j] = Base + (i*cols + j)*size\n\nColumn-major:\nA[i][j] = Base + (j*rows + i)*size"},
+{s:"ds",q:"Floyd's cycle detection",a:"Slow: moves 1 step\nFast: moves 2 steps\nMeet → cycle exists\nTo find start: reset one to head, advance by 1"},
+{s:"ds",q:"Open addressing expected probes",a:"Unsuccessful: 1/(1-α)\nSuccessful: (1/α)·ln(1/(1-α))\nα = load factor = n/m"},
+{s:"ds",q:"Binary tree types",a:"Full: 0 or 2 children\nComplete: all levels full except last (left-filled)\nPerfect: all leaves same level\nnodes = 2^(h+1)-1"},
+{s:"ds",q:"DSU with optimizations",a:"Path compression + union by rank\nAmortized O(α(n)) per op\nα = inverse Ackermann ≈ O(1)"},
+{s:"algo",q:"Master theorem 3 cases",a:"T(n)=aT(n/b)+f(n), k=log_b(a)\nCase 1: f=O(n^(k-ε)) → Θ(n^k)\nCase 2: f=Θ(n^k) → Θ(n^k·log n)\nCase 3: f=Ω(n^(k+ε)) → Θ(f(n))"},
+{s:"algo",q:"Stable sorting algorithms",a:"Stable: Merge, Insertion, Counting, Radix, Bubble\nUnstable: Quick, Heap, Selection\nStable = preserves relative order of equal elements"},
+{s:"algo",q:"LCS recurrence",a:"if s1[i]==s2[j]: dp[i][j]=dp[i-1][j-1]+1\nelse: dp[i][j]=max(dp[i-1][j],dp[i][j-1])\nTime: O(mn)"},
+{s:"algo",q:"Dijkstra complexity",a:"With min-heap: O((V+E) log V)\nWith Fibonacci heap: O(E + V log V)\nFails on negative edges!"},
+{s:"algo",q:"Bellman-Ford",a:"Time: O(VE)\nDetects negative cycles!\nRun V-1 rounds\nIf round V still relaxes → negative cycle"},
+{s:"algo",q:"0/1 Knapsack recurrence",a:"dp[i][w]=max(dp[i-1][w],\n  val[i]+dp[i-1][w-wt[i]])\nif wt[i]≤w, else dp[i-1][w]\nTime: O(nW)"},
+{s:"algo",q:"Quick sort complexity",a:"Best/Avg: O(n log n)\nWorst: O(n²) [sorted + first pivot]\nNOT stable, IS in-place"},
+{s:"dbms",q:"BCNF vs 3NF",a:"BCNF: for ALL X→Y, X is superkey\n3NF: X superkey OR Y is prime\n3NF allows dep-preserving decomp\nBCNF does not guarantee dep-preservation"},
+{s:"dbms",q:"Armstrong's Axioms",a:"Reflexivity: Y⊆X → X→Y\nAugmentation: X→Y → XZ→YZ\nTransitivity: X→Y, Y→Z → X→Z"},
+{s:"dbms",q:"2PL protocol",a:"Growing: acquire locks (no release)\nShrinking: release locks (no acquire)\nStrict 2PL: hold all until commit"},
+{s:"dbms",q:"ACID properties",a:"Atomicity: all or nothing\nConsistency: valid state transitions\nIsolation: concurrent = serial\nDurability: committed = permanent"},
+{s:"dbms",q:"B+ Tree key property",a:"ALL data at leaf level only\nLeaves linked as linked list\nInternal nodes: routing keys only\nSupports efficient range queries"},
+{s:"cn",q:"Stop-and-Wait efficiency",a:"η = 1 / (1 + 2a)\na = Tp/Tt\nLow efficiency when a >> 1"},
+{s:"cn",q:"GBN vs SR window sizes",a:"GBN max window: 2^n - 1\nSR max window: 2^(n-1)\nn = sequence number bits"},
+{s:"cn",q:"Usable hosts per /n subnet",a:"Host bits = 32-n\nUsable = 2^(32-n) - 2\n(subtract network + broadcast)"},
+{s:"cn",q:"TCP 3-way handshake",a:"Client → SYN → Server\nServer → SYN-ACK → Client\nClient → ACK → Server"},
+{s:"cn",q:"TCP slow start",a:"Slow start: cwnd doubles each RTT\nAt ssthresh: +1 MSS per RTT\nOn timeout: ssthresh=cwnd/2, cwnd=1"},
+{s:"cn",q:"OSI PDU names",a:"Transport: Segment\nNetwork: Packet\nData Link: Frame\nPhysical: Bit"},
+{s:"cn",q:"Private IP ranges RFC 1918",a:"10.0.0.0/8\n172.16.0.0/12\n192.168.0.0/16"},
+{s:"toc",q:"Pumping Lemma for RL",a:"If regular: exists p such that\n|w|≥p → w=xyz\n|y|≥1, |xy|≤p\nxy^i·z ∈ L for all i≥0"},
+{s:"toc",q:"Chomsky Hierarchy",a:"Type 3: Regular → DFA/NFA\nType 2: CFL → PDA\nType 1: CS → LBA\nType 0: RE → Turing Machine"},
+{s:"toc",q:"Rice's Theorem",a:"Any non-trivial semantic property\nof TMs is UNDECIDABLE\nSemantic = about L(M)\nNon-trivial = not all or no TMs"},
+{s:"toc",q:"Halting problem",a:"UNDECIDABLE (semi-decidable)\nRE but NOT recursive\nTM accepts if halts, loops if not"},
+{s:"toc",q:"CYK algorithm",a:"Parses CFG in CNF form\nTime: O(n^3 × |G|)\nDP on all substrings"},
+{s:"dl",q:"2's complement range",a:"n-bit range: -2^(n-1) to 2^(n-1)-1\nConvert: flip bits + 1\n8-bit: -128 to 127"},
+{s:"dl",q:"CLA adder formulas",a:"Gi = Ai·Bi  (Generate)\nPi = Ai XOR Bi  (Propagate)\nCi+1 = Gi + Pi·Ci\nAll carries parallel → O(1)"},
+{s:"dl",q:"JK flip-flop truth table",a:"J=0,K=0 → Hold\nJ=0,K=1 → Reset (0)\nJ=1,K=0 → Set (1)\nJ=1,K=1 → Toggle"},
+{s:"dl",q:"K-Map: essential prime implicants",a:"PI = largest group of 1s\nEssential PI = only PI covering a minterm\nMust include all essential PIs"},
+{s:"dl",q:"Mod-N counter flip-flops needed",a:"FFs = ceil(log2(N))\nMod-6 → ceil(2.58) = 3\nMod-8 → 3 (exact)\nMod-5 → 3"},
+{s:"dm",q:"Inclusion-exclusion",a:"|AuB| = |A|+|B|-|AnB|\n|AuBuC| = |A|+|B|+|C|\n-|AnB|-|AnC|-|BnC|+|AnBnC|"},
+{s:"dm",q:"Derangements",a:"D(n) = n! * Sum((-1)^k/k!)\n≈ n!/e for large n\nD(1)=0,D(2)=1,D(3)=2,D(4)=9"},
+{s:"dm",q:"Euler's formula planar graphs",a:"V - E + F = 2\n(connected planar)\nSimple planar: E ≤ 3V-6\nBipartite planar: E ≤ 2V-4"},
+{s:"dm",q:"Stars and bars",a:"n items in k bins:\nC(n+k-1, k-1) ways\n(non-negative integer solutions to\nx1+x2+...+xk = n)"},
+{s:"dm",q:"Equivalence relation conditions",a:"Must satisfy ALL three:\n1. Reflexive: aRa\n2. Symmetric: aRb → bRa\n3. Transitive: aRb, bRc → aRc"},
+{s:"coa",q:"AMAT formula",a:"AMAT = Hit time\n+ Miss rate * (L2 hit + L2 miss * Mem time)\nExample: 1+0.05*(10+0.2*100)=2.5ns"},
+{s:"coa",q:"Pipeline speedup",a:"Speedup = n*k / (k+n-1)\nn=instructions, k=stages\nIdeal (n>>k): speedup ≈ k"},
+{s:"coa",q:"Amdahl's Law",a:"Speedup = 1/((1-p) + p/s)\np=fraction parallelized\nMax speedup = 1/(1-p)"},
+{s:"coa",q:"Cache address bits",a:"[Tag | Index | Offset]\nOffset = log2(block size)\nIndex = log2(num sets)\nTag = remaining bits"},
+{s:"coa",q:"Pipeline hazard types",a:"Structural: resource conflict\nData RAW: read before write done\nControl: branch target unknown\nFix: forwarding, stalls, prediction"},
+{s:"cd",q:"FIRST set rules",a:"FIRST(a) = {a} for terminal\nFIRST(Aα): include FIRST(A)-{ε}\nIf ε in FIRST(A): include FIRST(α)"},
+{s:"cd",q:"FOLLOW set rules",a:"FOLLOW(S) includes $\nA→αBβ: FIRST(β)-{ε} ⊆ FOLLOW(B)\nIf ε in FIRST(β): FOLLOW(A) ⊆ FOLLOW(B)"},
+{s:"cd",q:"LR parser family",a:"LL(1) ⊂ SLR(1) ⊂ LALR(1) ⊂ CLR(1)\nSLR uses FOLLOW sets\nCLR uses exact lookaheads\nYACC = LALR(1)"},
+{s:"cd",q:"Synthesized vs Inherited attributes",a:"Synthesized: from children (bottom-up)\nInherited: from parent/siblings (top-down)\nS-attributed: only synthesized\nL-attributed: syn + left-inherited"},
+];
+
+let ratings=JSON.parse(localStorage.getItem('fc_ratings')||'{}');
+let deck=[...CARDS.keys()];
+let pos=0,isFlipped=false,currentFilter='all';
+
+function setFilter(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('filterMode').textContent=f==='all'?'All subjects':f==='hard'?'Hard only':f.toUpperCase();
+  buildDeck();pos=0;isFlipped=false;
+  document.getElementById('doneScreen').style.display='none';
+  loadCard();updateProgress();
+}
+
+function buildDeck(){
+  if(currentFilter==='all')deck=[...CARDS.keys()];
+  else if(currentFilter==='hard')deck=CARDS.map((_,i)=>i).filter(i=>ratings[i]==='hard');
+  else deck=CARDS.map((_,i)=>i).filter(i=>CARDS[i].s===currentFilter);
+  const ord={hard:0,medium:1,undefined:2,easy:3};
+  deck.sort((a,b)=>(ord[ratings[a]]??2)-(ord[ratings[b]]??2));
+}
+
+function loadCard(){
+  document.getElementById('doneScreen').style.display='none';
+  if(!deck.length||pos>=deck.length){document.getElementById('doneScreen').style.display='block';return;}
+  const card=CARDS[deck[pos]];
+  document.getElementById('cardFront').textContent=card.q;
+  const subEl=document.getElementById('cardSubTag');
+  subEl.textContent=card.s.toUpperCase();
+  subEl.style.color=COLORS[card.s]||'var(--acc)';
+  document.getElementById('cardBack').innerHTML=`<div class="code-ans">${card.a.replace(/\n/g,'\n')}</div>`;
+  isFlipped=false;
+  document.getElementById('card3d').classList.remove('flipped');
+  renderDeckMap();
+}
+
+function flipCard(){isFlipped=!isFlipped;document.getElementById('card3d').classList.toggle('flipped',isFlipped);}
+
+function rate(r){
+  if(pos>=deck.length)return;
+  ratings[deck[pos]]=r;
+  localStorage.setItem('fc_ratings',JSON.stringify(ratings));
+  pos++;isFlipped=false;
+  document.getElementById('doneScreen').style.display='none';
+  loadCard();updateProgress();
+}
+
+function prevCard(){if(pos>0){pos--;isFlipped=false;loadCard();}}
+function restartDeck(){pos=0;isFlipped=false;document.getElementById('doneScreen').style.display='none';loadCard();}
+
+function updateProgress(){
+  const all=currentFilter==='all'?CARDS.map((_,i)=>i):currentFilter==='hard'?deck:CARDS.map((_,i)=>i).filter(i=>CARDS[i].s===currentFilter);
+  document.getElementById('fcTotal').textContent=all.length;
+  document.getElementById('fcEasy').textContent=all.filter(i=>ratings[i]==='easy').length;
+  document.getElementById('fcMedium').textContent=all.filter(i=>ratings[i]==='medium').length;
+  document.getElementById('fcHard').textContent=all.filter(i=>ratings[i]==='hard').length;
+  document.getElementById('fcUnseen').textContent=all.filter(i=>!ratings[i]).length;
+}
+
+function renderDeckMap(){
+  const el=document.getElementById('deckMap');
+  el.innerHTML=deck.slice(0,60).map((idx,i)=>`<div class="dm-dot ${i===pos?'current':(ratings[idx]||'seen')}" onclick="pos=${i};isFlipped=false;loadCard()" title="${CARDS[idx].q.slice(0,40)}"></div>`).join('');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();flipCard();}
+  else if(e.key==='ArrowRight')rate('easy');
+  else if(e.key==='ArrowLeft')prevCard();
+  else if(e.key==='1')rate('hard');
+  else if(e.key==='2')rate('medium');
+  else if(e.key==='3')rate('easy');
+});
+
+buildDeck();loadCard();updateProgress();
+</script>
+</body>
+</html>
