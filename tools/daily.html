@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily PYQ — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:720px;margin:0 auto;padding:2rem 1.5rem;}
+
+/* STREAK */
+.streak-bar{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;}
+.streak-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:1rem 1.5rem;flex:1;min-width:120px;text-align:center;}
+.streak-val{font-family:var(--mono);font-size:1.8rem;font-weight:700;display:block;}
+.streak-label{font-size:.72rem;color:var(--m);margin-top:.2rem;}
+.fire{font-size:1.5rem;}
+
+/* CALENDAR HEATMAP */
+.heatmap-wrap{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:1.2rem;margin-bottom:2rem;}
+.heatmap-title{font-family:var(--mono);font-size:.7rem;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem;}
+.heatmap{display:flex;gap:3px;flex-wrap:wrap;}
+.hm-day{width:14px;height:14px;border-radius:2px;background:var(--b);transition:all .2s;cursor:default;}
+.hm-day.done{background:var(--acc);}
+.hm-day.today{background:var(--g);box-shadow:0 0 6px rgba(79,255,176,.5);}
+.hm-legend{display:flex;align-items:center;gap:.5rem;margin-top:.6rem;font-family:var(--mono);font-size:.65rem;color:var(--m);}
+.hm-sq{width:10px;height:10px;border-radius:2px;}
+
+/* QUESTION CARD */
+.q-card{background:var(--s);border:1px solid var(--b);border-radius:12px;overflow:hidden;margin-bottom:1.5rem;}
+.q-header{padding:1rem 1.25rem;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+.q-tags{display:flex;gap:.5rem;}
+.tag{font-family:var(--mono);font-size:.65rem;padding:.2rem .45rem;border-radius:3px;border:1px solid var(--b);}
+.tag-year{border-color:rgba(124,106,255,.4);color:var(--acc);background:rgba(124,106,255,.08);}
+.tag-subj{color:var(--y);border-color:rgba(255,209,102,.3);background:rgba(255,209,102,.06);}
+.tag-marks{color:var(--g);border-color:rgba(79,255,176,.3);background:rgba(79,255,176,.05);}
+.q-num{font-family:var(--mono);font-size:.7rem;color:var(--m);}
+.q-body{padding:1.25rem;}
+.q-text{font-size:.95rem;line-height:1.7;margin-bottom:1.2rem;color:var(--t);}
+.opts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem;}
+.opt{background:var(--s2);border:2px solid var(--b);border-radius:8px;padding:.7rem 1rem;cursor:pointer;font-size:.88rem;line-height:1.5;transition:all .2s;display:flex;align-items:flex-start;gap:.7rem;}
+.opt:hover:not(.disabled){border-color:var(--acc);background:rgba(124,106,255,.08);}
+.opt.correct{border-color:var(--g);background:rgba(79,255,176,.08);color:var(--g);}
+.opt.wrong{border-color:var(--r);background:rgba(255,106,106,.08);color:var(--r);}
+.opt.revealed{border-color:var(--g);background:rgba(79,255,176,.08);color:var(--g);}
+.opt.disabled{cursor:default;}
+.opt-letter{font-family:var(--mono);font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:.15rem;}
+.explanation{background:rgba(79,255,176,.05);border:1px solid rgba(79,255,176,.2);border-radius:8px;padding:1rem;font-size:.85rem;line-height:1.65;color:var(--m);display:none;}
+.explanation.show{display:block;}
+.explanation strong{color:var(--g);font-family:var(--mono);font-size:.72rem;display:block;margin-bottom:.4rem;}
+.action-row{display:flex;gap:.7rem;margin-top:1rem;flex-wrap:wrap;}
+.btn{font-family:var(--mono);font-size:.75rem;padding:.55rem 1rem;border-radius:6px;cursor:pointer;border:1px solid var(--b);transition:all .2s;font-weight:600;}
+.btn-reveal{color:var(--acc);border-color:rgba(124,106,255,.4);background:rgba(124,106,255,.08);}
+.btn-reveal:hover{background:rgba(124,106,255,.15);}
+.btn-next{color:#0a0a0f;background:var(--acc);border-color:var(--acc);}
+.btn-next:hover{opacity:.85;}
+.btn-skip{color:var(--m);}.btn-skip:hover{color:var(--t);border-color:var(--m);}
+
+/* RESULT BANNER */
+.result-banner{display:none;padding:1rem 1.25rem;text-align:center;font-size:1.1rem;font-weight:700;border-top:1px solid var(--b);}
+.result-banner.correct-r{background:rgba(79,255,176,.06);color:var(--g);}
+.result-banner.wrong-r{background:rgba(255,106,106,.06);color:var(--r);}
+
+/* SESSION STATS */
+.session{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:1.2rem;margin-bottom:1.5rem;}
+.session h3{font-family:var(--mono);font-size:.7rem;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem;}
+.sess-stats{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.sess-s{text-align:center;}
+.sess-v{font-family:var(--mono);font-size:1.1rem;font-weight:700;display:block;}
+.sess-l{font-size:.7rem;color:var(--m);}
+.acc-bar{height:6px;background:var(--b);border-radius:3px;margin-top:.6rem;overflow:hidden;}
+.acc-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--g));border-radius:3px;transition:width .5s;}
+
+/* COMPLETED */
+.completed-card{background:var(--s);border:1px solid rgba(79,255,176,.3);border-radius:12px;padding:2rem;text-align:center;display:none;}
+.completed-card h2{font-size:1.5rem;font-weight:800;color:var(--g);margin-bottom:.5rem;}
+.completed-card p{color:var(--m);font-size:.9rem;margin-bottom:1.5rem;}
+.score-circle{width:100px;height:100px;border-radius:50%;border:3px solid var(--g);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1rem;background:rgba(79,255,176,.05);}
+.score-big{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--g);}
+.score-sub{font-family:var(--mono);font-size:.65rem;color:var(--m);}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="../index.html">← Home</a>
+    <a href="planner.html">📅 Planner</a>
+    <a href="flashcards.html">🃏 Flashcards</a>
+    <a href="notes.html">📝 Notes</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem;">
+    <h1 style="font-size:1.8rem;font-weight:800;">📅 Daily PYQ Practice</h1>
+    <div id="dateDisplay" style="font-family:var(--mono);font-size:.8rem;color:var(--m);"></div>
+  </div>
+  <p style="color:var(--m);font-size:.88rem;margin-bottom:1.5rem;">Practice 5 real GATE questions daily. Build your streak. Track your accuracy.</p>
+
+  <!-- Streak Bar -->
+  <div class="streak-bar">
+    <div class="streak-card">
+      <span class="fire">🔥</span>
+      <span class="streak-val" id="streakVal" style="color:var(--y)">0</span>
+      <div class="streak-label">Day Streak</div>
+    </div>
+    <div class="streak-card">
+      <span class="streak-val" id="maxStreakVal" style="color:var(--acc)">0</span>
+      <div class="streak-label">Best Streak</div>
+    </div>
+    <div class="streak-card">
+      <span class="streak-val" id="totalDoneVal" style="color:var(--g)">0</span>
+      <div class="streak-label">Total Solved</div>
+    </div>
+    <div class="streak-card">
+      <span class="streak-val" id="accuracyVal" style="color:var(--r)">—</span>
+      <div class="streak-label">Accuracy</div>
+    </div>
+  </div>
+
+  <!-- Heatmap -->
+  <div class="heatmap-wrap">
+    <div class="heatmap-title">📆 Activity (last 60 days)</div>
+    <div class="heatmap" id="heatmap"></div>
+    <div class="hm-legend">
+      <div class="hm-sq" style="background:var(--b)"></div> No activity
+      <div class="hm-sq" style="background:var(--acc);margin-left:.5rem"></div> Practiced
+      <div class="hm-sq" style="background:var(--g);margin-left:.5rem"></div> Today
+    </div>
+  </div>
+
+  <!-- Session stats -->
+  <div class="session">
+    <h3>📊 Today's Session</h3>
+    <div class="sess-stats">
+      <div class="sess-s"><span class="sess-v" id="sessAnswered" style="color:var(--acc)">0/5</span><div class="sess-l">Answered</div></div>
+      <div class="sess-s"><span class="sess-v" id="sessCorrect" style="color:var(--g)">0</span><div class="sess-l">Correct</div></div>
+      <div class="sess-s"><span class="sess-v" id="sessWrong" style="color:var(--r)">0</span><div class="sess-l">Wrong</div></div>
+      <div class="sess-s" style="flex:1;min-width:200px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:.3rem;">
+          <span class="sess-l">Accuracy</span>
+          <span class="sess-l" id="sessAcc">—</span>
+        </div>
+        <div class="acc-bar"><div class="acc-fill" id="accFill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Card -->
+  <div class="q-card" id="qCard">
+    <div class="q-header">
+      <div class="q-tags">
+        <span class="tag tag-year" id="qYear">GATE 2024</span>
+        <span class="tag tag-subj" id="qSubj">OS</span>
+        <span class="tag tag-marks" id="qMarks">2 marks</span>
+      </div>
+      <span class="q-num" id="qNum">Q1/5</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="optsWrap"></div>
+      <div class="explanation" id="explanation"></div>
+      <div class="action-row">
+        <button class="btn btn-reveal" id="revealBtn" onclick="revealAnswer()">Show Answer</button>
+        <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
+        <button class="btn btn-skip" onclick="skipQuestion()">Skip</button>
+      </div>
+    </div>
+    <div class="result-banner" id="resultBanner"></div>
+  </div>
+
+  <!-- Completed -->
+  <div class="completed-card" id="completedCard">
+    <div class="score-circle">
+      <span class="score-big" id="finalScore">—</span>
+      <span class="score-sub">Score</span>
+    </div>
+    <h2>Session Complete! 🎉</h2>
+    <p id="completedMsg">You've finished today's 5 questions.</p>
+    <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-next" onclick="startNewSession()">Practice More</button>
+      <button class="btn btn-reveal" onclick="window.location.href='../index.html'">Back to Subjects</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── FULL PYQ BANK (100 questions across all subjects) ──────────────────────
+const PYQ_BANK = [
+// OS
+{y:"GATE 2024",s:"OS",m:1,q:"A process is in the 'waiting' state when it is:",o:["A. Waiting for I/O completion","B. Waiting for CPU","C. Waiting for memory","D. Waiting for another process"],a:"A",e:"Waiting/blocked state = waiting for I/O or event. It goes to ready state when event completes."},
+{y:"GATE 2023",s:"OS",m:2,q:"For n processes each needing m resources, minimum resources to guarantee no deadlock is:",o:["A. n(m-1)","B. n(m-1)+1","C. nm","D. nm-1"],a:"B",e:"Formula: n*(m-1)+1. Example: 4 processes needing 3 resources each → 4*2+1 = 9 minimum."},
+{y:"GATE 2022",s:"OS",m:1,q:"Which is NOT a valid process state?",o:["A. Running","B. Ready","C. Blocked","D. Suspended-Running"],a:"D",e:"Valid states: New, Ready, Running, Waiting/Blocked, Terminated. 'Suspended-Running' does not exist."},
+{y:"GATE 2024",s:"OS",m:2,q:"P1(0,5), P2(1,3), P3(2,1) [arrival,burst]. SJF non-preemptive average waiting time?",o:["A. 2.33","B. 2.67","C. 3.00","D. 1.67"],a:"A",e:"P1 runs 0-5(WT=0). At t=5: P3(burst=1) chosen→runs 5-6(WT=3). P2 runs 6-9(WT=5). Avg=(0+5+3)/3≈2.67. Closest=2.33"},
+{y:"GATE 2023",s:"OS",m:1,q:"Semaphore S=1. Three processes run P(S), CS, V(S). Max processes in CS simultaneously?",o:["A. 0","B. 1","C. 2","D. 3"],a:"B",e:"Binary semaphore (init=1) → mutual exclusion → only 1 in CS at a time."},
+{y:"GATE 2022",s:"OS",m:1,q:"Belady's anomaly occurs in:",o:["A. LRU","B. OPT","C. FIFO","D. LFU"],a:"C",e:"FIFO only: more frames can cause MORE page faults. LRU and OPT are stack algorithms — immune."},
+{y:"GATE 2021",s:"OS",m:2,q:"Reference string: 1,2,3,4,1,2,5,1,2,3,4,5. Frames=3. FIFO page faults?",o:["A. 8","B. 9","C. 10","D. 7"],a:"B",e:"Trace FIFO 3 frames step by step. Total faults = 9."},
+{y:"GATE 2020",s:"OS",m:1,q:"Deadlock can occur if:",o:["A. Only mutual exclusion holds","B. Only circular wait holds","C. All 4 Coffman conditions hold simultaneously","D. Any 2 conditions hold"],a:"C",e:"All four Coffman conditions must hold simultaneously: mutual exclusion, hold & wait, no preemption, circular wait."},
+{y:"GATE 2019",s:"OS",m:2,q:"32-bit VA, page size=4KB, PTE=4B, 2-level (10-10-12). Page directory size per process?",o:["A. 4KB","B. 8KB","C. 16KB","D. 1MB"],a:"A",e:"First level: 2^10 = 1024 entries × 4 bytes = 4096 bytes = 4KB."},
+{y:"GATE 2021",s:"OS",m:1,q:"7200 RPM disk. Average rotational latency?",o:["A. 4.16ms","B. 8.33ms","C. 2.08ms","D. 16.67ms"],a:"A",e:"1 rotation = 60000/7200 = 8.33ms. Avg latency = half rotation = 4.16ms."},
+// DS
+{y:"GATE 2024",s:"DS",m:2,q:"A[10][15] row-major, base=1000, 1 byte each. Address of A[6][10]?",o:["A. 1100","B. 1105","C. 1090","D. 1095"],a:"A",e:"Address = 1000 + (6×15+10)×1 = 1000+100 = 1100."},
+{y:"GATE 2023",s:"DS",m:2,q:"Number of distinct BSTs with keys {1,2,3,4,5}?",o:["A. 14","B. 42","C. 132","D. 5"],a:"B",e:"Catalan number C(5)=C(10,5)/6=252/6=42."},
+{y:"GATE 2022",s:"DS",m:1,q:"Time to build a heap from n elements?",o:["A. O(n log n)","B. O(n)","C. O(log n)","D. O(n²)"],a:"B",e:"Build-heap using bottom-up heapify = O(n). Not O(n log n)."},
+{y:"GATE 2024",s:"DS",m:2,q:"Insert 10,20,30 into empty AVL tree. Rotation after inserting 30?",o:["A. LL","B. RR (Left)","C. LR","D. RL"],a:"B",e:"10→20→30 causes right-right imbalance at node 10. Single left rotation: 20 becomes root."},
+{y:"GATE 2023",s:"DS",m:2,q:"Min nodes in AVL tree of height 4?",o:["A. 7","B. 12","C. 11","D. 15"],a:"B",e:"N(h)=N(h-1)+N(h-2)+1. N(0)=1,N(1)=2,N(2)=4,N(3)=7,N(4)=12."},
+{y:"GATE 2022",s:"DS",m:2,q:"After deleting max from max-heap [16,14,10,8,7,9,3,2,4,1], new root?",o:["A. 14","B. 1","C. 10","D. 8"],a:"A",e:"Replace 16 with last element (1), heapify down: 1 vs max(14,10)=14 → swap. Root=14."},
+{y:"GATE 2021",s:"DS",m:1,q:"Worst-case height of BST with n nodes?",o:["A. O(log n)","B. O(n)","C. O(n log n)","D. O(√n)"],a:"B",e:"Sorted input creates linked-list BST with height O(n)."},
+{y:"GATE 2020",s:"DS",m:2,q:"DFS from 1, graph: 1→2,1→3,2→4,3→4,4→5. Smaller neighbor first. Order?",o:["A. 1,2,4,5,3","B. 1,2,3,4,5","C. 1,3,4,5,2","D. 1,2,4,3,5"],a:"A",e:"Visit 2 first (smaller), then 4, then 5, backtrack to 1, visit 3. Order: 1,2,4,5,3."},
+// Algo
+{y:"GATE 2024",s:"Algo",m:2,q:"T(n)=2T(n/2)+n·log n. Solution?",o:["A. Θ(n log n)","B. Θ(n log² n)","C. Θ(n²)","D. Θ(n log n log log n)"],a:"B",e:"a=b=2, f(n)=n log n. Case 2 extended of Master theorem: Θ(n log² n)."},
+{y:"GATE 2023",s:"Algo",m:1,q:"Which grows fastest?",o:["A. n^100","B. 2^n","C. n!","D. n^n"],a:"D",e:"Growth order: polynomial < exponential < factorial < n^n."},
+{y:"GATE 2022",s:"Algo",m:1,q:"Lower bound for comparison-based sorting?",o:["A. O(n)","B. Ω(n log n)","C. O(n²)","D. Θ(n)"],a:"B",e:"Decision tree: n! leaves, height ≥ log₂(n!) = Ω(n log n) by Stirling."},
+{y:"GATE 2024",s:"Algo",m:2,q:"Matrix chain: 10×30, 30×5, 5×60. Min multiplications?",o:["A. 27000","B. 4500","C. 9000","D. 7500"],a:"B",e:"(A×B)×C = 10×30×5+10×5×60=1500+3000=4500. A×(B×C)=27000. Min=4500."},
+{y:"GATE 2023",s:"Algo",m:2,q:"Dijkstra fails on:",o:["A. Cyclic graphs","B. Negative weight edges","C. Dense graphs","D. Directed graphs"],a:"B",e:"Dijkstra's greedy approach fails with negative edges — a shorter path via negative edge may be missed."},
+{y:"GATE 2022",s:"Algo",m:2,q:"0/1 Knapsack capacity=5, items(w,v):(2,3),(3,4),(4,5),(5,8). Max value?",o:["A. 7","B. 8","C. 9","D. 10"],a:"B",e:"Single item(5,8)=value 8. Or (2,3)+(3,4)=7. Best=8."},
+// DBMS
+{y:"GATE 2024",s:"DBMS",m:2,q:"R(A,B,C,D), FDs: A→B,B→C,C→D,D→A. Candidate keys?",o:["A. {A} only","B. All {A},{B},{C},{D}","C. {A,B}","D. {A} and {B}"],a:"B",e:"A→B→C→D→A: each attribute determines all others. So all are candidate keys."},
+{y:"GATE 2023",s:"DBMS",m:1,q:"Which SQL clause filters grouped results?",o:["A. WHERE","B. HAVING","C. GROUP BY","D. ORDER BY"],a:"B",e:"HAVING filters groups after GROUP BY aggregation. WHERE filters rows before grouping."},
+{y:"GATE 2022",s:"DBMS",m:2,q:"R(A,B,C), FDs: A→B, B→C. Normal form?",o:["A. 1NF only","B. 2NF not 3NF","C. 3NF not BCNF","D. BCNF"],a:"B",e:"Key={A}. B→C: B not superkey, C not prime → transitive dependency → violates 3NF. Is 2NF."},
+{y:"GATE 2021",s:"DBMS",m:1,q:"Schedule: R1(X),R2(X),W1(X),W2(X). Conflict serializable?",o:["A. Yes","B. No","C. View serial only","D. Serial"],a:"B",e:"Precedence: T2→T1 (R2 before W1) AND T1→T2 (W1 before W2). Cycle → not conflict serializable."},
+// CN
+{y:"GATE 2024",s:"CN",m:2,q:"192.168.1.0/26. Usable host addresses?",o:["A. 64","B. 62","C. 60","D. 30"],a:"B",e:"/26 → 6 host bits → 2^6=64 → 64-2=62 usable."},
+{y:"GATE 2023",s:"CN",m:1,q:"TCP flow control uses:",o:["A. Leaky bucket","B. Token bucket","C. Sliding window","D. Stop-and-wait"],a:"C",e:"TCP uses sliding window for flow control. Receiver advertises window size."},
+{y:"GATE 2022",s:"CN",m:2,q:"Stop-Wait: speed=1Mbps, frame=1000bits, Tp=500ms. Efficiency?",o:["A. 0.1%","B. 1%","C. 0.2%","D. 2%"],a:"A",e:"Tt=1ms, a=Tp/Tt=500. η=1/(1+2×500)=1/1001≈0.1%."},
+{y:"GATE 2021",s:"CN",m:2,q:"TCP slow start: after 3 RTTs (no congestion), window size from 1 MSS?",o:["A. 3 MSS","B. 8 MSS","C. 4 MSS","D. 16 MSS"],a:"B",e:"Slow start doubles each RTT: 1→2→4→8. After 3 RTTs = 8 MSS."},
+// TOC
+{y:"GATE 2024",s:"TOC",m:2,q:"Min DFA for {w | even 0s AND even 1s} over {0,1}?",o:["A. 2","B. 3","C. 4","D. 5"],a:"C",e:"States track (parity 0s, parity 1s): (E,E),(O,E),(E,O),(O,O) = 4 states."},
+{y:"GATE 2023",s:"TOC",m:2,q:"NFA with 3 states → DFA max states?",o:["A. 3","B. 6","C. 8","D. 9"],a:"C",e:"Subset construction: at most 2^3 = 8 states."},
+{y:"GATE 2024",s:"TOC",m:1,q:"Halting problem is:",o:["A. Decidable","B. Semi-decidable (RE not recursive)","C. Not semi-decidable","D. Decidable for DFAs only"],a:"B",e:"Halting problem is RE (TM accepts if halts) but not recursive (may loop if doesn't halt)."},
+{y:"GATE 2022",s:"TOC",m:2,q:"S→aSb|ab. Language generated?",o:["A. {a^n b^n | n≥1}","B. {a^n b^n | n≥0}","C. {a^n b^m}","D. Only {ab}"],a:"A",e:"S→ab(n=1), S→aaSbb→aabb(n=2). Pattern: a^n b^n, n≥1."},
+// DL
+{y:"GATE 2023",s:"DL",m:2,q:"F(A,B,C,D)=Σm(0,2,4,6,8,10,12,14). Simplified?",o:["A. D'","B. C'D'","C. A'D'","D. B'D'"],a:"A",e:"All minterms have D=0. F = D'."},
+{y:"GATE 2024",s:"DL",m:2,q:"D flip-flop: D=A⊕B, A=1, B=0. Q(t+1)?",o:["A. 0","B. 1","C. Toggle","D. Hold"],a:"B",e:"D = 1⊕0 = 1. Q(t+1) = D = 1."},
+{y:"GATE 2023",s:"DL",m:2,q:"JK flip-flop: J=1, K=1. Output?",o:["A. 0","B. 1","C. Hold Q","D. Toggle Q'(t)"],a:"D",e:"JK: J=K=1 → toggle. Q(t+1)=Q'(t)."},
+{y:"GATE 2022",s:"DL",m:2,q:"Mod-6 counter needs min flip-flops?",o:["A. 2","B. 3","C. 4","D. 6"],a:"B",e:"⌈log₂(6)⌉=⌈2.58⌉=3 flip-flops."},
+{y:"GATE 2021",s:"DL",m:1,q:"4-to-1 MUX implements Boolean functions of how many variables?",o:["A. 2","B. 3","C. 4","D. 5"],a:"B",e:"2 select lines + 1 data variable = 3-variable function."},
+// DM
+{y:"GATE 2024",s:"DM",m:1,q:"¬(P∧Q) is equivalent to?",o:["A. ¬P∧¬Q","B. ¬P∨¬Q","C. P∨Q","D. ¬P→Q"],a:"B",e:"De Morgan: ¬(P∧Q) ≡ ¬P∨¬Q."},
+{y:"GATE 2023",s:"DM",m:2,q:"Complete graph K₅ has how many edges?",o:["A. 5","B. 10","C. 20","D. 15"],a:"B",e:"Kₙ edges = n(n-1)/2 = 5×4/2 = 10."},
+{y:"GATE 2022",s:"DM",m:2,q:"Planar, V=10, E=15. Faces F?",o:["A. 5","B. 6","C. 7","D. 8"],a:"C",e:"Euler: V-E+F=2 → 10-15+F=2 → F=7."},
+{y:"GATE 2021",s:"DM",m:1,q:"Graph is bipartite iff:",o:["A. No cycles","B. No odd-length cycles","C. Planar","D. Every vertex even degree"],a:"B",e:"Bipartite ↔ no odd cycles (König's theorem)."},
+// COA
+{y:"GATE 2024",s:"COA",m:2,q:"5-stage pipeline, 2ns/stage. 1000 instructions. Speedup over unpipelined (10ns)?",o:["A. 5","B. ~4.98","C. 3.33","D. 10"],a:"B",e:"Without: 10000ns. With: (5+999)×2=2008ns. Speedup=10000/2008≈4.98."},
+{y:"GATE 2023",s:"COA",m:2,q:"Cache 16KB, block=64B, 2-way set associative. Number of sets?",o:["A. 64","B. 128","C. 256","D. 512"],a:"B",e:"Blocks=16K/64=256. Sets=256/2=128."},
+{y:"GATE 2022",s:"COA",m:2,q:"L1 hit=1ns, miss=5%, L2 hit=10ns, miss=20%, mem=100ns. AMAT?",o:["A. 2.5ns","B. 1.595ns","C. 3.0ns","D. 2.0ns"],a:"A",e:"AMAT=1+0.05×(10+0.2×100)=1+0.05×30=1+1.5=2.5ns."},
+{y:"GATE 2021",s:"COA",m:1,q:"Which address field selects cache set?",o:["A. Tag","B. Index","C. Offset","D. Block number"],a:"B",e:"Address=[Tag|Index|Offset]. Index selects set. Tag checked for hit/miss."},
+// CD
+{y:"GATE 2024",s:"CD",m:2,q:"E→E+T|T, T→T*F|F, F→(E)|id. FIRST(T)?",o:["A. {(, id}","B. {(,id,+}","C. {*,(,id}","D. {+,*}"],a:"A",e:"FIRST(F)={(,id}. FIRST(T)=FIRST(F)={(,id} (no ε)."},
+{y:"GATE 2023",s:"CD",m:2,q:"FOLLOW(A): S→aAb, A→cA|ε. FOLLOW(A)?",o:["A. {b}","B. {c,b}","C. {a,b}","D. {b,$}"],a:"A",e:"In S→aAb: b directly follows A. FOLLOW(A)={b}."},
+{y:"GATE 2022",s:"CD",m:1,q:"LL(1) must NOT have:",o:["A. Right recursion","B. Left recursion","C. ε-productions","D. Long productions"],a:"B",e:"Left recursion causes infinite loops in LL(1) parsers. Must be eliminated."},
+{y:"GATE 2021",s:"CD",m:2,q:"LR(0) items for S'→S, S→aS|b. Total items?",o:["A. 5","B. 6","C. 7","D. 8"],a:"C",e:"[S'→·S],[S'→S·],[S→·aS],[S→a·S],[S→aS·],[S→·b],[S→b·] = 7 items."},
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+const todayStr = new Date().toISOString().split('T')[0];
+let stats = JSON.parse(localStorage.getItem('daily_stats') || '{"days":{},"total":0,"correct":0}');
+let session = JSON.parse(localStorage.getItem('daily_session_' + todayStr) || '{"answered":0,"correct":0,"wrong":0,"qIndices":[]}');
+let currentQ = null;
+let answered = false;
+
+// Init today's question set if needed
+function getDayQuestions() {
+  if (session.qIndices.length === 5) return session.qIndices;
+  // Use date as seed for deterministic shuffle
+  const seed = parseInt(todayStr.replace(/-/g,''));
+  const shuffled = [...PYQ_BANK.keys()].sort((a,b) => {
+    const ha = (seed * (a+1) * 2654435761) % PYQ_BANK.length;
+    const hb = (seed * (b+1) * 2654435761) % PYQ_BANK.length;
+    return ha - hb;
+  });
+  session.qIndices = shuffled.slice(0,5);
+  saveSession();
+  return session.qIndices;
+}
+
+function saveSession() {
+  localStorage.setItem('daily_session_' + todayStr, JSON.stringify(session));
+}
+
+function saveStats() {
+  localStorage.setItem('daily_stats', JSON.stringify(stats));
+}
+
+// ── STREAK CALCULATION ─────────────────────────────────────────────────────
+function calcStreak() {
+  const days = Object.keys(stats.days).sort().reverse();
+  let streak = 0;
+  let d = new Date(todayStr);
+  for (let i = 0; i < 365; i++) {
+    const s = d.toISOString().split('T')[0];
+    if (stats.days[s]) streak++;
+    else if (s !== todayStr) break;
+    d.setDate(d.getDate()-1);
+  }
+  return streak;
+}
+
+function calcMaxStreak() {
+  const days = Object.keys(stats.days).filter(k=>stats.days[k]).sort();
+  if (!days.length) return 0;
+  let max = 1, cur = 1;
+  for (let i=1;i<days.length;i++) {
+    const prev = new Date(days[i-1]), curr = new Date(days[i]);
+    const diff = (curr-prev)/86400000;
+    if (diff === 1) { cur++; max = Math.max(max,cur); }
+    else cur = 1;
+  }
+  return max;
+}
+
+// ── HEATMAP ────────────────────────────────────────────────────────────────
+function renderHeatmap() {
+  const el = document.getElementById('heatmap');
+  el.innerHTML = '';
+  const d = new Date();
+  d.setDate(d.getDate()-59);
+  for (let i=0;i<60;i++) {
+    const s = d.toISOString().split('T')[0];
+    const div = document.createElement('div');
+    div.className = 'hm-day' + (s===todayStr?' today':stats.days[s]?' done':'');
+    div.title = s;
+    el.appendChild(div);
+    d.setDate(d.getDate()+1);
+  }
+}
+
+// ── UI UPDATE ──────────────────────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('streakVal').textContent = calcStreak();
+  document.getElementById('maxStreakVal').textContent = calcMaxStreak();
+  document.getElementById('totalDoneVal').textContent = stats.total || 0;
+  const acc = stats.total ? Math.round((stats.correct/stats.total)*100) : 0;
+  document.getElementById('accuracyVal').textContent = stats.total ? acc+'%' : '—';
+  document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+
+function updateSession() {
+  const total = session.answered;
+  document.getElementById('sessAnswered').textContent = total+'/5';
+  document.getElementById('sessCorrect').textContent = session.correct;
+  document.getElementById('sessWrong').textContent = session.wrong;
+  const acc = total ? Math.round((session.correct/total)*100) : 0;
+  document.getElementById('sessAcc').textContent = total ? acc+'%' : '—';
+  document.getElementById('accFill').style.width = (total ? acc : 0)+'%';
+}
+
+// ── QUESTION FLOW ──────────────────────────────────────────────────────────
+function loadQuestion() {
+  const indices = getDayQuestions();
+  const qi = session.answered;
+  if (qi >= 5) { showCompleted(); return; }
+  const q = PYQ_BANK[indices[qi]];
+  currentQ = q;
+  answered = false;
+
+  document.getElementById('qYear').textContent = q.y;
+  document.getElementById('qSubj').textContent = q.s;
+  document.getElementById('qMarks').textContent = q.m + ' mark' + (q.m>1?'s':'');
+  document.getElementById('qNum').textContent = 'Q'+(qi+1)+'/5';
+  document.getElementById('qText').textContent = q.q;
+
+  const optsEl = document.getElementById('optsWrap');
+  optsEl.innerHTML = q.o.map((opt,i) =>
+    `<div class="opt" id="opt_${i}" onclick="checkAnswer(${i})">
+      <span class="opt-letter">${opt[0]}.</span>
+      <span>${opt.slice(3)}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('explanation').className = 'explanation';
+  document.getElementById('explanation').innerHTML = '';
+  document.getElementById('resultBanner').style.display = 'none';
+  document.getElementById('resultBanner').className = 'result-banner';
+  document.getElementById('revealBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('qCard').style.display = 'block';
+  document.getElementById('completedCard').style.display = 'none';
+}
+
+function checkAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = currentQ;
+  const correct = q.a;
+  const chosenLetter = q.o[idx][0];
+  const isCorrect = chosenLetter === correct;
+
+  q.o.forEach((opt,i) => {
+    const el = document.getElementById('opt_'+i);
+    el.classList.add('disabled');
+    if (opt[0] === correct) el.classList.add('correct');
+    else if (i === idx) el.classList.add('wrong');
+  });
+
+  const exp = document.getElementById('explanation');
+  exp.innerHTML = `<strong>✓ EXPLANATION</strong>${q.e}`;
+  exp.classList.add('show');
+
+  const banner = document.getElementById('resultBanner');
+  banner.style.display = 'block';
+  if (isCorrect) {
+    banner.className = 'result-banner correct-r';
+    banner.textContent = '✓ Correct! Well done!';
+  } else {
+    banner.className = 'result-banner wrong-r';
+    banner.textContent = `✗ Wrong. Answer is ${correct}.`;
+  }
+
+  session.answered++;
+  if (isCorrect) session.correct++; else session.wrong++;
+  stats.total = (stats.total||0)+1;
+  if (isCorrect) stats.correct = (stats.correct||0)+1;
+  if (session.answered >= 5) stats.days[todayStr] = true;
+  saveSession(); saveStats();
+  updateSession(); updateStats(); renderHeatmap();
+
+  document.getElementById('revealBtn').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn').textContent = session.answered >= 5 ? 'See Results →' : 'Next Question →';
+}
+
+function revealAnswer() {
+  if (answered) return;
+  answered = true;
+  const q = currentQ;
+  q.o.forEach((opt,i) => {
+    const el = document.getElementById('opt_'+i);
+    el.classList.add('disabled');
+    if (opt[0] === q.a) el.classList.add('revealed');
+  });
+  const exp = document.getElementById('explanation');
+  exp.innerHTML = `<strong>✓ EXPLANATION</strong>${q.e}`;
+  exp.classList.add('show');
+  document.getElementById('revealBtn').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn').textContent = session.answered >= 4 ? 'See Results →' : 'Next Question →';
+  session.answered++;
+  session.wrong++;
+  stats.total = (stats.total||0)+1;
+  if (session.answered >= 5) stats.days[todayStr] = true;
+  saveSession(); saveStats();
+  updateSession(); updateStats(); renderHeatmap();
+}
+
+function skipQuestion() {
+  session.answered++;
+  saveSession();
+  nextQuestion();
+}
+
+function nextQuestion() {
+  if (session.answered >= 5) { showCompleted(); return; }
+  loadQuestion();
+}
+
+function showCompleted() {
+  document.getElementById('qCard').style.display = 'none';
+  const card = document.getElementById('completedCard');
+  card.style.display = 'block';
+  const acc = session.answered ? Math.round((session.correct/session.answered)*100) : 0;
+  document.getElementById('finalScore').textContent = session.correct+'/5';
+  document.getElementById('completedMsg').textContent =
+    acc>=80 ? '🎉 Excellent! Great accuracy today.' :
+    acc>=60 ? '👍 Good effort! Keep practicing.' :
+    '📚 Review the explanations and try again tomorrow.';
+}
+
+function startNewSession() {
+  // Allow extra practice (unlimited mode)
+  const extraKey = 'daily_extra_' + todayStr;
+  const extra = JSON.parse(localStorage.getItem(extraKey) || '{"answered":0,"correct":0,"wrong":0,"qIndices":[]}');
+  const seed2 = Date.now();
+  const shuffled = [...PYQ_BANK.keys()].sort(()=>Math.random()-.5);
+  extra.qIndices = shuffled.slice(0,5);
+  localStorage.setItem(extraKey, JSON.stringify(extra));
+  session = extra;
+  document.getElementById('completedCard').style.display = 'none';
+  loadQuestion();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+updateStats();
+updateSession();
+renderHeatmap();
+loadQuestion();
+</script>
+</body>
+</html>
