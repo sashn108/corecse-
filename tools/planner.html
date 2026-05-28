@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Planner — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:1000px;margin:0 auto;padding:2rem;}
+h1{font-size:2rem;font-weight:800;margin-bottom:.4rem;}
+.sub{color:var(--m);font-size:.9rem;margin-bottom:2rem;}
+
+/* CONFIG CARD */
+.config{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:1.5rem;margin-bottom:2rem;}
+.config h2{font-family:var(--mono);font-size:.75rem;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.2rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+.field label{font-family:var(--mono);font-size:.72rem;color:var(--m);display:block;margin-bottom:.4rem;}
+.field input,.field select{width:100%;background:var(--s2);border:1px solid var(--b);color:var(--t);font-family:var(--mono);font-size:.82rem;padding:.55rem .8rem;border-radius:6px;outline:none;transition:border .2s;}
+.field input:focus,.field select:focus{border-color:var(--acc);}
+.field input[type="date"]{color-scheme:dark;}
+.subject-weights{margin-top:1.2rem;}
+.weights-title{font-family:var(--mono);font-size:.72rem;color:var(--m);margin-bottom:.8rem;}
+.weights-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;}
+.w-chip{background:var(--s2);border:1px solid var(--b);border-radius:6px;padding:.5rem .6rem;text-align:center;cursor:pointer;transition:all .2s;}
+.w-chip.on{border-color:var(--acc);background:rgba(124,106,255,.1);}
+.w-chip .wname{font-size:.75rem;font-weight:700;}
+.w-chip .wpct{font-family:var(--mono);font-size:.68rem;color:var(--m);}
+.w-chip.on .wpct{color:var(--acc);}
+.gen-btn{margin-top:1.2rem;width:100%;background:var(--acc);color:#fff;border:none;font-family:var(--mono);font-size:.85rem;font-weight:700;padding:.75rem;border-radius:8px;cursor:pointer;transition:opacity .2s;letter-spacing:.05em;}
+.gen-btn:hover{opacity:.85;}
+
+/* STATS ROW */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.stat-c{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:1rem;text-align:center;}
+.stat-v{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--acc);display:block;}
+.stat-l{font-size:.72rem;color:var(--m);margin-top:.2rem;}
+
+/* PLAN */
+.plan-wrap{display:none;}
+.week-block{margin-bottom:1.5rem;}
+.week-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+.week-hdr h3{font-family:var(--mono);font-size:.78rem;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;}
+.week-progress{font-family:var(--mono);font-size:.7rem;color:var(--m);}
+.days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.4rem;}
+.day-card{background:var(--s);border:1px solid var(--b);border-radius:6px;padding:.7rem .5rem;min-height:80px;position:relative;transition:all .2s;cursor:pointer;}
+.day-card:hover{border-color:var(--b);background:var(--s2);}
+.day-card.done{border-color:rgba(79,255,176,.4);background:rgba(79,255,176,.04);}
+.day-card.today{border-color:var(--acc);box-shadow:0 0 12px rgba(124,106,255,.2);}
+.day-card.rest{opacity:.5;cursor:default;}
+.day-num{font-family:var(--mono);font-size:.65rem;color:var(--m);margin-bottom:.35rem;}
+.day-subj{font-size:.7rem;font-weight:700;line-height:1.3;}
+.day-topics{font-size:.65rem;color:var(--m);margin-top:.25rem;line-height:1.4;}
+.day-hours{font-family:var(--mono);font-size:.6rem;color:var(--acc);margin-top:.3rem;}
+.done-tick{position:absolute;top:.4rem;right:.4rem;color:var(--g);font-size:.7rem;}
+.today-badge{position:absolute;top:.4rem;right:.4rem;font-family:var(--mono);font-size:.55rem;background:var(--acc);color:#fff;padding:.1rem .3rem;border-radius:2px;}
+.subj-color{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:.3rem;vertical-align:middle;}
+
+/* LEGEND */
+.legend{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;}
+.leg{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--m);}
+
+/* EXPORT */
+.export-row{display:flex;gap:.8rem;margin-top:1.5rem;}
+.exp-btn{font-family:var(--mono);font-size:.75rem;padding:.5rem 1rem;border-radius:6px;cursor:pointer;border:1px solid var(--b);color:var(--m);background:var(--s);transition:all .2s;}
+.exp-btn:hover{border-color:var(--acc);color:var(--acc);}
+
+@media(max-width:768px){.form-grid{grid-template-columns:1fr 1fr}.weights-grid{grid-template-columns:repeat(5,1fr)}.days-grid{grid-template-columns:repeat(4,1fr)}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.days-grid{grid-template-columns:repeat(3,1fr)}.weights-grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="../index.html">← Home</a>
+    <a href="daily.html">📅 Daily PYQ</a>
+    <a href="flashcards.html">🃏 Flashcards</a>
+    <a href="notes.html">📝 My Notes</a>
+  </div>
+</nav>
+
+<div class="page">
+  <h1>📅 Study Planner</h1>
+  <p class="sub">Personalized day-wise GATE 2027 schedule based on your available time and subject weightage</p>
+
+  <div class="config">
+    <h2>⚙️ Configure your plan</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>GATE Exam Date</label>
+        <input type="date" id="gateDate" value="2027-02-08">
+      </div>
+      <div class="field">
+        <label>Study Start Date</label>
+        <input type="date" id="startDate">
+      </div>
+      <div class="field">
+        <label>Weekday hours/day</label>
+        <select id="wdHours">
+          <option value="1">1 hour</option>
+          <option value="1.5">1.5 hours</option>
+          <option value="2" selected>2 hours</option>
+          <option value="2.5">2.5 hours</option>
+          <option value="3">3 hours</option>
+          <option value="4">4 hours</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Weekend hours/day</label>
+        <select id="weHours">
+          <option value="2">2 hours</option>
+          <option value="3">3 hours</option>
+          <option value="4" selected>4 hours</option>
+          <option value="5">5 hours</option>
+          <option value="6">6 hours</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Rest days/week</label>
+        <select id="restDays">
+          <option value="0">0 (no rest)</option>
+          <option value="1" selected>1 day</option>
+          <option value="2">2 days</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Revision buffer (weeks)</label>
+        <select id="revBuffer">
+          <option value="2" selected>2 weeks</option>
+          <option value="3">3 weeks</option>
+          <option value="4">4 weeks</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="subject-weights">
+      <div class="weights-title">Include subjects (click to toggle):</div>
+      <div class="weights-grid" id="subjectChips"></div>
+    </div>
+
+    <button class="gen-btn" onclick="generatePlan()">⚡ Generate My Study Plan</button>
+  </div>
+
+  <div id="statsRow" class="stats" style="display:none">
+    <div class="stat-c"><span class="stat-v" id="statDays">—</span><div class="stat-l">Study Days</div></div>
+    <div class="stat-c"><span class="stat-v" id="statHours">—</span><div class="stat-l">Total Hours</div></div>
+    <div class="stat-c"><span class="stat-v" id="statSubjects">—</span><div class="stat-l">Subjects</div></div>
+    <div class="stat-c"><span class="stat-v" id="statDaysLeft">—</span><div class="stat-l">Days to GATE</div></div>
+  </div>
+
+  <div class="plan-wrap" id="planWrap">
+    <div class="legend" id="legendRow"></div>
+    <div id="planContent"></div>
+    <div class="export-row">
+      <button class="exp-btn" onclick="markAllDone()">✓ Mark All Done</button>
+      <button class="exp-btn" onclick="clearProgress()">↺ Reset Progress</button>
+      <button class="exp-btn" onclick="exportPlan()">⬇ Export as Text</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUBJECTS = [
+  {id:"os",  name:"OS",    full:"Operating Systems",    pct:12, color:"#7c6aff", link:"../subjects/os.html"},
+  {id:"ds",  name:"DS",    full:"Data Structures",       pct:18, color:"#4fffb0", link:"../subjects/ds.html"},
+  {id:"algo",name:"Algo",  full:"Algorithms",            pct:15, color:"#ffd166", link:"../subjects/algo.html"},
+  {id:"dbms",name:"DBMS",  full:"DBMS",                  pct:11, color:"#ff9f43", link:"../subjects/dbms.html"},
+  {id:"cn",  name:"CN",    full:"Computer Networks",     pct:10, color:"#00cfe8", link:"../subjects/cn.html"},
+  {id:"toc", name:"TOC",   full:"Theory of Computation", pct:9,  color:"#a29bfe", link:"../subjects/toc.html"},
+  {id:"dl",  name:"DL",    full:"Digital Logic",         pct:8,  color:"#fdcb6e", link:"../subjects/dl.html"},
+  {id:"dm",  name:"DM",    full:"Discrete Math",         pct:8,  color:"#55efc4", link:"../subjects/dm.html"},
+  {id:"coa", name:"COA",   full:"CO & Architecture",     pct:7,  color:"#fd79a8", link:"../subjects/coa.html"},
+  {id:"cd",  name:"CD",    full:"Compiler Design",       pct:6,  color:"#e17055", link:"../subjects/cd.html"},
+];
+
+const TOPIC_MAP = {
+  os:   ["Process Management","CPU Scheduling","Synchronization","Deadlocks","Memory Management","Virtual Memory","File Systems","I/O Systems"],
+  ds:   ["Arrays & Strings","Linked Lists","Stacks & Queues","Trees & Binary Trees","BST","AVL Trees","Heaps","Hashing","Graphs","Segment Trees","Tries","DSU"],
+  algo: ["Asymptotic Analysis","Sorting","Searching","Divide & Conquer","Dynamic Programming","Greedy","Graph Algorithms","P NP Complexity","Backtracking","String Algorithms"],
+  dbms: ["Relational Model","SQL","Normalization","ER Modeling","Transactions","Concurrency Control","Indexing B+ Tree","Query Processing","Recovery"],
+  cn:   ["Network Models OSI","Data Link Layer","MAC & LAN","IP Subnetting","Routing","Transport TCP","Application Layer","Network Security"],
+  toc:  ["DFA & NFA","Regular Expressions","Pumping Lemma","CFG & Grammars","Pushdown Automata","Turing Machines","Decidability"],
+  dl:   ["Number Systems","Boolean Algebra","K-Map","Combinational Circuits","Sequential Circuits","Registers Counters","Logic Families"],
+  dm:   ["Mathematical Logic","Set Theory","Relations","Functions","Combinatorics","Graph Theory","Number Theory","Algebraic Structures"],
+  coa:  ["Basic Organization","ISA & Addressing","Pipelining","Cache Memory","Memory Organization","I/O Organization","Performance"],
+  cd:   ["Lexical Analysis","Parsing LL LR","Syntax-Directed Trans","Intermediate Code","Code Optimization","Code Generation"],
+};
+
+let selected = new Set(SUBJECTS.map(s=>s.id));
+let progress = JSON.parse(localStorage.getItem('planner_progress') || '{}');
+let planData = [];
+
+// Init date
+const today = new Date();
+document.getElementById('startDate').value = today.toISOString().split('T')[0];
+
+// Build subject chips
+const chipsEl = document.getElementById('subjectChips');
+SUBJECTS.forEach(s => {
+  const chip = document.createElement('div');
+  chip.className = 'w-chip on';
+  chip.id = 'chip_' + s.id;
+  chip.innerHTML = `<div class="wname">${s.name}</div><div class="wpct">${s.pct}%</div>`;
+  chip.style.borderColor = s.color;
+  chip.onclick = () => {
+    if(selected.has(s.id)) { selected.delete(s.id); chip.classList.remove('on'); chip.style.borderColor = 'var(--b)'; }
+    else { selected.add(s.id); chip.classList.add('on'); chip.style.borderColor = s.color; }
+  };
+  chipsEl.appendChild(chip);
+});
+
+function generatePlan() {
+  const gateDate = new Date(document.getElementById('gateDate').value);
+  const startDate = new Date(document.getElementById('startDate').value);
+  const wdH = parseFloat(document.getElementById('wdHours').value);
+  const weH = parseFloat(document.getElementById('weHours').value);
+  const restPerWeek = parseInt(document.getElementById('restDays').value);
+  const revWeeks = parseInt(document.getElementById('revBuffer').value);
+
+  const activeSubs = SUBJECTS.filter(s => selected.has(s.id));
+  if (!activeSubs.length) { alert('Select at least one subject'); return; }
+
+  // Calculate available days (exclude last revWeeks for revision)
+  const revStart = new Date(gateDate);
+  revStart.setDate(revStart.getDate() - revWeeks * 7);
+
+  // Build day list
+  const days = [];
+  let cur = new Date(startDate);
+  while (cur < revStart) {
+    const dow = cur.getDay(); // 0=Sun,6=Sat
+    const isWeekend = dow === 0 || dow === 6;
+    const dateStr = cur.toISOString().split('T')[0];
+    days.push({ date: new Date(cur), dateStr, isWeekend, hours: isWeekend ? weH : wdH });
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  // Apply rest days (mark every (7/restPerWeek+1)th day as rest if restPerWeek > 0)
+  if (restPerWeek > 0) {
+    const period = Math.round(7 / restPerWeek);
+    days.forEach((d,i) => { if ((i+1) % period === 0) d.rest = true; });
+  }
+
+  const studyDays = days.filter(d => !d.rest);
+  const totalHours = studyDays.reduce((a,d) => a+d.hours, 0);
+
+  // Allocate hours per subject proportional to weightage
+  const totalPct = activeSubs.reduce((a,s) => a+s.pct, 0);
+  const subHours = {};
+  activeSubs.forEach(s => { subHours[s.id] = (s.pct / totalPct) * totalHours; });
+
+  // Assign topics to days
+  planData = [];
+  let subQueue = [];
+  activeSubs.forEach(s => {
+    const topics = TOPIC_MAP[s.id] || [];
+    const hrsPerTopic = subHours[s.id] / topics.length;
+    topics.forEach(t => subQueue.push({subId: s.id, topic: t, hours: hrsPerTopic, sub: s}));
+  });
+
+  let qi = 0;
+  studyDays.forEach(day => {
+    const dayTopics = [];
+    let remaining = day.hours;
+    while (qi < subQueue.length && remaining > 0) {
+      const item = subQueue[qi];
+      const take = Math.min(item.hours, remaining);
+      dayTopics.push({...item, hours: take});
+      item.hours -= take;
+      remaining -= take;
+      if (item.hours < 0.01) qi++;
+    }
+    planData.push({...day, topics: dayTopics});
+  });
+
+  // Add revision days
+  let revCur = new Date(revStart);
+  while (revCur < gateDate) {
+    planData.push({
+      date: new Date(revCur),
+      dateStr: revCur.toISOString().split('T')[0],
+      isWeekend: revCur.getDay()===0||revCur.getDay()===6,
+      hours: revCur.getDay()===0||revCur.getDay()===6 ? weH : wdH,
+      topics: [{subId:'rev', topic:'Full Revision + PYQ Practice', hours: revCur.getDay()===0||revCur.getDay()===6?weH:wdH, sub:{color:'#ff6a6a',name:'REV'}}],
+      isRevision: true
+    });
+    revCur.setDate(revCur.getDate()+1);
+  }
+
+  // Stats
+  const daysToGate = Math.ceil((gateDate - today) / 86400000);
+  document.getElementById('statDays').textContent = studyDays.length;
+  document.getElementById('statHours').textContent = Math.round(totalHours);
+  document.getElementById('statSubjects').textContent = activeSubs.length;
+  document.getElementById('statDaysLeft').textContent = daysToGate;
+  document.getElementById('statsRow').style.display = 'grid';
+
+  renderPlan(activeSubs);
+  localStorage.setItem('planner_plan', JSON.stringify({
+    generated: new Date().toISOString(), activeSubs: activeSubs.map(s=>s.id)
+  }));
+}
+
+function renderPlan(activeSubs) {
+  const wrap = document.getElementById('planWrap');
+  const content = document.getElementById('planContent');
+  wrap.style.display = 'block';
+
+  // Legend
+  const legEl = document.getElementById('legendRow');
+  legEl.innerHTML = activeSubs.map(s =>
+    `<div class="leg"><span class="subj-color" style="background:${s.color}"></span>${s.name}</div>`
+  ).join('') + '<div class="leg"><span class="subj-color" style="background:#ff6a6a"></span>Revision</div>';
+
+  // Group into weeks
+  const weeks = [];
+  for (let i = 0; i < planData.length; i += 7) {
+    weeks.push(planData.slice(i, i+7));
+  }
+
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  content.innerHTML = weeks.map((week, wi) => {
+    const doneCount = week.filter(d => progress[d.dateStr]).length;
+    const daysHtml = week.map(day => {
+      const isDone = progress[day.dateStr];
+      const isToday = day.dateStr === todayStr;
+      const isPast = day.dateStr < todayStr;
+      const mainTopic = day.topics[0];
+      const cls = ['day-card', isDone?'done':'', isToday?'today':'', (!mainTopic||day.rest)?'rest':''].filter(Boolean).join(' ');
+      const subjColor = mainTopic?.sub?.color || '#2a2a3d';
+      const allTopics = day.topics.map(t=>t.topic).join(', ');
+      const dateObj = new Date(day.dateStr + 'T00:00:00');
+      const dateLabel = dateObj.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+      const dowLabel = dateObj.toLocaleDateString('en-IN',{weekday:'short'});
+      return `<div class="${cls}" onclick="toggleDay('${day.dateStr}')" title="${allTopics}">
+        ${isDone ? '<span class="done-tick">✓</span>' : ''}
+        ${isToday ? '<span class="today-badge">TODAY</span>' : ''}
+        <div class="day-num">${dowLabel} ${dateLabel}</div>
+        ${mainTopic ? `<div class="day-subj"><span class="subj-color" style="background:${subjColor}"></span>${mainTopic.sub?.name||'REV'}</div>
+        <div class="day-topics">${mainTopic.topic}${day.topics.length>1?` +${day.topics.length-1} more`:''}</div>
+        <div class="day-hours">${day.hours}h</div>` : '<div class="day-subj" style="color:var(--m)">Rest Day</div>'}
+      </div>`;
+    }).join('');
+    return `<div class="week-block">
+      <div class="week-hdr">
+        <h3>Week ${wi+1} ${week[0]?.isRevision?'(Revision)':''}</h3>
+        <span class="week-progress">${doneCount}/${week.length} done</span>
+      </div>
+      <div class="days-grid">${daysHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDay(dateStr) {
+  progress[dateStr] = !progress[dateStr];
+  localStorage.setItem('planner_progress', JSON.stringify(progress));
+  const activeSubs = SUBJECTS.filter(s=>selected.has(s.id));
+  renderPlan(activeSubs);
+}
+
+function markAllDone() {
+  planData.forEach(d => { progress[d.dateStr] = true; });
+  localStorage.setItem('planner_progress', JSON.stringify(progress));
+  const activeSubs = SUBJECTS.filter(s=>selected.has(s.id));
+  renderPlan(activeSubs);
+}
+
+function clearProgress() {
+  if (!confirm('Reset all progress?')) return;
+  progress = {};
+  localStorage.removeItem('planner_progress');
+  const activeSubs = SUBJECTS.filter(s=>selected.has(s.id));
+  renderPlan(activeSubs);
+}
+
+function exportPlan() {
+  const lines = ['CoreCSE GATE 2027 Study Plan', '='.repeat(40), ''];
+  planData.forEach(d => {
+    if (!d.topics.length) return;
+    const done = progress[d.dateStr] ? '✓' : '○';
+    lines.push(`${done} ${d.dateStr} (${d.hours}h) — ${d.topics.map(t=>t.topic).join(', ')}`);
+  });
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'gate2027-study-plan.txt';
+  a.click();
+}
+</script>
+</body>
+</html>
