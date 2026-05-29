@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study Planner — CoreCSE GATE 2027</title>
+<title>Study Planner — CoreCSE GATE <span class="gate-year-label">2027</span></title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
@@ -74,6 +74,7 @@ h1{font-size:2rem;font-weight:800;margin-bottom:.4rem;}
 @media(max-width:768px){.form-grid{grid-template-columns:1fr 1fr}.weights-grid{grid-template-columns:repeat(5,1fr)}.days-grid{grid-template-columns:repeat(4,1fr)}.stats{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.days-grid{grid-template-columns:repeat(3,1fr)}.weights-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
+<script src="../corecse-utils.js"></script>
 </head>
 <body>
 <nav>
@@ -88,14 +89,14 @@ h1{font-size:2rem;font-weight:800;margin-bottom:.4rem;}
 
 <div class="page">
   <h1>📅 Study Planner</h1>
-  <p class="sub">Personalized day-wise GATE 2027 schedule based on your available time and subject weightage</p>
+  <p class="sub">Personalized day-wise GATE <span class="gate-year-label">2027</span> schedule based on your available time and subject weightage</p>
 
   <div class="config">
     <h2>⚙️ Configure your plan</h2>
     <div class="form-grid">
       <div class="field">
         <label>GATE Exam Date</label>
-        <input type="date" id="gateDate" value="2027-02-08">
+        <input type="date" id="gateDate" id="gateDate" value="2027-02-08">
       </div>
       <div class="field">
         <label>Study Start Date</label>
@@ -382,7 +383,7 @@ function clearProgress() {
 }
 
 function exportPlan() {
-  const lines = ['CoreCSE GATE 2027 Study Plan', '='.repeat(40), ''];
+  const lines = ['CoreCSE GATE <span class="gate-year-label">2027</span> Study Plan', '='.repeat(40), ''];
   planData.forEach(d => {
     if (!d.topics.length) return;
     const done = progress[d.dateStr] ? '✓' : '○';

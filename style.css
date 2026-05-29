@@ -344,3 +344,183 @@ a { text-decoration: none; color: inherit; }
   .stats-row { gap: 1.5rem; }
   .nav-links a:not(.nav-cta) { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK / LIGHT THEME VARIABLES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Light mode (default) — uses existing :root vars above */
+
+[data-theme="dark"] {
+  --blue:       #7c6aff;
+  --blue-light: rgba(124,106,255,.15);
+  --blue-dark:  #a29bfe;
+  --teal:       #4fffb0;
+  --teal-light: rgba(79,255,176,.12);
+  --amber:      #ffd166;
+  --amber-light:rgba(255,209,102,.12);
+  --purple:     #a29bfe;
+  --purple-light:rgba(162,155,254,.12);
+  --green:      #4fffb0;
+  --green-light:rgba(79,255,176,.12);
+  --text:       #e8e8f0;
+  --text2:      #a0a0b8;
+  --text3:      #6b6b8a;
+  --border:     #2a2a3d;
+  --bg:         #0a0a0f;
+  --bg2:        #12121a;
+  --radius:     8px;
+  --radius-lg:  12px;
+}
+
+[data-theme="dark"] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+[data-theme="dark"] .nav,
+[data-theme="dark"] .tabs {
+  background: var(--bg);
+}
+
+[data-theme="dark"] .subject-card,
+[data-theme="dark"] .c-node-head,
+[data-theme="dark"] .pyq-item {
+  background: var(--bg2);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .subject-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(124,106,255,.2);
+}
+
+[data-theme="dark"] .predictor-card,
+[data-theme="dark"] .predictor-header,
+[data-theme="dark"] .pred-panel,
+[data-theme="dark"] .pred-panel-head {
+  background: var(--bg2);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .c-node-body,
+[data-theme="dark"] .topic-hero {
+  background: rgba(255,255,255,.03);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .stats-row {
+  background: var(--bg2);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .callout {
+  background: rgba(124,106,255,.1);
+  border-left-color: var(--blue);
+}
+
+[data-theme="dark"] .formula {
+  background: var(--bg2);
+  border-color: var(--border);
+  color: #4fffb0;
+}
+
+[data-theme="dark"] .filter-btn {
+  border-color: var(--border);
+  color: var(--text2);
+}
+
+[data-theme="dark"] .filter-btn:hover:not(.active) {
+  background: var(--bg2);
+}
+
+[data-theme="dark"] .pyq-year {
+  background: rgba(255,255,255,.06);
+  color: var(--text2);
+}
+
+[data-theme="dark"] .answer-box {
+  background: rgba(79,255,176,.1);
+  color: #4fffb0;
+}
+
+[data-theme="dark"] .nav-cta {
+  background: var(--blue);
+  color: #fff;
+}
+
+[data-theme="dark"] .btn-primary {
+  background: var(--blue);
+  color: #fff;
+}
+
+[data-theme="dark"] .btn-secondary {
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: var(--bg2);
+}
+
+[data-theme="dark"] .badge {
+  background: var(--bg2);
+  border-color: var(--border);
+  color: var(--text2);
+}
+
+[data-theme="dark"] footer,
+[data-theme="dark"] .footer {
+  border-color: var(--border);
+  background: var(--bg);
+}
+
+[data-theme="dark"] .sidebar {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .tree-item:hover {
+  background: var(--bg2);
+}
+
+[data-theme="dark"] .tree-item.active {
+  background: rgba(124,106,255,.1);
+  border-left-color: var(--blue);
+  color: var(--blue);
+}
+
+[data-theme="dark"] .dot-todo {
+  background: #3a3a5c;
+}
+
+/* ─── PYQ Interactive Scoring ────────────────────────────────── */
+.opt { cursor: pointer; padding: 5px 8px; border-radius: 5px; transition: background .12s, color .12s; }
+.opt:hover { background: var(--blue-light); }
+.opt.selected { background: var(--blue-light); color: var(--blue); font-weight: 500; }
+.opt.correct-reveal { background: var(--green-light); color: var(--green); font-weight: 600; }
+.opt.wrong-reveal   { background: var(--amber-light); color: var(--amber); }
+.pyq-score-bar { margin-top: .75rem; padding: .6rem .9rem; border-radius: 6px; font-size: 12px; font-weight: 500; display: none; }
+.pyq-score-bar.show { display: flex; align-items: center; gap: 8px; }
+.pyq-score-bar.good { background: var(--green-light); color: var(--green); }
+.pyq-score-bar.avg  { background: var(--amber-light); color: var(--amber); }
+.pyq-score-bar.low  { background: var(--purple-light); color: var(--purple); }
+
+/* ─── Pomodoro Timer ─────────────────────────────────────────── */
+.pomo-widget {
+  display: flex; align-items: center; gap: 8px;
+  padding: .4rem .75rem; margin: .5rem 0;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 6px; font-size: 12px;
+}
+.pomo-time { font-family: 'JetBrains Mono',monospace; font-size: 14px; font-weight: 700; color: var(--blue); min-width: 48px; }
+.pomo-btn  { font-size: 11px; padding: 3px 10px; border: 1px solid var(--border); border-radius: 4px; background: none; cursor: pointer; color: var(--text2); transition: all .15s; }
+.pomo-btn:hover { border-color: var(--blue); color: var(--blue); }
+.pomo-count { font-size: 11px; color: var(--text3); margin-left: auto; }
+
+/* ─── Bookmark Button ────────────────────────────────────────── */
+.bm-star {
+  background: none; border: none; cursor: pointer;
+  font-size: 15px; color: var(--text3); padding: 0 2px;
+  transition: color .15s; line-height: 1;
+}
+.bm-star:hover, .bm-star.bm-active { color: #f9ca24; }
