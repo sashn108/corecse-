@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CO & Architecture — CoreCSE</title>
@@ -123,6 +123,107 @@ nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color
 .sub-nav{display:flex;justify-content:space-between;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);grid-column:1/-1;}
 .sub-nav a{font-family:var(--mono);font-size:.76rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:.4rem .85rem;border-radius:4px;transition:all .2s;}.sub-nav a:hover{border-color:var(--accent);color:var(--accent);}
 @media(max-width:768px){.main{grid-template-columns:1fr}.sidebar{position:static;max-height:none}.hero{flex-direction:column;gap:.8rem;padding:1.5rem 1rem 1rem}nav{padding:.7rem 1rem}.nav-links{gap:.8rem}.main{padding:0 1rem 3rem}.wbar-wrap{padding:0 1rem}}
+
+/* ─── LIGHT THEME ─────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:#ffffff;
+  --surface:#f7f7f5;
+  --surface2:#f0f0ee;
+  --border:#e5e5e5;
+  --accent:#185FA5;
+  --green:#3B6D11;
+  --yellow:#854F0B;
+  --red:#c0392b;
+  --text:#1a1a1a;
+  --muted:#666;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Syne',sans-serif;
+}
+[data-theme="light"] body { background:#fff; color:#1a1a1a; }
+[data-theme="light"] nav { background:rgba(255,255,255,0.96); border-bottom:1px solid #e5e5e5; }
+[data-theme="light"] .topic-card { background:#fff; border-color:#e5e5e5; }
+[data-theme="light"] .topic-card.open { border-color:#185FA5; }
+[data-theme="light"] .topic-hdr:hover { background:#f7f7f5; }
+[data-theme="light"] .tabs { background:#f0f0ee; }
+[data-theme="light"] .tab-pane { background:#fff; }
+[data-theme="light"] .wiki-content h4 { color:#185FA5; border-bottom-color:#e5e5e5; }
+[data-theme="light"] .wiki-content p { color:#555; }
+[data-theme="light"] .wiki-content ul li { color:#1a1a1a; }
+[data-theme="light"] .wiki-content ul li::before { color:#185FA5; }
+[data-theme="light"] .wiki-content code { background:rgba(24,95,165,.1); color:#0F6E56; }
+[data-theme="light"] .wiki-content strong { color:#1a1a1a; }
+[data-theme="light"] .wiki-src { border-top-color:#e5e5e5; }
+[data-theme="light"] .pyq-card { background:#fff; border-color:#e5e5e5; }
+[data-theme="light"] .q-text { color:#1a1a1a; }
+[data-theme="light"] .opt { color:#555; }
+[data-theme="light"] .opt:hover { color:#1a1a1a; background:rgba(24,95,165,.07); }
+[data-theme="light"] .opt.correct,.opt.correct-reveal { color:#3B6D11; font-weight:600; }
+[data-theme="light"] .opt.wrong,.opt.wrong-reveal { color:#c0392b; }
+[data-theme="light"] .opt.revealed { color:#3B6D11; font-weight:600; }
+[data-theme="light"] .explanation { background:rgba(61,109,17,.04); border-top-color:#e5e5e5; color:#555; }
+[data-theme="light"] .explanation strong { color:#3B6D11; }
+[data-theme="light"] .ans-btn { color:#185FA5; border-color:rgba(24,95,165,.3); }
+[data-theme="light"] .ans-btn:hover { background:rgba(24,95,165,.08); }
+[data-theme="light"] .yr { background:rgba(24,95,165,.1); color:#185FA5; }
+[data-theme="light"] .mk { background:rgba(61,109,17,.1); color:#3B6D11; }
+[data-theme="light"] .card { background:#f7f7f5; border-color:#e5e5e5; }
+[data-theme="light"] .card h3 { color:#999; }
+[data-theme="light"] .predict-prob { color:#3B6D11; }
+[data-theme="light"] .formula { background:#f0f0ee; border-color:#e5e5e5; color:#0F6E56; }
+[data-theme="light"] .chip { border-color:#e5e5e5; color:#999; }
+[data-theme="light"] .chip.hi { background:rgba(24,95,165,.08); border-color:#185FA5; color:#185FA5; }
+[data-theme="light"] .q-link { color:#555; border-bottom-color:#e5e5e5; }
+[data-theme="light"] .q-link:hover { color:#185FA5; }
+[data-theme="light"] .nav-back { border-color:#e5e5e5; }
+[data-theme="light"] .nav-back:hover { color:#185FA5 !important; border-color:#185FA5; }
+[data-theme="light"] .wbar { background:#e5e5e5; }
+[data-theme="light"] .wbar-fill { background:linear-gradient(90deg,#185FA5,#0F6E56); }
+[data-theme="light"] .prob-bar { background:#e5e5e5; }
+[data-theme="light"] .prob-fill { background:linear-gradient(90deg,#185FA5,#3B6D11); }
+[data-theme="light"] .hero-icon { filter:none; }
+[data-theme="light"] .subject-tag { color:#185FA5; }
+[data-theme="light"] .hero p { color:#555; }
+[data-theme="light"] .stat-val { color:#185FA5; }
+[data-theme="light"] .stat-label { color:#999; }
+[data-theme="light"] .sec-title { color:#999; }
+[data-theme="light"] .topic-name { color:#1a1a1a; }
+[data-theme="light"] .topic-sub { color:#555; }
+[data-theme="light"] .badge-hot { background:rgba(192,57,43,.1); color:#c0392b; border-color:rgba(192,57,43,.25); }
+[data-theme="light"] .badge-warm { background:rgba(133,79,11,.1); color:#854F0B; border-color:rgba(133,79,11,.25); }
+[data-theme="light"] .badge-core { background:rgba(61,109,17,.1); color:#3B6D11; border-color:rgba(61,109,17,.25); }
+[data-theme="light"] .pyq-pill { color:#999; }
+[data-theme="light"] .chevron { color:#999; }
+[data-theme="light"] .src-btn { border-color:#e5e5e5; color:#555; }
+[data-theme="light"] .src-btn:hover { border-color:#185FA5; color:#185FA5; }
+[data-theme="light"] .sub-nav a { color:#555; border-color:#e5e5e5; }
+[data-theme="light"] .sub-nav a:hover { border-color:#185FA5; color:#185FA5; }
+[data-theme="light"] .go-link-box { background:rgba(255,159,67,.04); border-color:rgba(255,159,67,.2); }
+[data-theme="light"] .go-link-box span { color:#555; }
+[data-theme="light"] .sidebar::-webkit-scrollbar-thumb { background:#e5e5e5; }
+/* Pomodoro light */
+[data-theme="light"] .pomo-widget { background:#f7f7f5; border-color:#e5e5e5; }
+[data-theme="light"] .pomo-time { color:#185FA5; }
+[data-theme="light"] .pomo-btn { border-color:#e5e5e5; color:#555; }
+[data-theme="light"] .pomo-btn:hover { border-color:#185FA5; color:#185FA5; }
+[data-theme="light"] .pomo-count { color:#999; }
+/* Bookmark star light */
+[data-theme="light"] .bm-star { color:#999; }
+[data-theme="light"] .bm-star:hover, [data-theme="light"] .bm-star.bm-active { color:#f9ca24; }
+/* Score bar light */
+[data-theme="light"] .pyq-score-bar.good { background:rgba(61,109,17,.1); color:#3B6D11; }
+[data-theme="light"] .pyq-score-bar.avg  { background:rgba(133,79,11,.1); color:#854F0B; }
+[data-theme="light"] .pyq-score-bar.low  { background:rgba(83,74,183,.1); color:#534AB7; }
+/* Search overlay light */
+[data-theme="light"] #search-overlay > div { background:#fff; border-color:#e5e5e5; }
+[data-theme="light"] #search-input { color:#1a1a1a; }
+[data-theme="light"] .sr-item:hover { background:#f7f7f5; }
+[data-theme="light"] .sr-subject { color:#999; }
+[data-theme="light"] .sr-topic { color:#1a1a1a; }
+[data-theme="light"] .sr-topic mark { background:rgba(24,95,165,.12); color:#185FA5; }
+[data-theme="light"] #bookmark-drawer { background:#fff; border-left-color:#e5e5e5; }
+[data-theme="light"] #cc-nav-tools button { border-color:#e5e5e5; color:#555; }
+[data-theme="light"] #theme-toggle { border-color:#e5e5e5; color:#555; }
+
 </style>
 <script src="../corecse-utils.js"></script>
 </head>
@@ -195,7 +296,6 @@ nav a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color
         <a class="q-link" href="https://gateoverflow.in/questions?tag=co-and-architecture" target="_blank"><span>🔶</span> GATEOverflow PYQs</a>
         <a class="q-link" href="https://github.com/GATEOverflow/GO-PDFs/blob/main/co-and-architecture.pdf" target="_blank"><span>📄</span> GO-PDFs (All PYQs PDF)</a>
         <a class="q-link" href="https://www.geeksforgeeks.org/gate-cs-notes-gq/" target="_blank"><span>🟢</span> GFG GATE Notes</a>
-        <a class="q-link" href="https://www.studytonight.com/computer-science/" target="_blank"><span>📘</span> StudyTonight Notes</a>
         <a class="q-link" href="https://gate.nptel.ac.in/" target="_blank"><span>🎓</span> NPTEL GATE Prep</a>
         <a class="q-link" href="../mindmaps/coa.html"><span>🗺️</span> Quick Revision Mind Map</a>
       </div>
@@ -605,6 +705,8 @@ async function loadNotes(i) {
   const pane = document.getElementById('notes-'+i);
   if (pane.dataset.loaded) return;
   pane.dataset.loaded = '1';
+  const pomoDiv = document.getElementById('pomo-'+i);
+  const pomoHtml = pomoDiv ? pomoDiv.outerHTML : '';
 
   const t = TOPICS[i];
   const wikiPage = (WIKI[SLUG] || {})[t.name];
@@ -642,7 +744,7 @@ async function loadNotes(i) {
       <a class="src-btn go" href="https://gateoverflow.in/questions?tag=${(GO_TAGS[SLUG]||{})[t.name] || t.name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}" target="_blank">🔶 GATEOverflow</a>
     </div>`;
 
-  pane.innerHTML = (wikiHtml || '') + gateNotes + srcRow;
+  pane.innerHTML = pomoHtml + (wikiHtml || '') + gateNotes + srcRow;
 }
 
 function getGateNotes(slug, topic) {
