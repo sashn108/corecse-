@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Notes — CoreCSE GATE 2027</title>
@@ -14,11 +14,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 
 .nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
 .nav-r a:hover{border-color:var(--acc);color:var(--acc);}
 .save-status{font-family:var(--mono);font-size:.7rem;color:var(--m);padding:.3rem .6rem;}
-
-/* LAYOUT */
 .app{display:flex;flex:1;overflow:hidden;height:calc(100vh - 54px);}
-
-/* SIDEBAR */
 .sidebar{width:260px;background:var(--s);border-right:1px solid var(--b);display:flex;flex-direction:column;flex-shrink:0;transition:width .3s;}
 .sidebar.collapsed{width:0;overflow:hidden;}
 .sb-header{padding:.9rem 1rem;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
@@ -45,22 +41,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 
 .tag-chips{display:flex;flex-wrap:wrap;gap:.3rem;}
 .tag-chip{font-family:var(--mono);font-size:.62rem;padding:.18rem .45rem;border-radius:3px;border:1px solid var(--b);color:var(--m);cursor:pointer;transition:all .15s;}
 .tag-chip:hover,.tag-chip.active{border-color:var(--acc);color:var(--acc);background:rgba(124,106,255,.08);}
-
-/* EDITOR */
 .editor-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .toolbar{padding:.5rem 1.5rem;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;background:var(--s);}
 .tb-btn{font-family:var(--mono);font-size:.72rem;padding:.3rem .55rem;border-radius:4px;border:1px solid transparent;color:var(--m);background:none;cursor:pointer;transition:all .15s;min-width:28px;text-align:center;}
 .tb-btn:hover{background:var(--s2);color:var(--t);border-color:var(--b);}
-.tb-btn.active{background:rgba(124,106,255,.15);color:var(--acc);border-color:rgba(124,106,255,.3);}
 .tb-sep{width:1px;height:20px;background:var(--b);margin:0 .2rem;flex-shrink:0;}
 .tb-color{width:20px;height:20px;border-radius:4px;border:1px solid var(--b);cursor:pointer;transition:all .15s;}
 .tb-color:hover{transform:scale(1.1);}
 .tb-select{font-family:var(--mono);font-size:.72rem;background:var(--s2);border:1px solid var(--b);color:var(--t);padding:.28rem .5rem;border-radius:4px;outline:none;cursor:pointer;}
-
 .note-editor{flex:1;overflow-y:auto;padding:0;}
 .note-editor::-webkit-scrollbar{width:4px;}.note-editor::-webkit-scrollbar-thumb{background:var(--b);}
-
-/* TITLE */
 .note-title-input{width:100%;background:none;border:none;outline:none;color:var(--t);font-family:var(--sans);font-size:2rem;font-weight:800;padding:2rem 2.5rem .5rem;line-height:1.2;}
 .note-title-input::placeholder{color:var(--b);}
 .note-tags-input{display:flex;align-items:center;gap:.5rem;padding:.3rem 2.5rem .8rem;border-bottom:1px solid var(--b);flex-wrap:wrap;}
@@ -68,12 +58,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 
 .ntag:hover{background:rgba(255,106,106,.1);border-color:rgba(255,106,106,.3);color:var(--r);}
 .add-tag-btn{font-family:var(--mono);font-size:.68rem;color:var(--m);background:none;border:1px dashed var(--b);padding:.18rem .45rem;border-radius:3px;cursor:pointer;transition:all .2s;}
 .add-tag-btn:hover{border-color:var(--acc);color:var(--acc);}
-
-/* CONTENT EDITABLE */
 .content-area{padding:1.2rem 2.5rem 4rem;min-height:400px;outline:none;font-size:.95rem;line-height:1.8;color:var(--t);}
 .content-area:empty::before{content:'Start writing… Press / for commands';color:var(--b);pointer-events:none;}
-.content-area h1{font-size:1.8rem;font-weight:800;margin:1.2rem 0 .5rem;color:var(--t);}
-.content-area h2{font-size:1.3rem;font-weight:700;margin:1rem 0 .4rem;color:var(--t);}
+.content-area h1{font-size:1.8rem;font-weight:800;margin:1.2rem 0 .5rem;}
+.content-area h2{font-size:1.3rem;font-weight:700;margin:1rem 0 .4rem;}
 .content-area h3{font-size:1.1rem;font-weight:700;margin:.8rem 0 .3rem;color:var(--acc);}
 .content-area p{margin:.3rem 0;}
 .content-area ul,.content-area ol{padding-left:1.5rem;margin:.3rem 0;}
@@ -92,32 +80,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 
 .callout{background:rgba(124,106,255,.08);border:1px solid rgba(124,106,255,.2);border-radius:8px;padding:.75rem 1rem;margin:.5rem 0;display:flex;gap:.6rem;align-items:flex-start;}
 .callout-icon{font-size:1rem;flex-shrink:0;}
 .callout-text{font-size:.88rem;line-height:1.6;}
-
-/* SLASH MENU */
 .slash-menu{position:fixed;background:var(--s);border:1px solid var(--b);border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:300;min-width:200px;overflow:hidden;display:none;}
 .slash-item{padding:.6rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.7rem;font-size:.83rem;transition:background .15s;}
 .slash-item:hover,.slash-item.selected{background:rgba(124,106,255,.12);}
 .slash-icon{font-size:1rem;width:20px;text-align:center;}
 .slash-label{font-weight:600;}
 .slash-desc{font-size:.72rem;color:var(--m);}
-
-/* EMPTY STATE */
 .empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;color:var(--m);padding:2rem;text-align:center;}
 .empty-state h2{font-size:1.2rem;color:var(--t);}
 .empty-state p{font-size:.85rem;max-width:300px;line-height:1.6;}
-
-/* TOGGLE SIDEBAR BTN */
 .toggle-sb{font-family:var(--mono);font-size:.7rem;color:var(--m);background:none;border:1px solid var(--b);padding:.3rem .5rem;border-radius:4px;cursor:pointer;transition:all .2s;}
 .toggle-sb:hover{border-color:var(--acc);color:var(--acc);}
-
-/* IMAGE UPLOAD AREA */
 .img-placeholder{background:var(--s2);border:2px dashed var(--b);border-radius:8px;padding:2rem;text-align:center;cursor:pointer;margin:.5rem 0;transition:border .2s;}
 .img-placeholder:hover{border-color:var(--acc);}
 .img-placeholder p{color:var(--m);font-size:.85rem;}
-
-/* WORD COUNT */
 .wc-bar{padding:.4rem 2.5rem;font-family:var(--mono);font-size:.65rem;color:var(--m);border-top:1px solid var(--b);background:var(--s);display:flex;gap:1.5rem;}
-
 @media(max-width:768px){
   .sidebar{position:absolute;z-index:150;height:calc(100vh - 54px);}
   .toolbar{padding:.4rem .8rem;}
@@ -128,12 +105,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 
 }
 </style>
 <script src="../corecse-utils.js"></script>
-<script>
-// Update title year dynamically (can't use span inside <title>)
-document.addEventListener('DOMContentLoaded', function() {
-  document.title = document.title.replace(/\d{4}/, getGateYear());
-});
-</script>
 </head>
 <body>
 <nav>
@@ -149,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </nav>
 
 <div class="app">
-  <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div class="sb-header">
       <span class="sb-title">My Notes</span>
@@ -165,9 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- EDITOR -->
   <div class="editor-wrap" id="editorWrap">
-    <!-- EMPTY STATE -->
     <div class="empty-state" id="emptyState">
       <div style="font-size:3rem">📝</div>
       <h2>Your GATE Notes</h2>
@@ -175,8 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <button class="sb-new" style="font-size:.82rem;padding:.5rem 1.2rem" onclick="newNote()">+ Create First Note</button>
     </div>
 
-    <!-- ACTIVE EDITOR -->
-    <div id="activeEditor" style="display:none;flex:1;flex-direction:column;overflow:hidden;display:none;">
+    <div id="activeEditor" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
       <div class="toolbar" id="toolbar">
         <select class="tb-select" onchange="execCmd('formatBlock',this.value);this.value='p'" title="Block type">
           <option value="p">Text</option>
@@ -187,9 +154,9 @@ document.addEventListener('DOMContentLoaded', function() {
           <option value="blockquote">Quote</option>
         </select>
         <div class="tb-sep"></div>
-        <button class="tb-btn" onclick="execCmd('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
-        <button class="tb-btn" onclick="execCmd('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
-        <button class="tb-btn" onclick="execCmd('underline')" title="Underline (Ctrl+U)"><u>U</u></button>
+        <button class="tb-btn" onclick="execCmd('bold')" title="Bold"><b>B</b></button>
+        <button class="tb-btn" onclick="execCmd('italic')" title="Italic"><i>I</i></button>
+        <button class="tb-btn" onclick="execCmd('underline')" title="Underline"><u>U</u></button>
         <button class="tb-btn" onclick="execCmd('strikeThrough')" title="Strikethrough"><s>S</s></button>
         <button class="tb-btn" onclick="wrapSelection('mark')" title="Highlight">🖊</button>
         <div class="tb-sep"></div>
@@ -222,9 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       <div style="flex:1;overflow-y:auto;" id="scrollArea">
         <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Untitled Note" oninput="saveCurrent()">
-        <div class="note-tags-input" id="noteTagsWrap">
-          <!-- tags rendered here -->
-        </div>
+        <div class="note-tags-input" id="noteTagsWrap"></div>
         <div class="content-area" id="contentArea" contenteditable="true" spellcheck="true"></div>
       </div>
       <div class="wc-bar" id="wcBar">
@@ -236,7 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 </div>
 
-<!-- SLASH MENU -->
 <div class="slash-menu" id="slashMenu">
   <div class="slash-item" onclick="insertSlashBlock('h1')"><span class="slash-icon">H1</span><div><div class="slash-label">Heading 1</div><div class="slash-desc">Large heading</div></div></div>
   <div class="slash-item" onclick="insertSlashBlock('h2')"><span class="slash-icon">H2</span><div><div class="slash-label">Heading 2</div><div class="slash-desc">Medium heading</div></div></div>
@@ -245,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="slash-item" onclick="insertSlashBlock('ol')"><span class="slash-icon">1.</span><div><div class="slash-label">Numbered List</div><div class="slash-desc">Ordered list</div></div></div>
   <div class="slash-item" onclick="insertSlashBlock('todo')"><span class="slash-icon">☑</span><div><div class="slash-label">Todo / Checklist</div><div class="slash-desc">Task list</div></div></div>
   <div class="slash-item" onclick="insertSlashBlock('code')"><span class="slash-icon">&lt;/&gt;</span><div><div class="slash-label">Code Block</div><div class="slash-desc">Monospace code</div></div></div>
-  <div class="slash-item" onclick="insertSlashBlock('quote')"><span class="slash-icon">"</span><div><div class="slash-label">Quote</div><div class="slash-desc">Blockquote</div></div></div>
+  <div class="slash-item" onclick="insertSlashBlock('quote')"><span class="slash-icon">&quot;</span><div><div class="slash-label">Quote</div><div class="slash-desc">Blockquote</div></div></div>
   <div class="slash-item" onclick="insertSlashBlock('callout')"><span class="slash-icon">💡</span><div><div class="slash-label">Callout</div><div class="slash-desc">Highlighted note</div></div></div>
   <div class="slash-item" onclick="insertSlashBlock('table')"><span class="slash-icon">⊞</span><div><div class="slash-label">Table</div><div class="slash-desc">3×3 table</div></div></div>
   <div class="slash-item" onclick="insertSlashBlock('image')"><span class="slash-icon">🖼</span><div><div class="slash-label">Image</div><div class="slash-desc">Embed by URL</div></div></div>
@@ -474,18 +438,18 @@ function insertLink() {
 
 function exportNote() {
   const n = notes.find(x => x.id === currentId); if (!n) return;
-  const html = [
-    '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + escHtml(n.title) + '<\/title>',
+  const parts = [
+    '<!DOCTYPE html><html><head><meta charset=\'UTF-8\'><title>' + escHtml(n.title) + '<\/title>',
     '<style>body{font-family:Georgia,serif;max-width:800px;margin:2rem auto;padding:0 1rem;line-height:1.8;color:#222}',
     'h1{font-size:2rem}h2{font-size:1.4rem}h3{color:#555}',
     'pre{background:#f5f5f5;padding:1rem;border-radius:6px;overflow-x:auto}',
     'code{font-family:monospace;background:#f0f0f0;padding:.1rem .3rem;border-radius:3px}',
     'blockquote{border-left:3px solid #999;padding:.5rem 1rem;color:#555;margin:.5rem 0}',
     'table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:.5rem .8rem}th{background:#f5f5f5}',
-    'img{max-width:100%;border-radius:6px}<\/style>',
-    '<\/head>',
+    'img{max-width:100%;border-radius:6px}<\/style><\/head>',
     '<body><h1>' + escHtml(n.title) + '<\/h1>' + n.content + '<\/body><\/html>'
-  ].join('\n');
+  ];
+  const html = parts.join('\n');
   const blob = new Blob([html], {type:'text/html'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
