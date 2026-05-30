@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weak Topic Tracker — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;align-items:center;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
+.page-hd{margin-bottom:2rem;}
+.page-hd h1{font-size:1.8rem;font-weight:800;margin-bottom:.3rem;}
+.page-hd p{color:var(--m);font-size:.87rem;}
+.summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:2rem;}
+.sum-box{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:1rem;text-align:center;}
+.sum-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;margin-bottom:.2rem;}
+.sum-lbl{font-size:.7rem;color:var(--m);}
+.section-hd{font-family:var(--mono);font-size:.68rem;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.85rem;padding-bottom:.4rem;border-bottom:1px solid var(--b);}
+.topic-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:2rem;}
+.topic-row{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:.8rem 1rem;display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:1rem;transition:border-color .15s;}
+.topic-row:hover{border-color:var(--b);}
+.topic-row.weak{border-left:3px solid var(--r);}
+.topic-row.mid{border-left:3px solid var(--y);}
+.topic-row.good{border-left:3px solid var(--g);}
+.tr-name{font-size:.87rem;font-weight:500;}
+.tr-sub{font-family:var(--mono);font-size:.65rem;color:var(--m);margin-top:.1rem;}
+.tr-bar-wrap{width:120px;height:6px;background:var(--s2);border-radius:3px;overflow:hidden;}
+.tr-bar{height:100%;border-radius:3px;transition:width .4s;}
+.bar-bad{background:var(--r);}
+.bar-mid{background:var(--y);}
+.bar-good{background:var(--g);}
+.tr-pct{font-family:var(--mono);font-size:.8rem;font-weight:700;min-width:40px;text-align:right;}
+.tr-action{font-family:var(--mono);font-size:.7rem;padding:.3rem .65rem;border-radius:5px;border:1px solid var(--b);background:none;color:var(--m);cursor:pointer;transition:all .15s;text-decoration:none;display:inline-block;}
+.tr-action:hover{border-color:var(--acc);color:var(--acc);}
+.empty-state{text-align:center;padding:3rem;color:var(--m);}
+.empty-state h3{font-size:1rem;color:var(--t);margin-bottom:.5rem;}
+.empty-state p{font-size:.83rem;line-height:1.6;margin-bottom:1.2rem;}
+.empty-cta{display:inline-block;font-family:var(--mono);font-size:.8rem;padding:.6rem 1.4rem;background:var(--acc);color:#fff;border-radius:7px;text-decoration:none;transition:opacity .2s;}
+.empty-cta:hover{opacity:.85;}
+.pro-banner{background:linear-gradient(135deg,rgba(124,106,255,.1),rgba(79,255,176,.05));border:1px solid rgba(124,106,255,.25);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.pro-banner h3{font-size:.95rem;font-weight:700;margin-bottom:.25rem;}
+.pro-banner p{font-size:.8rem;color:var(--m);}
+.pro-banner a{font-family:var(--mono);font-size:.78rem;background:var(--acc);color:#fff;text-decoration:none;padding:.55rem 1.1rem;border-radius:7px;white-space:nowrap;transition:opacity .2s;}
+.pro-banner a:hover{opacity:.85;}
+.filter-row{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.filter-chip{font-family:var(--mono);font-size:.7rem;padding:.28rem .65rem;border-radius:4px;border:1px solid var(--b);color:var(--m);cursor:pointer;transition:all .15s;background:none;}
+.filter-chip:hover,.filter-chip.active{border-color:var(--acc);color:var(--acc);background:rgba(124,106,255,.07);}
+@media(max-width:600px){.summary-row{grid-template-columns:repeat(2,1fr)}.topic-row{grid-template-columns:1fr auto}}
+</style>
+<script src="../corecse-utils.js"></script>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="mocktest.html?mode=weak">🔥 Drill Weak Topics</a>
+    <a href="mocktest.html">📝 Mock Test</a>
+    <a href="../index.html">← Home</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-hd">
+    <h1>🔥 Weak Topic Tracker</h1>
+    <p>Topics where your PYQ score is below 60% — sorted by weakest first. Practice these to move the needle.</p>
+  </div>
+
+  <div id="proBanner" style="display:none" class="pro-banner">
+    <div>
+      <h3>⚡ Unlock Weak Topic Drill Mode</h3>
+      <p>Pro users get adaptive mock tests built automatically from their weakest topics.</p>
+    </div>
+    <a href="pricing.html">Upgrade to Pro →</a>
+  </div>
+
+  <div class="summary-row" id="summaryRow">
+    <div class="sum-box"><div class="sum-val" id="s-topics" style="color:var(--acc)">—</div><div class="sum-lbl">Topics attempted</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-weak" style="color:var(--r)">—</div><div class="sum-lbl">Weak (below 60%)</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-avg" style="color:var(--y)">—</div><div class="sum-lbl">Avg accuracy</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-strong" style="color:var(--g)">—</div><div class="sum-lbl">Strong (above 80%)</div></div>
+  </div>
+
+  <div class="filter-row" id="filterRow">
+    <button class="filter-chip active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-chip" onclick="setFilter('weak',this)">🔴 Weak (&lt;60%)</button>
+    <button class="filter-chip" onclick="setFilter('mid',this)">🟡 Improving (60–79%)</button>
+    <button class="filter-chip" onclick="setFilter('good',this)">🟢 Strong (≥80%)</button>
+  </div>
+
+  <div class="section-hd">Topic Performance</div>
+  <div class="topic-list" id="topicList"></div>
+
+  <div id="emptyState" class="empty-state" style="display:none">
+    <div style="font-size:2.5rem;margin-bottom:.75rem">📊</div>
+    <h3>No data yet</h3>
+    <p>Attempt PYQs in any subject page or take a mock test.<br>Your topic-wise accuracy will appear here automatically.</p>
+    <a class="empty-cta" href="mocktest.html">Take a Mock Test →</a>
+  </div>
+</div>
+
+<script>
+let currentFilter = 'all';
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderTracker();
+}
+
+function renderTracker() {
+  const weak = getWeakTopics();
+  const entries = Object.entries(weak).map(([key, v]) => ({
+    key,
+    subject: key.split('-')[0] || '?',
+    topic: key.split('-').slice(1).join('-') || key,
+    pct: v.pct || 0,
+    correct: v.correct || 0,
+    total: v.total || 0,
+    attempts: v.attempts || 0,
+  })).sort((a, b) => a.pct - b.pct);
+
+  // Summary stats
+  const total = entries.length;
+  const weakCount = entries.filter(e => e.pct < 60).length;
+  const avg = total > 0 ? Math.round(entries.reduce((s,e) => s + e.pct, 0) / total) : 0;
+  const strongCount = entries.filter(e => e.pct >= 80).length;
+
+  document.getElementById('s-topics').textContent = total || '—';
+  document.getElementById('s-weak').textContent = weakCount || '—';
+  document.getElementById('s-avg').textContent = total > 0 ? avg + '%' : '—';
+  document.getElementById('s-strong').textContent = strongCount || '—';
+
+  const list = document.getElementById('topicList');
+  const empty = document.getElementById('emptyState');
+
+  if (!total) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  const filtered = entries.filter(e => {
+    if (currentFilter === 'weak') return e.pct < 60;
+    if (currentFilter === 'mid') return e.pct >= 60 && e.pct < 80;
+    if (currentFilter === 'good') return e.pct >= 80;
+    return true;
+  });
+
+  if (!filtered.length) {
+    list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--m);font-size:.85rem">No topics in this category yet.</div>`;
+    return;
+  }
+
+  const subjectMap = { OS:'os', DS:'ds', ALGO:'algo', DBMS:'dbms', CN:'cn', TOC:'toc', DL:'dl', COA:'coa', CD:'cd', DM:'dm' };
+
+  list.innerHTML = filtered.map(e => {
+    const cls = e.pct < 60 ? 'weak' : e.pct < 80 ? 'mid' : 'good';
+    const barCls = e.pct < 60 ? 'bar-bad' : e.pct < 80 ? 'bar-mid' : 'bar-good';
+    const color = e.pct < 60 ? 'var(--r)' : e.pct < 80 ? 'var(--y)' : 'var(--g)';
+    const subSlug = subjectMap[e.subject] || 'os';
+    return `<div class="topic-row ${cls}">
+      <div>
+        <div class="tr-name">${e.topic}</div>
+        <div class="tr-sub">${e.subject} · ${e.correct}/${e.total} correct · ${e.attempts} attempt${e.attempts!==1?'s':''}</div>
+      </div>
+      <div class="tr-bar-wrap"><div class="tr-bar ${barCls}" style="width:${e.pct}%"></div></div>
+      <div class="tr-pct" style="color:${color}">${e.pct}%</div>
+      <a class="tr-action" href="../subjects/${subSlug}.html">Study →</a>
+    </div>`;
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  syncThemeIcon();
+  updateGateYears();
+  renderProNavBadge();
+  if (!isPro()) document.getElementById('proBanner').style.display = 'flex';
+  renderTracker();
+});
+</script>
+</body>
+</html>

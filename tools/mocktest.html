@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Test — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.5rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;align-items:center;font-family:var(--mono);font-size:.75rem;color:var(--m);}
+.timer-display{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--y);padding:.3rem .75rem;background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2);border-radius:6px;}
+.timer-display.danger{color:var(--r);background:rgba(255,106,106,.08);border-color:rgba(255,106,106,.2);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* SETUP SCREEN */
+#setupScreen{max-width:640px;margin:4rem auto;padding:0 1.5rem;text-align:center;}
+.setup-tag{font-family:var(--mono);font-size:.7rem;color:var(--acc);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;}
+#setupScreen h1{font-size:2rem;font-weight:800;margin-bottom:.6rem;}
+#setupScreen p{color:var(--m);font-size:.9rem;line-height:1.6;margin-bottom:2rem;}
+.setup-options{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2rem;text-align:left;}
+.option-card{background:var(--s);border:2px solid var(--b);border-radius:12px;padding:1.2rem;cursor:pointer;transition:all .2s;}
+.option-card:hover,.option-card.selected{border-color:var(--acc);background:rgba(124,106,255,.06);}
+.option-card h3{font-size:.95rem;font-weight:700;margin-bottom:.3rem;}
+.option-card p{font-size:.78rem;color:var(--m);line-height:1.4;}
+.option-card .tag{font-family:var(--mono);font-size:.62rem;color:var(--acc);margin-top:.5rem;}
+.start-btn{background:var(--acc);color:#fff;border:none;padding:.85rem 2.5rem;border-radius:10px;font-family:var(--mono);font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;width:100%;}
+.start-btn:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,106,255,.4);}
+.pro-lock{background:rgba(124,106,255,.06);border:1px solid rgba(124,106,255,.2);border-radius:8px;padding:.75rem 1rem;font-size:.82rem;color:var(--m);margin-bottom:1.5rem;}
+.pro-lock a{color:var(--acc);text-decoration:none;}
+
+/* TEST SCREEN */
+#testScreen{display:none;max-width:1100px;margin:0 auto;padding:1rem 1.5rem;}
+.test-layout{display:grid;grid-template-columns:1fr 260px;gap:1.25rem;align-items:start;}
+.question-panel{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:1.5rem;}
+.q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.q-num{font-family:var(--mono);font-size:.72rem;color:var(--m);}
+.q-marks{font-family:var(--mono);font-size:.72rem;}
+.q-marks.pos{color:var(--g);}
+.q-marks.neg{color:var(--r);}
+.q-subject{font-family:var(--mono);font-size:.65rem;background:rgba(124,106,255,.1);color:var(--acc);padding:.15rem .5rem;border-radius:3px;}
+.q-text{font-size:.95rem;line-height:1.75;margin-bottom:1.25rem;color:var(--t);}
+.q-text code{font-family:var(--mono);background:var(--s2);padding:.15rem .4rem;border-radius:3px;color:var(--g);font-size:.85em;}
+.opts{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem;}
+.opt-btn{text-align:left;padding:.7rem 1rem;border-radius:8px;border:1px solid var(--b);background:var(--s2);color:var(--t);font-size:.88rem;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:.75rem;line-height:1.4;}
+.opt-btn:hover:not(:disabled){border-color:var(--acc);background:rgba(124,106,255,.08);}
+.opt-btn.selected{border-color:var(--acc);background:rgba(124,106,255,.12);}
+.opt-btn.correct{border-color:var(--g);background:rgba(79,255,176,.08);color:var(--g);}
+.opt-btn.wrong{border-color:var(--r);background:rgba(255,106,106,.08);color:var(--r);}
+.opt-btn:disabled{cursor:default;}
+.opt-letter{font-family:var(--mono);font-size:.78rem;color:var(--m);flex-shrink:0;width:18px;}
+.opt-btn.selected .opt-letter,.opt-btn.correct .opt-letter{color:inherit;}
+.q-nav{display:flex;gap:.75rem;justify-content:space-between;align-items:center;}
+.nav-btn{font-family:var(--mono);font-size:.78rem;padding:.55rem 1.1rem;border-radius:7px;border:1px solid var(--b);background:none;color:var(--t);cursor:pointer;transition:all .15s;}
+.nav-btn:hover{border-color:var(--acc);color:var(--acc);}
+.nav-btn.primary{background:var(--acc);border-color:var(--acc);color:#fff;}
+.nav-btn.primary:hover{opacity:.85;}
+.mark-btn{font-family:var(--mono);font-size:.72rem;padding:.4rem .8rem;border-radius:6px;border:1px solid rgba(255,209,102,.3);background:none;color:var(--y);cursor:pointer;}
+.mark-btn.marked{background:rgba(255,209,102,.1);}
+
+/* SIDEBAR PANEL */
+.sidebar-panel{position:sticky;top:70px;}
+.score-live{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:1rem;margin-bottom:.75rem;}
+.score-row{display:flex;gap:.5rem;margin-bottom:.5rem;}
+.score-box{flex:1;text-align:center;background:var(--s2);border-radius:6px;padding:.5rem;}
+.score-box .val{font-family:var(--mono);font-size:1.1rem;font-weight:700;}
+.score-box .lbl{font-size:.62rem;color:var(--m);margin-top:.1rem;}
+.val-green{color:var(--g);}
+.val-red{color:var(--r);}
+.val-yellow{color:var(--y);}
+.q-palette{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:1rem;}
+.palette-title{font-family:var(--mono);font-size:.65rem;color:var(--m);margin-bottom:.6rem;letter-spacing:.08em;text-transform:uppercase;}
+.palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:.75rem;}
+.p-btn{width:100%;aspect-ratio:1;border-radius:4px;border:1px solid var(--b);background:var(--s2);font-family:var(--mono);font-size:.72rem;color:var(--m);cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:center;}
+.p-btn:hover{border-color:var(--acc);}
+.p-btn.current{border-color:var(--acc);color:var(--acc);background:rgba(124,106,255,.1);}
+.p-btn.answered{background:var(--g);border-color:var(--g);color:#0a0a0f;}
+.p-btn.marked{background:rgba(255,209,102,.15);border-color:var(--y);color:var(--y);}
+.p-btn.visited{border-color:var(--m);}
+.palette-legend{display:flex;flex-direction:column;gap:.3rem;}
+.leg-item{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:var(--m);}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.submit-btn{width:100%;padding:.7rem;background:var(--acc);border:none;border-radius:8px;font-family:var(--mono);font-size:.82rem;font-weight:700;color:#fff;cursor:pointer;margin-top:.75rem;transition:all .2s;}
+.submit-btn:hover{opacity:.85;}
+
+/* RESULT SCREEN */
+#resultScreen{display:none;max-width:800px;margin:3rem auto;padding:0 1.5rem;}
+.result-hero{text-align:center;margin-bottom:2rem;}
+.result-hero h1{font-size:2.2rem;font-weight:800;margin-bottom:.4rem;}
+.result-hero p{color:var(--m);font-size:.9rem;}
+.result-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:2rem;}
+.rs-box{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:1rem;text-align:center;}
+.rs-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;margin-bottom:.2rem;}
+.rs-lbl{font-size:.72rem;color:var(--m);}
+.rank-estimate{background:linear-gradient(135deg,rgba(124,106,255,.1),rgba(79,255,176,.05));border:1px solid rgba(124,106,255,.3);border-radius:10px;padding:1.25rem;margin-bottom:2rem;text-align:center;}
+.rank-estimate h3{font-size:1rem;font-weight:700;margin-bottom:.3rem;}
+.rank-estimate p{font-size:.82rem;color:var(--m);}
+.weak-topics-result h3{font-size:.95rem;font-weight:700;margin-bottom:.75rem;}
+.wt-item{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
+.wt-name{font-size:.85rem;}
+.wt-score{font-family:var(--mono);font-size:.78rem;}
+.wt-score.bad{color:var(--r);}
+.wt-score.mid{color:var(--y);}
+.result-actions{display:flex;gap:.75rem;margin-top:2rem;}
+.ra-btn{flex:1;padding:.75rem;border-radius:8px;font-family:var(--mono);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;text-decoration:none;border:1px solid var(--b);color:var(--t);background:none;}
+.ra-btn:hover{border-color:var(--acc);color:var(--acc);}
+.ra-btn.primary{background:var(--acc);border-color:var(--acc);color:#fff;}
+.ra-btn.primary:hover{opacity:.85;}
+
+@media(max-width:768px){
+  .test-layout{grid-template-columns:1fr;}
+  .sidebar-panel{position:static;}
+  .result-stats{grid-template-columns:repeat(2,1fr);}
+  .palette-grid{grid-template-columns:repeat(8,1fr);}
+}
+</style>
+<script src="../corecse-utils.js"></script>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <span id="timerDisplay" class="timer-display" style="display:none">3:00:00</span>
+    <a href="pricing.html" style="color:var(--acc);text-decoration:none;font-family:var(--mono);font-size:.72rem;border:1px solid rgba(124,106,255,.3);padding:.3rem .7rem;border-radius:4px;">⚡ Pro</a>
+    <a href="../index.html" style="color:var(--m);text-decoration:none;font-family:var(--mono);font-size:.72rem;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;">← Home</a>
+  </div>
+</nav>
+
+<!-- SETUP SCREEN -->
+<div id="setupScreen">
+  <div class="setup-tag">📝 Mock Test</div>
+  <h1>Simulate GATE CSE</h1>
+  <p>Full 65-question, 3-hour test with negative marking — exactly like the real exam. Track weak topics automatically.</p>
+
+  <div id="proLockMsg" class="pro-lock" style="display:none">
+    🔒 <strong>Mock Test is a Pro feature.</strong> <a href="pricing.html">Upgrade for ₹199/mo</a> to unlock timed full-length tests, weak topic tracking, and more.
+  </div>
+
+  <div id="setupForm">
+    <div class="setup-options">
+      <div class="option-card selected" onclick="selectMode(this,'full')" data-mode="full">
+        <h3>🎯 Full Mock Test</h3>
+        <p>65 questions · 3 hours · All subjects · Negative marking</p>
+        <div class="tag">Recommended</div>
+      </div>
+      <div class="option-card" onclick="selectMode(this,'mini')" data-mode="mini">
+        <h3>⚡ Mini Test</h3>
+        <p>20 questions · 40 mins · Mixed subjects</p>
+        <div class="tag">Quick practice</div>
+      </div>
+      <div class="option-card" onclick="selectMode(this,'subject')" data-mode="subject">
+        <h3>📚 Subject Test</h3>
+        <p>15 questions · 30 mins · Single subject focus</p>
+        <div class="tag">Targeted prep</div>
+      </div>
+      <div class="option-card" onclick="selectMode(this,'weak')" data-mode="weak">
+        <h3>🔥 Weak Topics Drill</h3>
+        <p>From your weak topic list · Adaptive · No time limit</p>
+        <div class="tag">Smart practice</div>
+      </div>
+    </div>
+    <button class="start-btn" onclick="startTest()">Start Test →</button>
+  </div>
+</div>
+
+<!-- TEST SCREEN -->
+<div id="testScreen">
+  <div class="test-layout">
+    <div class="question-panel" id="questionPanel"></div>
+    <div class="sidebar-panel">
+      <div class="score-live">
+        <div class="score-row">
+          <div class="score-box"><div class="val val-green" id="sc-correct">0</div><div class="lbl">Correct (+1)</div></div>
+          <div class="score-box"><div class="val val-red" id="sc-wrong">0</div><div class="lbl">Wrong (−⅓)</div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-box"><div class="val val-yellow" id="sc-score">0.00</div><div class="lbl">Score</div></div>
+          <div class="score-box"><div class="val" id="sc-left">65</div><div class="lbl">Remaining</div></div>
+        </div>
+      </div>
+      <div class="q-palette">
+        <div class="palette-title">Question Map</div>
+        <div class="palette-grid" id="paletteGrid"></div>
+        <div class="palette-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:var(--g)"></div>Answered</div>
+          <div class="leg-item"><div class="leg-dot" style="background:rgba(255,209,102,.3);border:1px solid var(--y)"></div>Marked for review</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--s2);border:1px solid var(--m)"></div>Visited</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--s2)"></div>Not visited</div>
+        </div>
+        <button class="submit-btn" onclick="submitTest()">Submit Test</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen">
+  <div class="result-hero">
+    <div style="font-size:3rem;margin-bottom:.5rem" id="resultEmoji">📊</div>
+    <h1 id="resultTitle">Test Complete</h1>
+    <p id="resultSub"></p>
+  </div>
+  <div class="result-stats">
+    <div class="rs-box"><div class="rs-val" id="r-score" style="color:var(--acc)">0</div><div class="rs-lbl">Score / 100</div></div>
+    <div class="rs-box"><div class="rs-val" id="r-correct" style="color:var(--g)">0</div><div class="rs-lbl">Correct</div></div>
+    <div class="rs-box"><div class="rs-val" id="r-wrong" style="color:var(--r)">0</div><div class="rs-lbl">Wrong</div></div>
+    <div class="rs-box"><div class="rs-val" id="r-acc" style="color:var(--y)">0%</div><div class="rs-lbl">Accuracy</div></div>
+  </div>
+  <div class="rank-estimate" id="rankEstimate"></div>
+  <div class="weak-topics-result" id="weakTopicsResult"></div>
+  <div class="result-actions">
+    <button class="ra-btn" onclick="retakeTest()">↩ Retake</button>
+    <a class="ra-btn" href="pricing.html">⚡ Upgrade Pro</a>
+    <a class="ra-btn primary" href="../index.html">Study Weak Topics →</a>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  // OS — 10 questions
+  {id:1,subject:'OS',topic:'CPU Scheduling',q:'A process arrives at time 0 with burst time 8. Another arrives at time 1 with burst time 4. Using SRTF (preemptive SJF), what is the average waiting time?',opts:['A. 3.0','B. 3.5','C. 4.0','D. 2.5'],ans:'A',marks:1,neg:0.33},
+  {id:2,subject:'OS',topic:'Memory Management',q:'A system uses 32-bit logical address space with 4 KB pages. How many entries are in the page table?',opts:['A. 2^20','B. 2^10','C. 2^12','D. 2^22'],ans:'A',marks:1,neg:0.33},
+  {id:3,subject:'OS',topic:'Deadlocks',q:"In the Banker's algorithm, if a system has 3 processes and 2 resource types with Max matrix [[7,5],[3,2],[9,0]] and Allocation [[0,1],[2,0],[3,0]], which state is safe?",opts:['A. Both <P1,P2,P0> and <P0,P2,P1>','B. Only <P1,P0,P2>','C. No safe sequence','D. Only <P1,P2,P0>'],ans:'D',marks:1,neg:0.33},
+  {id:4,subject:'OS',topic:'Virtual Memory',q:'A page reference string is 1,2,3,4,1,2,5,1,2,3,4,5. With 3 frames and FIFO replacement, how many page faults occur?',opts:['A. 9','B. 10','C. 8','D. 7'],ans:'A',marks:1,neg:0.33},
+  {id:5,subject:'OS',topic:'Process Synchronization',q:'Which of the following is NOT required for deadlock to occur?',opts:['A. Mutual Exclusion','B. Preemption','C. Hold and Wait','D. Circular Wait'],ans:'B',marks:1,neg:0.33},
+  // DS — 10 questions
+  {id:6,subject:'DS',topic:'Binary Search Trees',q:'In a BST, the number of distinct BSTs with n keys follows which sequence?',opts:['A. Fibonacci','B. Catalan numbers','C. Bell numbers','D. Stirling numbers'],ans:'B',marks:1,neg:0.33},
+  {id:7,subject:'DS',topic:'Heaps',q:'Building a min-heap from n random elements using the Floyd algorithm has time complexity:',opts:['A. O(n log n)','B. O(n)','C. O(log n)','D. O(n²)'],ans:'B',marks:1,neg:0.33},
+  {id:8,subject:'DS',topic:'Hashing',q:'In open addressing with linear probing, the worst-case time for a successful search with load factor α is:',opts:['A. O(1/(1-α))','B. O(1/α)','C. O(1/(1-α)²)','D. O(log n)'],ans:'A',marks:1,neg:0.33},
+  {id:9,subject:'DS',topic:'AVL & Balanced Trees',q:'The minimum number of nodes in an AVL tree of height h is given by:',opts:['A. N(h) = N(h-1) + N(h-2) + 1','B. N(h) = 2^h','C. N(h) = h + 1','D. N(h) = N(h-1) + 2'],ans:'A',marks:1,neg:0.33},
+  {id:10,subject:'DS',topic:'Graphs',q:'In a directed graph with V vertices, DFS runs in O(V+E). For a complete directed graph, this simplifies to:',opts:['A. O(V²)','B. O(V log V)','C. O(E)','D. O(V)'],ans:'A',marks:1,neg:0.33},
+  // ALGO — 8 questions
+  {id:11,subject:'ALGO',topic:'Dynamic Programming',q:'The time complexity of the Matrix Chain Multiplication problem using DP is:',opts:['A. O(n³)','B. O(n²)','C. O(2ⁿ)','D. O(n log n)'],ans:'A',marks:1,neg:0.33},
+  {id:12,subject:'ALGO',topic:'Greedy Algorithms',q:'Huffman coding produces an optimal prefix-free code. The time complexity for n characters is:',opts:['A. O(n)','B. O(n log n)','C. O(n²)','D. O(log n)'],ans:'B',marks:1,neg:0.33},
+  {id:13,subject:'ALGO',topic:'Graph Algorithms',q:"Dijkstra's algorithm with a binary min-heap and adjacency list representation has time complexity:",opts:['A. O((V+E) log V)','B. O(V²)','C. O(E log V)','D. O(VE)'],ans:'A',marks:1,neg:0.33},
+  {id:14,subject:'ALGO',topic:'Asymptotic Analysis',q:'T(n) = 2T(n/2) + n log n. By the Master Theorem, T(n) is:',opts:['A. Θ(n log n)','B. Θ(n log² n)','C. Θ(n²)','D. Θ(n)'],ans:'B',marks:1,neg:0.33},
+  {id:15,subject:'ALGO',topic:'Sorting Algorithms',q:'Which sorting algorithm is NOT stable by default?',opts:['A. Merge Sort','B. Insertion Sort','C. Heap Sort','D. Bubble Sort'],ans:'C',marks:1,neg:0.33},
+  // DBMS — 7 questions
+  {id:16,subject:'DBMS',topic:'Normalization',q:'A relation R(A,B,C,D) has FDs: A→B, B→C, C→D. The highest normal form R is in is:',opts:['A. 1NF','B. 2NF','C. 3NF','D. BCNF'],ans:'B',marks:1,neg:0.33},
+  {id:17,subject:'DBMS',topic:'Transactions & ACID',q:'Which isolation level prevents dirty reads but allows non-repeatable reads?',opts:['A. Serializable','B. Read Committed','C. Read Uncommitted','D. Repeatable Read'],ans:'B',marks:1,neg:0.33},
+  {id:18,subject:'DBMS',topic:'SQL',q:'SELECT COUNT(*) FROM R WHERE A IS NULL — what does this return if R has 10 rows and 3 have A=NULL?',opts:['A. 10','B. 7','C. 3','D. 0'],ans:'C',marks:1,neg:0.33},
+  {id:19,subject:'DBMS',topic:'Indexing & Hashing',q:'A B+ tree of order m (max m pointers per node) with n keys has height at most:',opts:['A. log_⌈m/2⌉(n)','B. log_m(n)','C. log_2(n)','D. n/m'],ans:'A',marks:1,neg:0.33},
+  // CN — 7 questions
+  {id:20,subject:'CN',topic:'Data Link Layer',q:'A sender uses Go-Back-N with window size 7 and 3-bit sequence numbers. The maximum efficiency when propagation delay = 2× transmission time is:',opts:['A. 7/5','B. 7/9','C. 1/5','D. 1/3'],ans:'B',marks:1,neg:0.33},
+  {id:21,subject:'CN',topic:'IP Addressing & Subnetting',q:'How many usable host addresses are in a /26 subnet?',opts:['A. 62','B. 64','C. 30','D. 126'],ans:'A',marks:1,neg:0.33},
+  {id:22,subject:'CN',topic:'Transport Layer',q:'TCP uses a 3-way handshake. Which flag combination initiates connection teardown?',opts:['A. SYN','B. FIN','C. RST','D. ACK+FIN'],ans:'B',marks:1,neg:0.33},
+  // TOC — 6 questions
+  {id:23,subject:'TOC',topic:'Regular Languages & DFA',q:'The language L = {aⁿbⁿ | n ≥ 1} is:',opts:['A. Regular','B. Context-Free but not Regular','C. Context-Sensitive but not CF','D. Recursive but not CS'],ans:'B',marks:1,neg:0.33},
+  {id:24,subject:'TOC',topic:'Decidability',q:'The halting problem is:',opts:['A. Decidable','B. Recursively Enumerable but not Recursive','C. Not RE','D. Context-Free'],ans:'B',marks:1,neg:0.33},
+  {id:25,subject:'TOC',topic:'Context-Free Grammars',q:'Which grammar is NOT context-free?',opts:['A. aⁿbⁿ','B. aⁿbⁿcⁿ','C. palindromes over {a,b}','D. balanced parentheses'],ans:'B',marks:1,neg:0.33},
+  // DL — 6 questions
+  {id:26,subject:'DL',topic:'K-Map Minimization',q:"Minimize: F(A,B,C,D) = Σm(0,1,2,5,8,9,10). The minimized SOP is:",opts:["A. B'D' + A'CD'","B. B'D + A'C","C. A'B' + B'D'","D. B'D' + A'C'D"],ans:'C',marks:1,neg:0.33},
+  {id:27,subject:'DL',topic:'Sequential Circuits',q:'A D flip-flop has D = Q⊕CLK_input. This circuit implements a:',opts:['A. T flip-flop','B. SR latch','C. JK flip-flop','D. Toggle with enable'],ans:'A',marks:1,neg:0.33},
+  // COA — 6 questions
+  {id:28,subject:'COA',topic:'Cache Memory',q:'A cache has hit time 1ns and miss penalty 100ns. With hit rate 95%, the AMAT is:',opts:['A. 5.95ns','B. 6ns','C. 5ns','D. 100ns'],ans:'A',marks:1,neg:0.33},
+  {id:29,subject:'COA',topic:'Pipelining',q:'A 5-stage pipeline has stages IF,ID,EX,MEM,WB each taking 1ns. A RAW hazard requires 2 stall cycles. For 100 instructions with 10 hazards, total time is:',opts:['A. 124ns','B. 120ns','C. 104ns + stalls','D. 100ns'],ans:'A',marks:1,neg:0.33},
+  // CD — 5 questions
+  {id:30,subject:'CD',topic:'Syntax Analysis (Parsing)',q:'Which of the following grammars is LL(1)?',opts:['A. S → Sa | a (left recursive)','B. S → aS | a','C. S → aS | bS | ε (ambiguous)','D. E → E+T | T (left recursive)'],ans:'B',marks:1,neg:0.33},
+  // Fill remaining to 65 with variations
+  {id:31,subject:'OS',topic:'File Systems',q:'In Unix inode structure, a file with size requiring triple indirect block can hold approximately how many data blocks (block size=1KB, pointer size=4B)?',opts:['A. ~16GB','B. ~4GB','C. ~256MB','D. ~1GB'],ans:'A',marks:1,neg:0.33},
+  {id:32,subject:'DS',topic:'Linked Lists',q:"Floyd's cycle detection algorithm uses two pointers (slow and fast). If cycle length is L and tail length is F, they meet at F steps from the start of the cycle at step:",opts:['A. F + L','B. 2F','C. F mod L from cycle start','D. L/2'],ans:'C',marks:1,neg:0.33},
+  {id:33,subject:'ALGO',topic:'P, NP & Complexity',q:'Which of the following is NP-Complete?',opts:['A. Minimum Spanning Tree','B. Shortest Path (single source)','C. Hamiltonian Cycle','D. Topological Sort'],ans:'C',marks:1,neg:0.33},
+  {id:34,subject:'DBMS',topic:'Concurrency Control',q:'In 2PL (Two-Phase Locking), a transaction may NOT acquire a new lock after:',opts:['A. Releasing any lock','B. Commit','C. Rollback','D. Reading a value'],ans:'A',marks:1,neg:0.33},
+  {id:35,subject:'CN',topic:'Routing',q:'OSPF uses which algorithm to compute shortest paths?',opts:["A. Bellman-Ford","B. Floyd-Warshall","C. Dijkstra's","D. Prim's"],ans:'C',marks:1,neg:0.33},
+  {id:36,subject:'TOC',topic:'Regular Languages & DFA',q:'The minimum number of states in a DFA accepting strings over {0,1} divisible by 5 is:',opts:['A. 5','B. 6','C. 10','D. 4'],ans:'A',marks:1,neg:0.33},
+  {id:37,subject:'DL',topic:'Number Systems',q:"Two's complement representation of -128 in 8-bit is:",opts:['A. 10000000','B. 11111111','C. 01111111','D. 11000000'],ans:'A',marks:1,neg:0.33},
+  {id:38,subject:'COA',topic:'Memory Organization',q:'A memory system has 4 banks each 1MB wide. Interleaving with block size 64 bytes. A sequential 256-byte access requires minimum how many cycles if each bank takes 10 cycles?',opts:['A. 10','B. 40','C. 4×10','D. 13'],ans:'D',marks:1,neg:0.33},
+  {id:39,subject:'CD',topic:'Lexical Analysis',q:'The regular expression (a|b)*abb recognizes strings over {a,b} that:',opts:['A. End with abb','B. Start with abb','C. Contain abb','D. Are exactly abb'],ans:'A',marks:1,neg:0.33},
+  {id:40,subject:'DM',topic:'Graph Theory',q:"A connected graph with n vertices and n-1 edges is always a:",opts:['A. Complete graph','B. Tree','C. Bipartite graph','D. Regular graph'],ans:'B',marks:1,neg:0.33},
+  // 2-mark questions (25 marks total, 25 questions × 2 marks)
+  {id:41,subject:'OS',topic:'CPU Scheduling',q:'Four processes arrive at times 0,1,2,3 with burst times 7,5,3,1. What is the average turnaround time with preemptive SJF (SRTF)?',opts:['A. 4.25','B. 5.0','C. 6.75','D. 4.5'],ans:'A',marks:2,neg:0.67},
+  {id:42,subject:'DS',topic:'Trees & Binary Trees',q:'A full binary tree with n internal nodes has exactly how many leaves?',opts:['A. n','B. n+1','C. 2n','D. n-1'],ans:'B',marks:2,neg:0.67},
+  {id:43,subject:'ALGO',topic:'Dynamic Programming',q:'The edit distance between "sunday" and "saturday" is:',opts:['A. 3','B. 4','C. 5','D. 2'],ans:'A',marks:2,neg:0.67},
+  {id:44,subject:'DBMS',topic:'Relational Model',q:'R(A,B,C) and S(C,D,E). The result of π_{A,D}(R ⋈ S) has which attributes?',opts:['A. A,C,D','B. A,D','C. A,B,D','D. A,B,C,D,E'],ans:'B',marks:2,neg:0.67},
+  {id:45,subject:'CN',topic:'Data Link Layer',q:'CRC with generator 1011 is used on data 10011101. What is the transmitted frame?',opts:['A. 10011101110','B. 10011101000','C. 10011101011','D. 10011101100'],ans:'A',marks:2,neg:0.67},
+  {id:46,subject:'TOC',topic:'Context-Free Grammars',q:'Which language can a DPDA recognize that an NPDA can also recognize but DFA cannot?',opts:['A. aⁿbⁿ','B. aⁿ','C. (ab)*','D. a*b*'],ans:'A',marks:2,neg:0.67},
+  {id:47,subject:'DL',topic:'Boolean Algebra',q:"Simplify: F = AB + A'C + BC using consensus theorem:",opts:["A. AB + A'C","B. AB + BC","C. A'C + BC","D. AB + A'C + BC (cannot simplify)"],ans:'A',marks:2,neg:0.67},
+  {id:48,subject:'COA',topic:'Pipelining',q:'A pipeline has 5 stages. Instructions have RAW dependency every 3rd instruction requiring 1 stall. For 1000 instructions, the CPI is:',opts:['A. 1.33','B. 1.0','C. 1.5','D. 2.0'],ans:'A',marks:2,neg:0.67},
+  {id:49,subject:'CD',topic:'Syntax Analysis (Parsing)',q:'FIRST(A) = {a,b}, FOLLOW(A) = {c,d,$}. An LL(1) parse table entry T[A,c] should contain:',opts:['A. A production with FIRST containing c','B. Error','C. Epsilon production if exists','D. Any production for A'],ans:'C',marks:2,neg:0.67},
+  {id:50,subject:'DM',topic:'Combinatorics',q:'The number of ways to distribute 10 identical balls into 4 distinct boxes with no empty box is:',opts:['A. C(9,3)','B. C(10,4)','C. 4^10','D. C(6,3)'],ans:'A',marks:2,neg:0.67},
+  {id:51,subject:'OS',topic:'Memory Management',q:'A system has 512MB RAM, 32-bit address space, 4KB pages, 4-byte PTEs. What percentage of RAM is needed for all page tables in the worst case?',opts:['A. 0.39%','B. 3.9%','C. 0.039%','D. 39%'],ans:'A',marks:2,neg:0.67},
+  {id:52,subject:'DS',topic:'Stacks & Queues',q:'Evaluate postfix: 5 3 2 * + 8 4 / -',opts:['A. 9','B. 11','C. 7','D. 13'],ans:'A',marks:2,neg:0.67},
+  {id:53,subject:'ALGO',topic:'Graph Algorithms',q:"Bellman-Ford algorithm can detect negative weight cycles. Its time complexity for a graph with V vertices and E edges is:",opts:['A. O(VE)','B. O(V²)','C. O(E log V)','D. O(V³)'],ans:'A',marks:2,neg:0.67},
+  {id:54,subject:'DBMS',topic:'Normalization',q:'Given R(A,B,C,D,E) with FDs: AB→C, C→D, D→E, AB→E. The canonical cover (minimal FD set) is:',opts:['A. {AB→C, C→D, D→E}','B. {AB→C, C→DE}','C. {AB→CDE, C→D, D→E}','D. {AB→CD, D→E}'],ans:'A',marks:2,neg:0.67},
+  {id:55,subject:'CN',topic:'IP Addressing & Subnetting',q:'A company has 200.1.1.0/24. It needs 5 subnets of sizes 60,30,30,14,14. After VLSM, which is the correct allocation for the 60-host subnet?',opts:['A. 200.1.1.0/26','B. 200.1.1.0/25','C. 200.1.1.64/26','D. 200.1.1.0/27'],ans:'A',marks:2,neg:0.67},
+  {id:56,subject:'TOC',topic:'Turing Machines',q:'Which of the following problems is decidable?',opts:['A. Whether a TM halts on all inputs','B. Whether two CFGs generate the same language','C. Whether a DFA accepts at least one string','D. Whether a TM accepts a regular language'],ans:'C',marks:2,neg:0.67},
+  {id:57,subject:'DL',topic:'Combinational Circuits',q:'A 4-bit ripple carry adder has 4 full adders. The worst-case propagation delay if each gate has delay t is:',opts:['A. 8t (carry chain: 2 gates per stage)','B. 4t','C. 2t','D. 16t'],ans:'A',marks:2,neg:0.67},
+  {id:58,subject:'COA',topic:'Cache Memory',q:'A 2-way set-associative cache has 64 sets, 16-byte blocks, 32-bit address. How many tag bits are needed?',opts:['A. 22','B. 20','C. 18','D. 24'],ans:'A',marks:2,neg:0.67},
+  {id:59,subject:'CD',topic:'Code Optimization',q:'Which optimization eliminates y = x+0 and x = x*1?',opts:['A. Algebraic simplification','B. Common subexpression elimination','C. Dead code elimination','D. Constant folding'],ans:'A',marks:2,neg:0.67},
+  {id:60,subject:'DM',topic:'Mathematical Logic',q:'The number of satisfying assignments for (A ∨ B) ∧ (¬A ∨ C) ∧ (¬B ∨ ¬C) is:',opts:['A. 3','B. 4','C. 2','D. 5'],ans:'A',marks:2,neg:0.67},
+  {id:61,subject:'OS',topic:'I/O Systems',q:'DMA transfers data without CPU intervention. After DMA completes, it notifies CPU via:',opts:['A. Interrupt','B. Polling','C. Semaphore','D. Shared memory flag'],ans:'A',marks:2,neg:0.67},
+  {id:62,subject:'DS',topic:'Graphs',q:"In Kruskal's algorithm, a disjoint-set (union-find) with path compression and union by rank processes m edge operations on n nodes in time:",opts:['A. O(m α(n)) where α is inverse Ackermann','B. O(m log n)','C. O(n²)','D. O(m log m)'],ans:'A',marks:2,neg:0.67},
+  {id:63,subject:'ALGO',topic:'Divide & Conquer',q:'The recurrence T(n) = T(n/3) + T(2n/3) + n arises in which algorithm?',opts:['A. Worst-case quicksort with 1/3-2/3 split','B. Merge sort','C. Binary search','D. Karatsuba multiplication'],ans:'A',marks:2,neg:0.67},
+  {id:64,subject:'DBMS',topic:'Query Processing',q:'In a nested-loop join of R (1000 tuples) and S (500 tuples) with R as outer, using block nested loop join with buffer = 3 pages (1 output, 1 S, 1 R), disk I/Os = ?',opts:['A. Cost depends on block sizes','B. 1000 × 500','C. 1500','D. 500 + 1000'],ans:'A',marks:2,neg:0.67},
+  {id:65,subject:'CN',topic:'Application Layer',q:'DNS uses both UDP and TCP. It uses TCP when:',opts:['A. Response > 512 bytes or zone transfers','B. Always for security','C. For A record queries only','D. Only on port 443'],ans:'A',marks:2,neg:0.67},
+];
+
+let testMode = 'full';
+let testQuestions = [];
+let currentQ = 0;
+let answers = {}; // qIdx → selected option letter
+let marked = {};  // qIdx → bool
+let visited = {}; // qIdx → bool
+let timerInterval = null;
+let timeLeft = 0;
+let testStartTime = null;
+
+function selectMode(el, mode) {
+  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  testMode = mode;
+}
+
+function startTest() {
+  if (!isPro() && (testMode === 'full' || testMode === 'weak')) {
+    if (!requirePro('Mock Test — Full & Weak Drill modes')) return;
+  }
+
+  // Pick questions based on mode
+  if (testMode === 'full') {
+    testQuestions = [...QUESTIONS]; // all 65
+    timeLeft = 3 * 60 * 60;
+  } else if (testMode === 'mini') {
+    testQuestions = shuffleArr([...QUESTIONS]).slice(0, 20);
+    timeLeft = 40 * 60;
+  } else if (testMode === 'subject') {
+    testQuestions = QUESTIONS.filter(q => q.subject === 'OS').slice(0, 15);
+    timeLeft = 30 * 60;
+  } else if (testMode === 'weak') {
+    const weakList = getWeakList(60);
+    const weakTopics = weakList.map(w => w.key.split('-')[1]).filter(Boolean);
+    testQuestions = weakTopics.length > 0
+      ? QUESTIONS.filter(q => weakTopics.some(t => q.topic.toLowerCase().includes(t.toLowerCase()))).slice(0, 20)
+      : shuffleArr([...QUESTIONS]).slice(0, 20);
+    timeLeft = 0; // no timer for drill
+  }
+
+  answers = {}; marked = {}; visited = {};
+  currentQ = 0;
+  testStartTime = Date.now();
+
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('testScreen').style.display = 'block';
+
+  buildPalette();
+  renderQuestion(0);
+
+  if (timeLeft > 0) {
+    document.getElementById('timerDisplay').style.display = 'block';
+    startTimer();
+  }
+}
+
+function shuffleArr(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function startTimer() {
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) { clearInterval(timerInterval); submitTest(); }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const h = Math.floor(timeLeft / 3600);
+  const m = Math.floor((timeLeft % 3600) / 60);
+  const s = timeLeft % 60;
+  const el = document.getElementById('timerDisplay');
+  el.textContent = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.classList.toggle('danger', timeLeft < 600);
+}
+
+function renderQuestion(idx) {
+  currentQ = idx;
+  visited[idx] = true;
+  const q = testQuestions[idx];
+  const panel = document.getElementById('questionPanel');
+  const marksColor = q.marks === 2 ? 'var(--y)' : 'var(--g)';
+
+  panel.innerHTML = `
+    <div class="q-meta">
+      <span class="q-num">Q${idx+1} of ${testQuestions.length}</span>
+      <span class="q-subject">${q.subject} · ${q.topic}</span>
+      <span class="q-marks pos">+${q.marks}</span>
+      <span class="q-marks neg">−${q.neg}</span>
+    </div>
+    <div class="q-text">${q.q}</div>
+    <div class="opts" id="opts">
+      ${q.opts.map((o,i) => {
+        const letter = String.fromCharCode(65+i);
+        const isSelected = answers[idx] === letter;
+        return `<button class="opt-btn${isSelected?' selected':''}" onclick="selectAnswer(${idx},'${letter}',this)">
+          <span class="opt-letter">${letter}.</span> ${o.slice(3)}
+        </button>`;
+      }).join('')}
+    </div>
+    <div class="q-nav">
+      <button class="nav-btn" onclick="navigate(-1)" ${idx===0?'disabled':''}>← Prev</button>
+      <button class="mark-btn ${marked[idx]?'marked':''}" onclick="toggleMark(${idx})">
+        ${marked[idx]?'★ Marked':'☆ Mark'}
+      </button>
+      <button class="nav-btn primary" onclick="navigate(1)">${idx===testQuestions.length-1?'Review →':'Next →'}</button>
+    </div>`;
+
+  updatePalette();
+  updateLiveScore();
+}
+
+function selectAnswer(idx, letter, btn) {
+  answers[idx] = letter;
+  document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updatePalette();
+  updateLiveScore();
+}
+
+function navigate(dir) {
+  const next = currentQ + dir;
+  if (next >= 0 && next < testQuestions.length) renderQuestion(next);
+}
+
+function toggleMark(idx) {
+  marked[idx] = !marked[idx];
+  renderQuestion(idx);
+}
+
+function buildPalette() {
+  const grid = document.getElementById('paletteGrid');
+  grid.innerHTML = testQuestions.map((_,i) =>
+    `<button class="p-btn" id="pb-${i}" onclick="renderQuestion(${i})">${i+1}</button>`
+  ).join('');
+}
+
+function updatePalette() {
+  testQuestions.forEach((_,i) => {
+    const btn = document.getElementById('pb-'+i);
+    if (!btn) return;
+    btn.className = 'p-btn';
+    if (i === currentQ) btn.classList.add('current');
+    else if (answers[i]) btn.classList.add('answered');
+    else if (marked[i]) btn.classList.add('marked');
+    else if (visited[i]) btn.classList.add('visited');
+  });
+}
+
+function updateLiveScore() {
+  let correct = 0, wrong = 0, score = 0;
+  testQuestions.forEach((q,i) => {
+    if (answers[i]) {
+      if (answers[i] === q.ans) { correct++; score += q.marks; }
+      else { wrong++; score -= q.neg; }
+    }
+  });
+  document.getElementById('sc-correct').textContent = correct;
+  document.getElementById('sc-wrong').textContent = wrong;
+  document.getElementById('sc-score').textContent = score.toFixed(2);
+  document.getElementById('sc-left').textContent = testQuestions.length - Object.keys(answers).length;
+}
+
+function submitTest() {
+  clearInterval(timerInterval);
+  document.getElementById('timerDisplay').style.display = 'none';
+
+  // Calculate results
+  let correct = 0, wrong = 0, score = 0;
+  const byTopic = {};
+
+  testQuestions.forEach((q,i) => {
+    const key = `${q.subject}-${q.topic}`;
+    if (!byTopic[key]) byTopic[key] = { correct:0, total:0 };
+    byTopic[key].total++;
+    if (answers[i]) {
+      if (answers[i] === q.ans) { correct++; score += q.marks; byTopic[key].correct++; }
+      else wrong++;
+    }
+  });
+
+  // Normalise score to 100
+  const maxScore = testQuestions.reduce((s,q) => s+q.marks, 0);
+  const normScore = Math.round((score / maxScore) * 100);
+  const accuracy = correct + wrong > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+
+  // Record weak topics
+  Object.entries(byTopic).forEach(([key, v]) => {
+    recordPYQResult(key, v.correct, v.total);
+  });
+
+  // Show result screen
+  document.getElementById('testScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'block';
+
+  document.getElementById('r-score').textContent = normScore;
+  document.getElementById('r-correct').textContent = correct;
+  document.getElementById('r-wrong').textContent = wrong;
+  document.getElementById('r-acc').textContent = accuracy + '%';
+
+  // Emoji based on score
+  const emojis = normScore >= 80 ? ['🏆','Exceptional! You are ready for AIR < 100.'] :
+                 normScore >= 65 ? ['🎯','Great score! Focus on weak topics to push higher.'] :
+                 normScore >= 50 ? ['📈','Good effort. Target your weak topics for next 2 weeks.'] :
+                                   ['💪','Keep going! Consistent practice will get you there.'];
+  document.getElementById('resultEmoji').textContent = emojis[0];
+  document.getElementById('resultTitle').textContent = `Score: ${normScore}/100`;
+  document.getElementById('resultSub').textContent = emojis[1];
+
+  // Rank estimate
+  const rankMap = normScore >= 85 ? '<200' : normScore >= 75 ? '200–500' : normScore >= 65 ? '500–1000' : normScore >= 55 ? '1000–2000' : '2000+';
+  document.getElementById('rankEstimate').innerHTML = `
+    <h3>Estimated Rank: <span style="color:var(--acc)">${rankMap}</span></h3>
+    <p>Based on GATE <span class="gate-year-label">2027</span> expected cutoffs. Improve weak topics to move up.</p>`;
+
+  // Weak topics
+  const weakEntries = Object.entries(byTopic)
+    .map(([key, v]) => ({ key, pct: v.total > 0 ? Math.round((v.correct/v.total)*100) : 0, ...v }))
+    .filter(w => w.pct < 60)
+    .sort((a,b) => a.pct - b.pct)
+    .slice(0, 6);
+
+  if (weakEntries.length) {
+    document.getElementById('weakTopicsResult').innerHTML = `
+      <h3>🔥 Weak Topics to Focus On</h3>
+      ${weakEntries.map(w => `
+        <div class="wt-item">
+          <span class="wt-name">${w.key.replace('-',' → ')}</span>
+          <span class="wt-score ${w.pct < 40 ? 'bad' : 'mid'}">${w.correct}/${w.total} (${w.pct}%)</span>
+        </div>`).join('')}`;
+  }
+
+  updateGateYears();
+}
+
+function retakeTest() {
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('setupScreen').style.display = 'block';
+  document.getElementById('setupScreen').style.display = '';
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  syncThemeIcon();
+  updateGateYears();
+  renderProNavBadge();
+  // Check if user came from weak topics
+  const urlMode = new URLSearchParams(window.location.search).get('mode');
+  if (urlMode) {
+    const card = document.querySelector(`[data-mode="${urlMode}"]`);
+    if (card) selectMode(card, urlMode);
+  }
+});
+</script>
+</body>
+</html>

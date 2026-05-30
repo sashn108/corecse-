@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoreCSE Pro — Unlock Everything for GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;align-items:center;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.hero{text-align:center;padding:4rem 2rem 3rem;max-width:700px;margin:0 auto;}
+.hero-tag{font-family:var(--mono);font-size:.7rem;color:var(--acc);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:1rem;}
+.hero h1 span{color:var(--acc);}
+.hero p{color:var(--m);font-size:.95rem;line-height:1.7;max-width:500px;margin:0 auto 1.5rem;}
+.trust-row{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:.5rem;}
+.trust-item{font-family:var(--mono);font-size:.72rem;color:var(--m);display:flex;align-items:center;gap:.4rem;}
+
+/* PRICING CARDS */
+.pricing-wrap{max-width:960px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:1.2rem;align-items:start;}
+.plan{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:1.75rem;position:relative;transition:border-color .2s;}
+.plan.featured{border-color:var(--acc);background:linear-gradient(135deg,rgba(124,106,255,.08),var(--s));}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;font-family:var(--mono);font-size:.65rem;padding:.25rem .75rem;border-radius:20px;letter-spacing:.05em;white-space:nowrap;}
+.plan-name{font-family:var(--mono);font-size:.7rem;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;}
+.plan-price{font-size:2.4rem;font-weight:800;line-height:1;margin-bottom:.3rem;}
+.plan-price sup{font-size:1rem;font-weight:600;vertical-align:super;}
+.plan-period{font-family:var(--mono);font-size:.72rem;color:var(--m);margin-bottom:1.2rem;}
+.plan-features{list-style:none;margin-bottom:1.5rem;}
+.plan-features li{font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--b);display:flex;align-items:flex-start;gap:.6rem;line-height:1.4;}
+.plan-features li:last-child{border-bottom:none;}
+.plan-features li .check{color:var(--g);font-size:.9rem;flex-shrink:0;margin-top:.05rem;}
+.plan-features li .cross{color:var(--m);font-size:.9rem;flex-shrink:0;margin-top:.05rem;}
+.plan-features li.dim{color:var(--m);}
+.plan-cta{width:100%;padding:.75rem;border-radius:8px;font-family:var(--mono);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.03em;}
+.cta-free{background:none;border:1px solid var(--b);color:var(--m);}
+.cta-free:hover{border-color:var(--t);color:var(--t);}
+.cta-pro{background:var(--acc);border:none;color:#fff;}
+.cta-pro:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,106,255,.4);}
+.cta-bundle{background:var(--g);border:none;color:#0a0a0f;}
+.cta-bundle:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 4px 20px rgba(79,255,176,.3);}
+
+/* BUNDLE SECTION */
+.bundle-section{max-width:960px;margin:0 auto;padding:0 2rem 4rem;}
+.section-hd{font-family:var(--mono);font-size:.7rem;color:var(--m);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;padding-bottom:.5rem;border-bottom:1px solid var(--b);}
+.bundle-card{background:var(--s);border:1px solid rgba(79,255,176,.25);border-radius:16px;padding:2rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
+.bundle-tag{font-family:var(--mono);font-size:.65rem;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem;}
+.bundle-title{font-size:1.5rem;font-weight:800;margin-bottom:.5rem;}
+.bundle-desc{color:var(--m);font-size:.85rem;line-height:1.6;margin-bottom:1rem;}
+.bundle-includes{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;}
+.bundle-item{font-family:var(--mono);font-size:.68rem;background:rgba(79,255,176,.08);border:1px solid rgba(79,255,176,.2);color:var(--g);padding:.2rem .55rem;border-radius:4px;}
+.bundle-price-area{text-align:center;}
+.bundle-orig{font-family:var(--mono);font-size:.8rem;color:var(--m);text-decoration:line-through;margin-bottom:.2rem;}
+.bundle-price{font-size:2.8rem;font-weight:800;color:var(--g);line-height:1;}
+.bundle-price sup{font-size:1.1rem;vertical-align:super;}
+.bundle-save{font-family:var(--mono);font-size:.68rem;color:var(--g);background:rgba(79,255,176,.1);padding:.2rem .5rem;border-radius:3px;margin-top:.4rem;display:inline-block;}
+.bundle-buy{margin-top:1rem;background:var(--g);color:#0a0a0f;border:none;padding:.75rem 2rem;border-radius:8px;font-family:var(--mono);font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;width:100%;}
+.bundle-buy:hover{opacity:.85;transform:translateY(-1px);}
+
+/* AFFILIATE SECTION */
+.affiliate-section{max-width:960px;margin:0 auto;padding:0 2rem 4rem;}
+.aff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;}
+.aff-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:1rem;text-decoration:none;display:flex;flex-direction:column;gap:.4rem;transition:border-color .2s,transform .2s;}
+.aff-card:hover{border-color:var(--acc);transform:translateY(-2px);}
+.aff-logo{font-size:1.3rem;}
+.aff-name{font-size:.88rem;font-weight:700;color:var(--t);}
+.aff-desc{font-size:.75rem;color:var(--m);line-height:1.4;}
+.aff-tag{font-family:var(--mono);font-size:.62rem;color:var(--acc);margin-top:auto;}
+
+/* PRO MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:2rem;width:min(480px,90vw);position:relative;}
+.modal h2{font-size:1.3rem;font-weight:800;margin-bottom:.4rem;}
+.modal-sub{color:var(--m);font-size:.85rem;margin-bottom:1.5rem;}
+.modal-plan-toggle{display:flex;background:var(--s2);border-radius:8px;padding:3px;margin-bottom:1.5rem;gap:3px;}
+.modal-plan-btn{flex:1;padding:.5rem;border:none;border-radius:6px;font-family:var(--mono);font-size:.75rem;cursor:pointer;background:none;color:var(--m);transition:all .15s;}
+.modal-plan-btn.active{background:var(--acc);color:#fff;}
+.modal-price-display{text-align:center;margin-bottom:1.5rem;}
+.modal-price-display .big{font-size:2.5rem;font-weight:800;color:var(--acc);}
+.modal-price-display .period{font-family:var(--mono);font-size:.8rem;color:var(--m);}
+.modal-price-display .saving{font-family:var(--mono);font-size:.7rem;color:var(--g);margin-top:.25rem;}
+.razorpay-btn{width:100%;padding:.85rem;background:var(--acc);border:none;border-radius:8px;color:#fff;font-family:var(--mono);font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:.75rem;}
+.razorpay-btn:hover{opacity:.85;}
+.modal-note{font-family:var(--mono);font-size:.68rem;color:var(--m);text-align:center;line-height:1.5;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--m);font-size:1.3rem;cursor:pointer;}
+.modal-close:hover{color:var(--t);}
+.test-key-note{font-family:var(--mono);font-size:.65rem;color:var(--y);background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2);border-radius:4px;padding:.4rem .6rem;margin-bottom:1rem;text-align:center;}
+
+/* SUCCESS TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--s);border:1px solid var(--g);border-radius:10px;padding:1rem 1.25rem;font-size:.85rem;color:var(--t);z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* PRO BADGE */
+.pro-badge{display:inline-block;font-family:var(--mono);font-size:.6rem;background:linear-gradient(135deg,#7c6aff,#4fffb0);color:#0a0a0f;padding:.15rem .4rem;border-radius:3px;font-weight:700;vertical-align:middle;margin-left:.3rem;}
+
+@media(max-width:768px){
+  .pricing-wrap{grid-template-columns:1fr;}
+  .bundle-card{grid-template-columns:1fr;}
+  .bundle-price-area{text-align:left;}
+}
+</style>
+<script src="../corecse-utils.js"></script>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="../index.html">← Home</a>
+    <a href="../subjects/os.html">Study</a>
+    <a href="flashcards.html">🃏 Cards</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">🚀 CoreCSE Pro</div>
+  <h1>Go from studying to <span>scoring</span></h1>
+  <p>Everything you need to crack GATE CSE — mock tests, AI tools, weak-topic tracker, formula sheets and more.</p>
+  <div class="trust-row">
+    <span class="trust-item">✓ Cancel anytime</span>
+    <span class="trust-item">✓ Instant access</span>
+    <span class="trust-item">✓ Secure via Razorpay</span>
+  </div>
+</div>
+
+<!-- PRICING CARDS -->
+<div class="pricing-wrap">
+  <!-- FREE -->
+  <div class="plan">
+    <div class="plan-name">Free</div>
+    <div class="plan-price">₹0</div>
+    <div class="plan-period">forever</div>
+    <ul class="plan-features">
+      <li><span class="check">✓</span> All 10 subject notes</li>
+      <li><span class="check">✓</span> 2,400+ PYQs with answers</li>
+      <li><span class="check">✓</span> GATE year predictions</li>
+      <li><span class="check">✓</span> Basic flashcards (20 cards)</li>
+      <li><span class="check">✓</span> Pomodoro timer</li>
+      <li><span class="check">✓</span> Notes editor</li>
+      <li class="dim"><span class="cross">✗</span> Mock test mode</li>
+      <li class="dim"><span class="cross">✗</span> Weak topic tracker</li>
+      <li class="dim"><span class="cross">✗</span> Unlimited flashcards</li>
+      <li class="dim"><span class="cross">✗</span> Formula sheet downloads</li>
+    </ul>
+    <button class="plan-cta cta-free" onclick="window.location='../index.html'">Continue Free</button>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan featured">
+    <div class="plan-badge">⚡ Most Popular</div>
+    <div class="plan-name">Pro</div>
+    <div class="plan-price"><sup>₹</sup><span id="proPrice">199</span></div>
+    <div class="plan-period" id="proPeriod">per month · billed monthly</div>
+    <ul class="plan-features">
+      <li><span class="check">✓</span> Everything in Free</li>
+      <li><span class="check">✓</span> <strong>Timed mock tests</strong> (full 65Q, 3hr)</li>
+      <li><span class="check">✓</span> <strong>Weak topic tracker</strong> with drill mode</li>
+      <li><span class="check">✓</span> <strong>Unlimited flashcards</strong> (all subjects)</li>
+      <li><span class="check">✓</span> <strong>Formula sheet PDFs</strong> (10 subjects)</li>
+      <li><span class="check">✓</span> Priority PYQ explanations</li>
+      <li><span class="check">✓</span> Progress analytics dashboard</li>
+      <li><span class="check">✓</span> Early access to new features</li>
+    </ul>
+    <button class="plan-cta cta-pro" onclick="openProModal()">Get Pro Access →</button>
+  </div>
+
+  <!-- BUNDLE -->
+  <div class="plan">
+    <div class="plan-name">Bundle</div>
+    <div class="plan-price"><sup>₹</sup>499</div>
+    <div class="plan-period">one-time · lifetime access</div>
+    <ul class="plan-features">
+      <li><span class="check">✓</span> Everything in Pro (1 year)</li>
+      <li><span class="check">✓</span> <strong>10 formula sheet PDFs</strong></li>
+      <li><span class="check">✓</span> <strong>Topic-wise PYQ PDF pack</strong></li>
+      <li><span class="check">✓</span> <strong>Last 20yr paper analysis</strong> PDF</li>
+      <li><span class="check">✓</span> GATE weightage cheatsheet</li>
+      <li><span class="check">✓</span> Offline study pack (ZIP)</li>
+    </ul>
+    <button class="plan-cta cta-bundle" onclick="openBundleModal()">Buy Bundle ₹499 →</button>
+  </div>
+</div>
+
+<!-- BUNDLE DETAIL SECTION -->
+<div class="bundle-section">
+  <div class="section-hd">📦 What's in the GATE Bundle</div>
+  <div class="bundle-card">
+    <div>
+      <div class="bundle-tag">One-time purchase · Instant download</div>
+      <div class="bundle-title">GATE CSE Complete Bundle</div>
+      <div class="bundle-desc">10 meticulously curated PDF formula sheets + topic-wise PYQ compilation + 20-year pattern analysis. Everything offline, forever.</div>
+      <div class="bundle-includes">
+        <span class="bundle-item">📐 OS Formula Sheet</span>
+        <span class="bundle-item">📐 DS Cheatsheet</span>
+        <span class="bundle-item">📐 Algo Complexity Sheet</span>
+        <span class="bundle-item">📐 DBMS Quick Ref</span>
+        <span class="bundle-item">📐 CN Protocols PDF</span>
+        <span class="bundle-item">📐 TOC Summary</span>
+        <span class="bundle-item">📐 DL Boolean PDF</span>
+        <span class="bundle-item">📐 COA Pipeline Sheet</span>
+        <span class="bundle-item">📄 20-yr PYQ Analysis</span>
+        <span class="bundle-item">📄 Weightage Heatmap</span>
+      </div>
+      <button class="bundle-buy" onclick="openBundleModal()">Buy Now for ₹499 →</button>
+    </div>
+    <div class="bundle-price-area">
+      <div class="bundle-orig">₹999</div>
+      <div class="bundle-price"><sup>₹</sup>499</div>
+      <div class="bundle-save">Save 50%</div>
+    </div>
+  </div>
+</div>
+
+<!-- AFFILIATE / PARTNER RESOURCES -->
+<div class="affiliate-section">
+  <div class="section-hd">🤝 Trusted Partner Resources</div>
+  <div class="aff-grid">
+    <a class="aff-card" href="https://www.geeksforgeeks.org/gate-cs-notes-gq/?ref=corecse" target="_blank">
+      <div class="aff-logo">🟢</div>
+      <div class="aff-name">GFG GATE Notes</div>
+      <div class="aff-desc">Topic-wise notes and practice problems curated for GATE CSE.</div>
+      <div class="aff-tag">Free Resource ↗</div>
+    </a>
+    <a class="aff-card" href="https://practice.geeksforgeeks.org/courses/gate-cse-self-paced?ref=corecse" target="_blank">
+      <div class="aff-logo">🟢</div>
+      <div class="aff-name">GFG GATE Course</div>
+      <div class="aff-desc">Self-paced GATE CSE course with 500+ practice problems and mock tests.</div>
+      <div class="aff-tag">Paid Course — Affiliate ↗</div>
+    </a>
+    <a class="aff-card" href="https://gateoverflow.in?ref=corecse" target="_blank">
+      <div class="aff-logo">🔶</div>
+      <div class="aff-name">GATEOverflow</div>
+      <div class="aff-desc">India's largest GATE CSE discussion forum. PYQ solutions and community explanations.</div>
+      <div class="aff-tag">Free Resource ↗</div>
+    </a>
+    <a class="aff-card" href="https://gate.nptel.ac.in/?ref=corecse" target="_blank">
+      <div class="aff-logo">🎓</div>
+      <div class="aff-name">NPTEL GATE Prep</div>
+      <div class="aff-desc">IIT professor-taught video lectures aligned to GATE CSE syllabus.</div>
+      <div class="aff-tag">Free Resource ↗</div>
+    </a>
+    <a class="aff-card" href="https://www.madeeasy.in/?ref=corecse" target="_blank">
+      <div class="aff-logo">📘</div>
+      <div class="aff-name">Made Easy</div>
+      <div class="aff-desc">India's top GATE coaching — test series, classroom, and online programs.</div>
+      <div class="aff-tag">Coaching — Affiliate ↗</div>
+    </a>
+    <a class="aff-card" href="https://github.com/baquer/GATE-and-CSE-Resources-for-Students?ref=corecse" target="_blank">
+      <div class="aff-logo">📦</div>
+      <div class="aff-name">GATE CSE Resources</div>
+      <div class="aff-desc">Curated GitHub repo with books, papers, and study material for GATE CSE.</div>
+      <div class="aff-tag">Free Resource ↗</div>
+    </a>
+  </div>
+</div>
+
+<!-- PRO MODAL -->
+<div class="modal-overlay" id="proModal" onclick="if(event.target===this)closeProModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeProModal()">×</button>
+    <h2>Get CoreCSE Pro ⚡</h2>
+    <p class="modal-sub">Mock tests · Weak tracker · Unlimited flashcards · Formula PDFs</p>
+    <div class="test-key-note">⚠️ Razorpay Key not configured yet — payments inactive. Add your key in corecse-utils.js to go live.</div>
+    <div class="modal-plan-toggle">
+      <button class="modal-plan-btn active" onclick="setProPlan('monthly',this)">Monthly ₹199</button>
+      <button class="modal-plan-btn" onclick="setProPlan('annual',this)">Annual ₹1499 <span style="color:var(--g)">Save 37%</span></button>
+    </div>
+    <div class="modal-price-display">
+      <div class="big" id="modalPrice">₹199</div>
+      <div class="period" id="modalPeriod">per month, cancel anytime</div>
+      <div class="saving" id="modalSaving"></div>
+    </div>
+    <button class="razorpay-btn" onclick="startRazorpay('pro')">🔒 Pay Securely via Razorpay</button>
+    <div class="modal-note">Powered by Razorpay · 256-bit SSL · Cancel anytime from dashboard</div>
+  </div>
+</div>
+
+<!-- BUNDLE MODAL -->
+<div class="modal-overlay" id="bundleModal" onclick="if(event.target===this)closeBundleModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBundleModal()">×</button>
+    <h2>GATE Bundle ₹499 📦</h2>
+    <p class="modal-sub">Formula sheets + PYQ PDFs + 20-year analysis — one payment, lifetime access</p>
+    <div class="test-key-note">⚠️ Razorpay Key not configured yet — payments inactive. Add your key in corecse-utils.js to go live.</div>
+    <div class="modal-price-display">
+      <div class="big">₹499</div>
+      <div class="period">one-time · no subscription</div>
+      <div class="saving">You save ₹500 vs original price</div>
+    </div>
+    <button class="razorpay-btn" onclick="startRazorpay('bundle')">🔒 Buy Bundle via Razorpay</button>
+    <div class="modal-note">Instant download link sent to email · Powered by Razorpay · 256-bit SSL</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const RAZORPAY_KEY = 'rzp_test_REPLACE_WITH_YOUR_KEY'; // ← Replace with your Razorpay Key ID
+
+let selectedProPlan = 'monthly';
+
+function openProModal() {
+  document.getElementById('proModal').classList.add('show');
+}
+function closeProModal() {
+  document.getElementById('proModal').classList.remove('show');
+}
+function openBundleModal() {
+  document.getElementById('bundleModal').classList.add('show');
+}
+function closeBundleModal() {
+  document.getElementById('bundleModal').classList.remove('show');
+}
+
+function setProPlan(plan, btn) {
+  selectedProPlan = plan;
+  document.querySelectorAll('.modal-plan-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (plan === 'monthly') {
+    document.getElementById('modalPrice').textContent = '₹199';
+    document.getElementById('modalPeriod').textContent = 'per month, cancel anytime';
+    document.getElementById('modalSaving').textContent = '';
+  } else {
+    document.getElementById('modalPrice').textContent = '₹1,499';
+    document.getElementById('modalPeriod').textContent = 'per year — just ₹125/month';
+    document.getElementById('modalSaving').textContent = '✓ You save ₹889 vs monthly';
+  }
+}
+
+function startRazorpay(type) {
+  if (RAZORPAY_KEY.includes('REPLACE_WITH_YOUR_KEY')) {
+    showToast('⚠️ Add your Razorpay Key ID to go live! See corecse-utils.js line 1.');
+    return;
+  }
+
+  const configs = {
+    pro_monthly: { amount: 19900, name: 'CoreCSE Pro — Monthly', desc: 'Mock tests, weak tracker, unlimited flashcards' },
+    pro_annual:  { amount: 149900, name: 'CoreCSE Pro — Annual', desc: 'Best value — save 37% vs monthly' },
+    bundle:      { amount: 49900,  name: 'GATE Bundle Pack', desc: 'Formula sheets + PYQ PDFs + 20yr analysis' },
+  };
+  const key = type === 'bundle' ? 'bundle' : `pro_${selectedProPlan}`;
+  const cfg = configs[key];
+
+  const options = {
+    key: RAZORPAY_KEY,
+    amount: cfg.amount, // in paise
+    currency: 'INR',
+    name: 'CoreCSE',
+    description: cfg.desc,
+    image: 'https://sashn108.github.io/corecse-/favicon.ico',
+    handler: function(response) {
+      // Payment success
+      if (type !== 'bundle') {
+        activatePro(selectedProPlan === 'annual' ? 365 : 30);
+      } else {
+        activateBundle();
+      }
+      closeProModal();
+      closeBundleModal();
+      showToast('🎉 Payment successful! Your access is now active.');
+      setTimeout(() => window.location.href = '../index.html', 2000);
+    },
+    prefill: { name: '', email: '' },
+    theme: { color: '#7c6aff' },
+    modal: { ondismiss: function() { showToast('Payment cancelled.'); } }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+}
+
+function activatePro(days) {
+  const expiry = Date.now() + days * 24 * 60 * 60 * 1000;
+  localStorage.setItem('cc-pro', JSON.stringify({ active: true, expiry, plan: days > 30 ? 'annual' : 'monthly' }));
+}
+
+function activateBundle() {
+  localStorage.setItem('cc-bundle', JSON.stringify({ active: true, purchasedAt: Date.now() }));
+  activatePro(365);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// Keyboard close
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeProModal(); closeBundleModal(); }
+});
+</script>
+<!-- Load Razorpay SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>

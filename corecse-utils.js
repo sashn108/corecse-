@@ -381,3 +381,99 @@ if (document.readyState === 'loading') {
 } else {
   initCoreCSE();
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PRO / PAYWALL SYSTEM
+   ═══════════════════════════════════════════════════════════════ */
+
+const RAZORPAY_KEY = 'rzp_test_REPLACE_WITH_YOUR_KEY'; // ← Paste your Razorpay Key ID here
+
+function getProStatus() {
+  try {
+    const p = JSON.parse(localStorage.getItem('cc-pro') || '{}');
+    if (p.active && p.expiry > Date.now()) return { active: true, plan: p.plan, daysLeft: Math.ceil((p.expiry - Date.now()) / 86400000) };
+  } catch {}
+  try {
+    const b = JSON.parse(localStorage.getItem('cc-bundle') || '{}');
+    if (b.active) return { active: true, plan: 'bundle', daysLeft: 999 };
+  } catch {}
+  return { active: false };
+}
+
+function isPro() { return getProStatus().active; }
+
+// Gate a feature — if not Pro, show upgrade modal
+function requirePro(featureName) {
+  if (isPro()) return true;
+  showUpgradeModal(featureName);
+  return false;
+}
+
+function showUpgradeModal(featureName) {
+  let el = document.getElementById('cc-upgrade-modal');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'cc-upgrade-modal';
+    el.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;align-items:center;justify-content:center';
+    el.innerHTML = `
+      <div style="background:#12121a;border:1px solid #7c6aff;border-radius:16px;padding:2rem;width:min(420px,90vw);text-align:center;position:relative">
+        <button onclick="document.getElementById('cc-upgrade-modal').style.display='none'" style="position:absolute;top:.8rem;right:.8rem;background:none;border:none;color:#6b6b8a;font-size:1.3rem;cursor:pointer">×</button>
+        <div style="font-size:2.5rem;margin-bottom:.75rem">⚡</div>
+        <h2 style="font-size:1.2rem;font-weight:800;color:#e8e8f0;margin-bottom:.4rem">Pro Feature</h2>
+        <p style="color:#6b6b8a;font-size:.85rem;margin-bottom:1.25rem" id="cc-upgrade-feat-name"></p>
+        <a href="/corecse-/tools/pricing.html" style="display:block;background:#7c6aff;color:#fff;text-decoration:none;padding:.75rem;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:700;margin-bottom:.6rem;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Upgrade to Pro — ₹199/mo →</a>
+        <a href="/corecse-/tools/pricing.html" style="display:block;color:#4fffb0;font-family:'JetBrains Mono',monospace;font-size:.75rem;text-decoration:none">Or get the ₹499 Bundle (lifetime)</a>
+      </div>`;
+    document.body.appendChild(el);
+  }
+  document.getElementById('cc-upgrade-feat-name').textContent = featureName ? `"${featureName}" requires CoreCSE Pro` : 'Upgrade to unlock this feature';
+  el.style.display = 'flex';
+  document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { el.style.display = 'none'; document.removeEventListener('keydown', esc); } });
+}
+
+// Show Pro badge in nav if active
+function renderProNavBadge() {
+  const pro = getProStatus();
+  const nav = document.querySelector('#cc-nav-tools') || document.querySelector('.nav-r') || document.querySelector('.nav-links');
+  if (!nav || document.getElementById('cc-pro-badge')) return;
+  if (pro.active) {
+    const badge = document.createElement('span');
+    badge.id = 'cc-pro-badge';
+    badge.style.cssText = "font-family:'JetBrains Mono',monospace;font-size:.62rem;background:linear-gradient(135deg,#7c6aff,#4fffb0);color:#0a0a0f;padding:.18rem .45rem;border-radius:3px;font-weight:700";
+    badge.textContent = 'PRO';
+    badge.title = `Pro active · ${pro.daysLeft} days left`;
+    nav.prepend(badge);
+  }
+}
+
+// Flashcard limit for free users
+const FREE_FLASHCARD_LIMIT = 20;
+function getFlashcardLimit() { return isPro() ? Infinity : FREE_FLASHCARD_LIMIT; }
+
+/* ═══════════════════════════════════════════════════════════════
+   WEAK TOPIC TRACKER
+   ═══════════════════════════════════════════════════════════════ */
+
+function getWeakTopics() {
+  try { return JSON.parse(localStorage.getItem('cc-weak') || '{}'); } catch { return {}; }
+}
+
+function recordPYQResult(topicKey, correct, total) {
+  const weak = getWeakTopics();
+  if (!weak[topicKey]) weak[topicKey] = { correct: 0, total: 0, attempts: 0 };
+  weak[topicKey].correct += correct;
+  weak[topicKey].total += total;
+  weak[topicKey].attempts += 1;
+  weak[topicKey].pct = Math.round((weak[topicKey].correct / weak[topicKey].total) * 100);
+  weak[topicKey].lastAttempt = Date.now();
+  localStorage.setItem('cc-weak', JSON.stringify(weak));
+}
+
+function getWeakList(threshold = 60) {
+  const weak = getWeakTopics();
+  return Object.entries(weak)
+    .filter(([, v]) => v.pct < threshold)
+    .sort((a, b) => a[1].pct - b[1].pct)
+    .map(([key, v]) => ({ key, ...v }));
+}
+
