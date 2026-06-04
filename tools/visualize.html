@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept Visualizers — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:1100px;margin:0 auto;padding:2rem;}
+h1{font-size:1.8rem;font-weight:800;margin-bottom:.3rem;}
+.sub{color:var(--m);font-size:.88rem;margin-bottom:1.5rem;}
+
+/* CONCEPT GRID */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem;}
+.concept-card{background:var(--s);border:1px solid var(--b);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s;}
+.concept-card:hover{border-color:var(--acc);box-shadow:0 4px 16px rgba(124,106,255,.15);}
+.concept-header{padding:1.2rem;background:linear-gradient(135deg,rgba(124,106,255,.1),rgba(79,255,176,.06));border-bottom:1px solid var(--b);}
+.concept-icon{font-size:2rem;margin-bottom:.4rem;}
+.concept-title{font-size:1rem;font-weight:700;margin-bottom:.2rem;}
+.concept-desc{font-size:.8rem;color:var(--m);line-height:1.5;}
+.concept-canvas{width:100%;height:250px;background:#0a0a0f;display:block;}
+
+/* VISUALIZER MODAL */
+.viz-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:300;align-items:center;justify-content:center;padding:1rem;}
+.viz-content{background:var(--s);border:1px solid var(--b);border-radius:16px;width:100%;max-width:900px;max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;}
+.viz-header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem;border-bottom:1px solid var(--b);position:sticky;top:0;background:var(--s);flex-shrink:0;}
+.viz-title{display:flex;align-items:center;gap:.6rem;font-size:1.3rem;font-weight:800;}
+.close-btn{font-size:1.5rem;cursor:pointer;color:var(--m);background:none;border:none;padding:0;transition:color .2s;}
+.close-btn:hover{color:var(--t);}
+.viz-body{padding:2rem;flex:1;}
+.viz-canvas{width:100%;height:400px;border:1px solid var(--b);border-radius:8px;background:linear-gradient(135deg,#0a0a0f,#12121a);margin-bottom:1rem;}
+.viz-controls{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.btn{font-family:var(--mono);font-size:.75rem;padding:.5rem 1rem;border-radius:6px;border:1px solid var(--b);background:var(--s2);color:var(--m);cursor:pointer;transition:all .2s;}
+.btn:hover{border-color:var(--acc);color:var(--acc);}
+.btn.active{background:rgba(124,106,255,.2);border-color:var(--acc);color:var(--acc);}
+.explanation{background:rgba(124,106,255,.08);border:1px solid rgba(124,106,255,.2);border-radius:8px;padding:1rem;margin-bottom:1rem;font-size:.88rem;line-height:1.6;}
+.explanation h3{color:var(--acc);margin-bottom:.4rem;font-family:var(--mono);font-size:.75rem;text-transform:uppercase;}
+.explanation code{background:rgba(124,106,255,.1);padding:.1rem .3rem;border-radius:3px;color:var(--g);font-family:var(--mono);font-size:.78rem;}
+
+/* ANIMATIONS */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+@keyframes slide {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-pulse{animation:pulse 2s infinite;}
+.animate-slide{animation:slide 0.5s ease-out;}
+.animate-bounce{animation:bounce 0.8s;}
+
+@media(max-width:768px){
+  .page{padding:1rem}
+  .concept-grid{grid-template-columns:1fr}
+  .viz-modal{padding:0}
+  .viz-content{border-radius:0;max-height:100vh}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="../index.html">← Home</a>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="notes.html">📝 Notes</a>
+  </div>
+</nav>
+
+<div class="page">
+  <h1>🎨 Interactive Concept Visualizers</h1>
+  <p class="sub">Click any concept to see animated diagrams. Understand complex ideas visually in seconds.</p>
+
+  <div class="concept-grid" id="conceptGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="viz-modal" id="vizModal">
+  <div class="viz-content">
+    <div class="viz-header">
+      <div class="viz-title"><span id="vizIcon">🌳</span> <span id="vizName">Concept</span></div>
+      <button class="close-btn" onclick="closeVisualizer()">×</button>
+    </div>
+    <div class="viz-body">
+      <div class="viz-controls" id="vizControls"></div>
+      <canvas class="viz-canvas" id="vizCanvas"></canvas>
+      <div class="explanation" id="vizExplanation"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CONCEPTS = [
+  {
+    id: 'bst-search',
+    icon: '🌳',
+    name: 'BST Search Step-by-Step',
+    subject: 'DS',
+    desc: 'Watch how binary search tree search works with animations',
+    explanation: `
+      <h3>How BST Search Works</h3>
+      <p><code>search(25)</code> in tree with root 50:</p>
+      <ul style="margin-left:1rem;line-height:1.8">
+        <li>Compare 25 < 50 → go LEFT</li>
+        <li>Compare 25 > 15 → go RIGHT</li>
+        <li>Compare 25 = 25 → FOUND!</li>
+      </ul>
+      <p><strong>Time Complexity:</strong> O(log n) average, O(n) worst case (skewed tree)</p>
+    `,
+    draw: drawBSTSearch,
+    controls: ['Start', 'Step', 'Reset']
+  },
+  {
+    id: 'merge-sort',
+    icon: '📊',
+    name: 'Merge Sort Animation',
+    subject: 'Algo',
+    desc: 'Divide & conquer approach to sorting visualized',
+    explanation: `
+      <h3>Merge Sort Process</h3>
+      <ol style="margin-left:1rem;line-height:1.8">
+        <li><strong>Divide:</strong> Split array in half recursively</li>
+        <li><strong>Conquer:</strong> Sort left & right halves</li>
+        <li><strong>Merge:</strong> Combine sorted halves</li>
+      </ol>
+      <p><strong>Time:</strong> O(n log n) always | <strong>Space:</strong> O(n)</p>
+      <p><strong>Stable?</strong> Yes | <strong>In-place?</strong> No</p>
+    `,
+    draw: drawMergeSort,
+    controls: ['Play', 'Pause', 'Reset']
+  },
+  {
+    id: 'heap-insert',
+    icon: '📈',
+    name: 'Max Heap Insertion',
+    subject: 'DS',
+    desc: 'Insert element and bubble-up to maintain heap property',
+    explanation: `
+      <h3>Heap Property</h3>
+      <p>Parent ≥ Children (for max heap)</p>
+      <h3>Insertion Steps</h3>
+      <ol style="margin-left:1rem;line-height:1.8">
+        <li>Add element at last position</li>
+        <li>Compare with parent</li>
+        <li>If > parent, swap and repeat</li>
+        <li>Stop when heap property restored</li>
+      </ol>
+      <p><strong>Time:</strong> O(log n) | <strong>Complete binary tree?</strong> Always</p>
+    `,
+    draw: drawHeapInsert,
+    controls: ['Insert 42', 'Insert 88', 'Reset']
+  },
+  {
+    id: 'avl-rotate',
+    icon: '🔄',
+    name: 'AVL Tree Rotation',
+    subject: 'DS',
+    desc: 'Self-balancing rotation when balance factor violates constraints',
+    explanation: `
+      <h3>AVL Balance Condition</h3>
+      <p>Balance Factor = height(left) - height(right) ∈ {-1, 0, +1}</p>
+      <h3>Rotation Types</h3>
+      <ul style="margin-left:1rem;line-height:1.8">
+        <li><strong>LL case:</strong> Single RIGHT rotation</li>
+        <li><strong>RR case:</strong> Single LEFT rotation</li>
+        <li><strong>LR case:</strong> LEFT then RIGHT rotation</li>
+        <li><strong>RL case:</strong> RIGHT then LEFT rotation</li>
+      </ul>
+      <p><strong>Max height:</strong> ≈ 1.44 × log₂(n)</p>
+    `,
+    draw: drawAVLRotate,
+    controls: ['Show Imbalance', 'Left Rotate', 'Reset']
+  },
+  {
+    id: 'dijkstra',
+    icon: '🛤️',
+    name: 'Dijkstra\'s Algorithm',
+    subject: 'Algo',
+    desc: 'Shortest path from source to all vertices',
+    explanation: `
+      <h3>Greedy Approach</h3>
+      <ol style="margin-left:1rem;line-height:1.8">
+        <li>Mark source distance = 0, others = ∞</li>
+        <li>Pick unvisited vertex with min distance</li>
+        <li>Relax all neighbors: dist[v] = min(dist[v], dist[u] + weight)</li>
+        <li>Repeat until all visited</li>
+      </ol>
+      <p><strong>Time:</strong> O((V+E) log V) with min-heap | <strong>Fails on:</strong> Negative edges</p>
+    `,
+    draw: drawDijkstra,
+    controls: ['Start from A', 'Next Step', 'Reset']
+  },
+  {
+    id: 'process-states',
+    icon: '⚙️',
+    name: 'Process State Diagram',
+    subject: 'OS',
+    desc: 'Transitions between New, Ready, Running, Blocked, Terminated',
+    explanation: `
+      <h3>Process States</h3>
+      <ul style="margin-left:1rem;line-height:1.8">
+        <li><strong>New:</strong> Process created, waiting to be admitted</li>
+        <li><strong>Ready:</strong> In memory, waiting for CPU</li>
+        <li><strong>Running:</strong> Executing on CPU</li>
+        <li><strong>Blocked:</strong> Waiting for I/O or event</li>
+        <li><strong>Terminated:</strong> Execution complete</li>
+      </ul>
+      <p><strong>Dispatcher:</strong> Selects process from Ready queue</p>
+    `,
+    draw: drawProcessStates,
+    controls: ['Play Timeline', 'Pause', 'Reset']
+  },
+  {
+    id: 'page-replacement',
+    icon: '💾',
+    name: 'LRU Page Replacement',
+    subject: 'OS',
+    desc: 'FIFO vs LRU vs Optimal page replacement visualization',
+    explanation: `
+      <h3>Page Replacement Algorithms</h3>
+      <ul style="margin-left:1rem;line-height:1.8">
+        <li><strong>FIFO:</strong> Remove oldest page (suffers Belady's anomaly)</li>
+        <li><strong>LRU:</strong> Remove least recently used (stack algorithm)</li>
+        <li><strong>OPT:</strong> Remove page used farthest in future (impossible)</li>
+      </ul>
+      <p><strong>Page Fault:</strong> Requested page not in frame</p>
+      <p><strong>Belady's Anomaly:</strong> More frames → more faults (FIFO only!)</p>
+    `,
+    draw: drawPageReplacement,
+    controls: ['Reference: 7,0,1,2,0,3,0,4', 'Reset']
+  },
+  {
+    id: 'deadlock-circle',
+    icon: '🔒',
+    name: 'Deadlock Circle Detection',
+    subject: 'OS',
+    desc: '4 Coffman conditions and circular wait visualization',
+    explanation: `
+      <h3>4 Coffman Conditions (ALL must hold)</h3>
+      <ol style="margin-left:1rem;line-height:1.8">
+        <li><strong>Mutual Exclusion:</strong> Resource not shareable</li>
+        <li><strong>Hold & Wait:</strong> Process holds resources while waiting</li>
+        <li><strong>No Preemption:</strong> Can't force resource release</li>
+        <li><strong>Circular Wait:</strong> Circular chain of waiting</li>
+      </ol>
+      <p><strong>Prevention:</strong> Break at least one condition</p>
+      <p><strong>Detection:</strong> Wait-for graph, banker's algorithm</p>
+    `,
+    draw: drawDeadlockCircle,
+    controls: ['Show Cycle', 'Resolve', 'Reset']
+  },
+  {
+    id: 'dfa-simulation',
+    icon: '🤖',
+    name: 'DFA Simulation',
+    subject: 'TOC',
+    desc: 'Deterministic Finite Automaton state transitions',
+    explanation: `
+      <h3>DFA Properties</h3>
+      <ul style="margin-left:1rem;line-height:1.8">
+        <li><strong>Deterministic:</strong> One transition per (state, input)</li>
+        <li><strong>No ε-transitions:</strong> Every move consumes input</li>
+        <li><strong>Accepts:</strong> If ends in accept state</li>
+      </ul>
+      <p><strong>Example:</strong> DFA for strings ending in '01'</p>
+      <p><strong>String "1001":</strong> q0→q1→q0→q1→q2 → ACCEPT ✓</p>
+    `,
+    draw: drawDFASimulation,
+    controls: ['Animate String "1001"', 'Try "101"', 'Reset']
+  },
+  {
+    id: 'kmap',
+    icon: '🗺️',
+    name: 'Karnaugh Map (4-var)',
+    subject: 'DL',
+    desc: 'Minimize Boolean function with K-Map grouping',
+    explanation: `
+      <h3>K-Map Grouping Rules</h3>
+      <ul style="margin-left:1rem;line-height:1.8">
+        <li>Group 1s (minterms)</li>
+        <li>Groups must be 2^n in size</li>
+        <li>Maximize group sizes</li>
+        <li>Use don't-cares to expand groups</li>
+        <li>Minimize number of groups</li>
+      </ul>
+      <p><strong>Example:</strong> f(A,B,C,D) = Σm(0,2,4,6,8,10,12,14)</p>
+      <p><strong>Result:</strong> D' (all minterms have D=0)</p>
+    `,
+    draw: drawKMap,
+    controls: ['Highlight D=0 cells', 'Show Simplified', 'Reset']
+  },
+  {
+    id: 'pipeline-stages',
+    icon: '🔄',
+    name: 'CPU Pipeline Stages',
+    subject: 'COA',
+    desc: 'Instruction pipeline: Fetch → Decode → Execute → Memory → Write-back',
+    explanation: `
+      <h3>5-Stage Pipeline</h3>
+      <ol style="margin-left:1rem;line-height:1.8">
+        <li><strong>IF:</strong> Fetch instruction from memory</li>
+        <li><strong>ID:</strong> Decode instruction, read registers</li>
+        <li><strong>EX:</strong> Execute ALU operation</li>
+        <li><strong>MEM:</strong> Memory access (load/store)</li>
+        <li><strong>WB:</strong> Write result back to register</li>
+      </ol>
+      <p><strong>CPI:</strong> Ideal = 1 (one instr/cycle)</p>
+      <p><strong>Speedup:</strong> ≈ stages × (for large n)</p>
+    `,
+    draw: drawPipeline,
+    controls: ['Play', 'Pause', 'Reset']
+  },
+  {
+    id: 'cache-hierarchy',
+    icon: '🧠',
+    name: 'Memory Hierarchy & AMAT',
+    subject: 'COA',
+    desc: 'L1 → L2 → Memory access time calculation',
+    explanation: `
+      <h3>Average Memory Access Time (AMAT)</h3>
+      <p><code>AMAT = L1_hit_time + L1_miss_rate × (L2_hit_time + L2_miss_rate × Mem_time)</code></p>
+      <p><strong>Example:</strong> L1: 1ns, 5% miss | L2: 10ns, 20% miss | Mem: 100ns</p>
+      <p><code>= 1 + 0.05 × (10 + 0.2 × 100) = 1 + 0.05 × 30 = 2.5ns</code></p>
+      <p><strong>Hierarchy:</strong> Registers (fastest, smallest) → L1 → L2 → Memory (slowest, largest)</p>
+    `,
+    draw: drawMemoryHierarchy,
+    controls: ['Show AMAT Calc', 'Hit Scenario', 'Miss Scenario']
+  }
+];
+
+function openVisualizer(id) {
+  const concept = CONCEPTS.find(c=>c.id===id);
+  if (!concept) return;
+  
+  document.getElementById('vizIcon').textContent = concept.icon;
+  document.getElementById('vizName').textContent = concept.name;
+  document.getElementById('vizExplanation').innerHTML = concept.explanation;
+  
+  const ctrl = document.getElementById('vizControls');
+  ctrl.innerHTML = concept.controls.map((c,i)=>
+    `<button class="btn ${i===0?'active':''}" onclick="controlViz('${concept.id}',${i})">${c}</button>`
+  ).join('');
+  
+  const canvas = document.getElementById('vizCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  
+  window.currentConcept = {concept, ctx, canvas, state: 0};
+  concept.draw(ctx, 0);
+  
+  document.getElementById('vizModal').style.display = 'flex';
+}
+
+function closeVisualizer() {
+  document.getElementById('vizModal').style.display = 'none';
+}
+
+function controlViz(id, idx) {
+  if (!window.currentConcept) return;
+  const cpt = window.currentConcept.concept;
+  const {ctx, canvas} = window.currentConcept;
+  window.currentConcept.state = idx;
+  
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  cpt.draw(ctx, idx);
+  
+  document.querySelectorAll('#vizControls .btn').forEach((b,i)=>
+    b.classList.toggle('active', i===idx)
+  );
+}
+
+// Draw functions
+function drawBSTSearch(ctx, step) {
+  ctx.fillStyle='#12121a'; ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+  ctx.font='bold 16px sans-serif'; ctx.textAlign='center'; ctx.fillStyle='#e8e8f0';
+  
+  const nodes = [{v:50,x:200,y:50},{v:30,x:100,y:120},{v:70,x:300,y:120},{v:15,x:50,y:190},{v:40,x:150,y:190},{v:25,x:120,y:260}];
+  const steps_arr = [
+    {msg:'Starting search for 25',highlight:[]},
+    {msg:'25 < 50 → go LEFT',highlight:[0,1]},
+    {msg:'25 > 15 → go RIGHT',highlight:[1,5]},
+    {msg:'25 = 25 → FOUND! ✓',highlight:[5],color:'#4fffb0'}
+  ];
+  
+  ctx.strokeStyle='#2a2a3d'; ctx.lineWidth=2;
+  for(let i=0;i<nodes.length;i++) {
+    const n=nodes[i];
+    if (i>0) {
+      const p=nodes[i>3?Math.floor((i-2)/2):i===1?0:0];
+      ctx.beginPath(); ctx.moveTo(p.x,p.y+20); ctx.lineTo(n.x,n.y-20); ctx.stroke();
+    }
+  }
+  
+  nodes.forEach((n,i)=>{
+    const isHi = step<=steps_arr.length-1 && steps_arr[step].highlight.includes(i);
+    ctx.fillStyle = isHi ? (steps_arr[step].color||'#7c6aff') : '#12121a';
+    ctx.strokeStyle = isHi ? (steps_arr[step].color||'#7c6aff') : '#6b6b8a';
+    ctx.lineWidth = isHi ? 3 : 2;
+    ctx.beginPath(); ctx.arc(n.x,n.y,20,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = isHi ? '#0a0a0f' : '#e8e8f0'; ctx.fillText(n.v,n.x,n.y+5);
+  });
+  
+  ctx.font='14px monospace'; ctx.fillStyle='#4fffb0'; ctx.textAlign='left';
+  ctx.fillText(steps_arr[Math.min(step,3)].msg, 20, 30);
+}
+
+function drawMergeSort(ctx, step) {
+  ctx.fillStyle='#12121a'; ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+  const arr = [38,27,43,3,9,82,10];
+  const x0=20, y0=50, h=30, gap=5;
+  
+  const stages = [
+    {label:'Original',bars:[[38,'#ff6a6a'],[27,'#ff6a6a'],[43,'#ff6a6a'],[3,'#ff6a6a'],[9,'#ff6a6a'],[82,'#ff6a6a'],[10,'#ff6a6a']]},
+    {label:'After Divide',bars:[[38,'#ffd166'],[27,'#ffd166'],[43,'#4fffb0'],[3,'#4fffb0'],[9,'#4fffb0'],[82,'#fd79a8'],[10,'#fd79a8']]},
+    {label:'Sorted Halves',bars:[[27,'#4fffb0'],[38,'#4fffb0'],[3,'#4fffb0'],[9,'#4fffb0'],[43,'#fd79a8'],[10,'#fd79a8'],[82,'#fd79a8']]},
+    {label:'Merged!',bars:[[3,'#g'],[9,'#g'],[27,'#g'],[38,'#g'],[10,'#g'],[43,'#g'],[82,'#g']]},
+  ];
+  
+  const stage = stages[Math.min(step,stages.length-1)];
+  ctx.font='14px monospace'; ctx.fillStyle='#6b6b8a'; ctx.fillText(stage.label, x0, 30);
+  
+  stage.bars.forEach((b,i)=>{
+    const col = b[1]==='#g'?'#4fffb0':b[1];
+    ctx.fillStyle=col; ctx.fillRect(x0+i*35, y0, 30, h); ctx.fillStyle='#0a0a0f';
+    ctx.fillText(b[0], x0+i*35+7, y0+h+15);
+  });
+  
+  ctx.fillStyle='#4fffb0'; ctx.fillText('O(n log n) time | O(n) space | Stable sort', x0, 250);
+}
+
+function drawHeapInsert(ctx, step) {
+  ctx.fillStyle='#12121a'; ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+  const nodes = [{v:90,x:200,y:40},{v:70,x:100,y:100},{v:50,x:300,y:100},{v:60,x:50,y:160},{v:30,x:150,y:160},{v:[42,88][step-1]||0,x:250,y:160}];
+  
+  ctx.strokeStyle='#2a2a3d'; ctx.lineWidth=2;
+  for(let i=0;i<nodes.length;i++) {
+    if(i>0) {
+      const p = nodes[Math.floor((i-1)/2)];
+      ctx.beginPath(); ctx.moveTo(p.x,p.y+15); ctx.lineTo(nodes[i].x,nodes[i].y-15); ctx.stroke();
+    }
+  }
+  
+  nodes.forEach((n,i)=>{
+    ctx.fillStyle = step===i+1 ? '#ff6a6a' : '#7c6aff';
+    ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(n.x,n.y,15,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#0a0a0f'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(n.v,n.x,n.y+4);
+  });
+  
+  ctx.fillStyle='#4fffb0'; ctx.font='14px monospace'; ctx.textAlign='left';
+  ctx.fillText(['Insert 42','Bubble-up', 'Swap & done!'][Math.min(step,2)], 20, 30);
+}
+
+function drawAVLRotate(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);ctx.font='14px monospace';ctx.fillStyle='#ffd166';ctx.textAlign='left';ctx.fillText(['Imbalance LL','Left rotation','Balanced!'][step],20,30);}
+function drawDijkstra(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);ctx.fillStyle='#4fffb0';ctx.font='14px sans-serif';ctx.fillText(['Start from A','Visit neighbors','Done!'][step],20,40);}
+function drawProcessStates(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);ctx.fillStyle='#7c6aff';ctx.font='14px sans-serif';ctx.fillText('New→Ready→Running→Blocked→Terminated',20,40);}
+function drawPageReplacement(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);ctx.fillStyle='#fd79a8';ctx.font='12px monospace';ctx.fillText('Ref: 7,0,1,2,0,3,0,4 | FIFO: 4 faults | LRU: 3 faults',20,40);}
+function drawDeadlockCircle(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);const r=60;ctx.strokeStyle='#ff6a6a';ctx.lineWidth=2;ctx.beginPath();ctx.arc(150,100,r,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#ff6a6a';ctx.fillText('P1→P2→P3→P1',120,105);}
+function drawDFASimulation(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);ctx.fillStyle='#4fffb0';ctx.font='14px monospace';ctx.fillText('String: 1001 | Path: q0→q1→q0→q1→q2 | ACCEPT ✓',20,40);}
+function drawKMap(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);ctx.fillStyle='#ffd166';ctx.font='12px monospace';ctx.fillText('4-variable K-Map | Grouping 1s | Result: D\'',20,40);}
+function drawPipeline(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);['IF','ID','EX','MEM','WB'].forEach((s,i)=>{ctx.fillStyle=step>i?'#7c6aff':'#2a2a3d';ctx.fillRect(40+i*50,50,45,60);ctx.fillStyle='#e8e8f0';ctx.font='12px sans-serif';ctx.fillText(s,42+i*50,85);});}
+function drawMemoryHierarchy(ctx,step){ctx.fillStyle='#12121a';ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);ctx.fillStyle='#4fffb0';ctx.font='12px monospace';ctx.fillText('L1(1ns)→L2(10ns)→Memory(100ns) | AMAT=2.5ns',20,40);}
+
+// Render grid
+document.getElementById('conceptGrid').innerHTML = CONCEPTS.map(c=>`
+  <div class="concept-card" onclick="openVisualizer('${c.id}')">
+    <div class="concept-header">
+      <div class="concept-icon">${c.icon}</div>
+      <div class="concept-title">${c.name}</div>
+      <div class="concept-desc">${c.desc}</div>
+    </div>
+    <canvas class="concept-canvas" width="300" height="250"></canvas>
+  </div>
+`).join('');
+
+// Draw thumbnails
+CONCEPTS.forEach(c=>{
+  const canvas = document.querySelector(`[data-concept="${c.id}"]`);
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,300,250);
+    c.draw(ctx, 0);
+  }
+});
+
+document.addEventListener('click', e=>{
+  if (e.target.id==='vizModal') closeVisualizer();
+});
+</script>
+</body>
+</html>
