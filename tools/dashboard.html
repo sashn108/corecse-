@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Dashboard — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:1200px;margin:0 auto;padding:2rem;}
+h1{font-size:1.8rem;font-weight:800;margin-bottom:.3rem;}
+.sub{color:var(--m);font-size:.88rem;margin-bottom:1.5rem;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:2rem;}
+.stat-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:1rem;text-align:center;}
+.stat-val{font-family:var(--mono);font-size:1.6rem;font-weight:700;display:block;color:var(--acc);}
+.stat-label{font-size:.72rem;color:var(--m);margin-top:.2rem;}
+.stat-card.good .stat-val{color:var(--g);}
+.stat-card.warn .stat-val{color:var(--y);}
+.stat-card.bad .stat-val{color:var(--r);}
+
+/* CHART CARDS */
+.chart-wrap{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;}
+.chart-title{font-family:var(--mono);font-size:.75rem;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;}
+.chart-container{position:relative;height:300px;margin-bottom:.5rem;}
+
+/* WEAK TOPICS */
+.weak-topics{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;}
+.weak-topics h3{font-family:var(--mono);font-size:.75rem;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;}
+.topic-item{padding:.6rem;background:var(--s2);border-radius:8px;margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between;}
+.topic-name{font-size:.87rem;font-weight:600;}
+.topic-subj{font-family:var(--mono);font-size:.65rem;color:var(--m);margin-top:.2rem;}
+.topic-score{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--r);}
+.bar{height:4px;background:var(--b);border-radius:2px;width:100%;margin-top:.3rem;overflow:hidden;}
+.bar-fill{height:100%;background:var(--r);border-radius:2px;}
+
+/* SUBJECT WISE */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
+.subj-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:1.2rem;}
+.subj-name{font-size:.88rem;font-weight:700;margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem;}
+.subj-dot{width:8px;height:8px;border-radius:50%;}
+.subj-stat{font-family:var(--mono);font-size:.75rem;color:var(--m);margin-bottom:.2rem;}
+.subj-val{font-family:var(--mono);font-size:1rem;font-weight:700;}
+.progress-bar{height:6px;background:var(--b);border-radius:3px;margin-top:.5rem;overflow:hidden;}
+.progress-fill{height:100%;background:var(--acc);border-radius:3px;transition:width .3s;}
+
+/* MOCK TEST HISTORY */
+.mock-hist{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:1.5rem;}
+.mock-hist h3{font-family:var(--mono);font-size:.75rem;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;}
+.mock-item{padding:1rem;background:var(--s2);border-radius:8px;margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between;border-left:3px solid var(--b);}
+.mock-item.high{border-left-color:var(--g);}
+.mock-item.med{border-left-color:var(--y);}
+.mock-item.low{border-left-color:var(--r);}
+.mock-date{font-family:var(--mono);font-size:.7rem;color:var(--m);}
+.mock-name{font-size:.85rem;font-weight:600;margin-bottom:.1rem;}
+.mock-score{font-family:var(--mono);font-size:1.1rem;font-weight:700;}
+
+/* RECOMMENDATIONS */
+.recommendations{background:linear-gradient(135deg,rgba(124,106,255,.08),rgba(79,255,176,.04));border:1px solid rgba(124,106,255,.2);border-radius:12px;padding:1.5rem;}
+.rec-title{font-family:var(--mono);font-size:.75rem;color:var(--acc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;}
+.rec-item{padding:.7rem;background:rgba(10,10,15,.5);border-radius:6px;margin-bottom:.5rem;display:flex;gap:.6rem;align-items:flex-start;}
+.rec-icon{font-size:1rem;flex-shrink:0;}
+.rec-text{font-size:.82rem;line-height:1.5;}
+.rec-action{color:var(--acc);font-family:var(--mono);cursor:pointer;text-decoration:none;font-size:.72rem;margin-top:.3rem;display:inline-block;}
+
+/* BUTTONS */
+.btn{font-family:var(--mono);font-size:.75rem;padding:.5rem 1rem;border-radius:6px;border:1px solid var(--b);background:var(--s);color:var(--m);cursor:pointer;transition:all .2s;}
+.btn:hover{border-color:var(--acc);color:var(--acc);}
+.btn-primary{background:var(--acc);color:#fff;border-color:var(--acc);}
+.btn-primary:hover{opacity:.85;}
+
+@media(max-width:768px){
+  .page{padding:1rem}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-container{height:250px}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="../index.html">← Home</a>
+    <a href="planner.html">📅 Planner</a>
+    <a href="daily.html">📅 Daily</a>
+    <a href="flashcards.html">🃏 Cards</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+    <div>
+      <h1>📊 Performance Dashboard</h1>
+      <p class="sub">Track mock tests, identify weak topics, monitor progress toward AIR rank</p>
+    </div>
+    <button class="btn btn-primary" onclick="addMockTest()">+ Add Mock Test</button>
+  </div>
+
+  <!-- OVERALL STATS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-val" id="totalMocks">0</span>
+      <div class="stat-label">Total Mocks</div>
+    </div>
+    <div class="stat-card good">
+      <span class="stat-val" id="bestScore">0</span>
+      <div class="stat-label">Best Score</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="avgScore">0</span>
+      <div class="stat-label">Avg Score</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="accuracy">0%</span>
+      <div class="stat-label">Accuracy</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="studyDays">0</span>
+      <div class="stat-label">Study Days</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="estimatedRank">—</span>
+      <div class="stat-label">Est. Rank*</div>
+    </div>
+  </div>
+
+  <!-- SCORE TREND CHART -->
+  <div class="chart-wrap">
+    <div class="chart-title">📈 Score Trend (Last 10 Mocks)</div>
+    <div class="chart-container"><canvas id="scoreChart"></canvas></div>
+    <p style="font-family:var(--mono);font-size:.7rem;color:var(--m);">*Estimated based on avg score & weightage (subject to change)</p>
+  </div>
+
+  <!-- SUBJECT-WISE PERFORMANCE -->
+  <div class="chart-wrap">
+    <div class="chart-title">⚙️ Subject-Wise Performance</div>
+    <div class="chart-container"><canvas id="subjectChart"></canvas></div>
+  </div>
+
+  <!-- SUBJECT CARDS -->
+  <div class="subj-grid" id="subjCards"></div>
+
+  <!-- WEAK TOPICS -->
+  <div class="weak-topics">
+    <h3>🔴 Weak Topics (< 50% accuracy)</h3>
+    <div id="weakTopicsList" style="display:none">
+      <!-- Populated by JS -->
+    </div>
+    <div id="noWeakTopics" style="padding:1rem;color:var(--m);text-align:center;font-size:.85rem;">
+      No weak topics detected yet. Keep practicing! 🎯
+    </div>
+  </div>
+
+  <!-- RECENT MOCKS -->
+  <div class="mock-hist">
+    <h3>📋 Recent Mocks</h3>
+    <div id="mockList" style="color:var(--m);text-align:center;font-size:.85rem;padding:1rem;">
+      No mocks added yet. Take your first mock test! 🚀
+    </div>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="recommendations">
+    <div class="rec-title">💡 Personalized Recommendations</div>
+    <div id="recList">
+      <div class="rec-item">
+        <span class="rec-icon">📌</span>
+        <div class="rec-text">
+          <strong>Start your first mock test</strong> to get personalized recommendations based on your performance.
+          <a href="daily.html" class="rec-action">→ Daily PYQ Practice</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOR ADDING MOCK -->
+<div id="mockModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center;">
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:12px;padding:2rem;width:90%;max-width:400px;">
+    <h2 style="margin-bottom:1rem;">Add Mock Test Result</h2>
+    <div style="margin-bottom:.8rem;">
+      <label style="display:block;margin-bottom:.3rem;font-family:var(--mono);font-size:.75rem;color:var(--m);">Mock Name</label>
+      <input type="text" id="mockName" placeholder="Full Length Mock 1" style="width:100%;padding:.5rem;background:var(--s2);border:1px solid var(--b);border-radius:6px;color:var(--t);font-family:var(--sans);">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem;">
+      <div>
+        <label style="display:block;margin-bottom:.3rem;font-family:var(--mono);font-size:.75rem;color:var(--m);">Total Marks</label>
+        <input type="number" id="mockTotal" value="100" style="width:100%;padding:.5rem;background:var(--s2);border:1px solid var(--b);border-radius:6px;color:var(--t);font-family:var(--sans);">
+      </div>
+      <div>
+        <label style="display:block;margin-bottom:.3rem;font-family:var(--mono);font-size:.75rem;color:var(--m);">Your Score</label>
+        <input type="number" id="mockScore" placeholder="0" style="width:100%;padding:.5rem;background:var(--s2);border:1px solid var(--b);border-radius:6px;color:var(--t);font-family:var(--sans);">
+      </div>
+    </div>
+    <div style="margin-bottom:.8rem;">
+      <label style="display:block;margin-bottom:.3rem;font-family:var(--mono);font-size:.75rem;color:var(--m);">Correct Answers</label>
+      <input type="number" id="mockCorrect" placeholder="0" style="width:100%;padding:.5rem;background:var(--s2);border:1px solid var(--b);border-radius:6px;color:var(--t);font-family:var(--sans);">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.5rem;">
+      <div>
+        <label style="display:block;margin-bottom:.3rem;font-family:var(--mono);font-size:.75rem;color:var(--m);">Date</label>
+        <input type="date" id="mockDate" style="width:100%;padding:.5rem;background:var(--s2);border:1px solid var(--b);border-radius:6px;color:var(--t);font-family:var(--sans);">
+      </div>
+      <div>
+        <label style="display:block;margin-bottom:.3rem;font-family:var(--mono);font-size:.75rem;color:var(--m);">Weak Subject</label>
+        <select id="mockWeakSubj" style="width:100%;padding:.5rem;background:var(--s2);border:1px solid var(--b);border-radius:6px;color:var(--t);font-family:var(--sans);">
+          <option value="">None</option>
+          <option value="os">OS</option>
+          <option value="ds">DS</option>
+          <option value="algo">Algo</option>
+          <option value="dbms">DBMS</option>
+          <option value="cn">CN</option>
+          <option value="toc">TOC</option>
+          <option value="dl">DL</option>
+          <option value="dm">DM</option>
+          <option value="coa">COA</option>
+          <option value="cd">CD</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:.8rem;">
+      <button class="btn btn-primary" style="flex:1" onclick="saveMock()">Save Mock</button>
+      <button class="btn" style="flex:1" onclick="closeMockModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS = {os:'#7c6aff',ds:'#4fffb0',algo:'#ffd166',dbms:'#ff9f43',cn:'#00cfe8',toc:'#a29bfe',dl:'#fdcb6e',dm:'#55efc4',coa:'#fd79a8',cd:'#e17055'};
+const SUBS = Object.keys(COLORS);
+
+let mocks = JSON.parse(localStorage.getItem('dashboard_mocks') || '[]');
+let charts = {};
+
+function addMockTest() {
+  document.getElementById('mockDate').valueAsDate = new Date();
+  document.getElementById('mockModal').style.display = 'flex';
+  document.getElementById('mockName').focus();
+}
+
+function closeMockModal() {
+  document.getElementById('mockModal').style.display = 'none';
+}
+
+function saveMock() {
+  const name = document.getElementById('mockName').value || 'Mock Test';
+  const total = parseFloat(document.getElementById('mockTotal').value) || 100;
+  const score = parseFloat(document.getElementById('mockScore').value) || 0;
+  const correct = parseFloat(document.getElementById('mockCorrect').value) || 0;
+  const date = document.getElementById('mockDate').value || new Date().toISOString().split('T')[0];
+  const weakSubj = document.getElementById('mockWeakSubj').value;
+
+  mocks.push({ id: Date.now(), name, total, score, correct, date, weakSubj, acc: correct/65*100 });
+  mocks.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  localStorage.setItem('dashboard_mocks', JSON.stringify(mocks));
+  
+  closeMockModal();
+  render();
+  document.getElementById('mockName').value = '';
+  document.getElementById('mockScore').value = '';
+  document.getElementById('mockCorrect').value = '';
+}
+
+function deleteMock(id) {
+  if (!confirm('Delete this mock?')) return;
+  mocks = mocks.filter(m=>m.id!==id);
+  localStorage.setItem('dashboard_mocks', JSON.stringify(mocks));
+  render();
+}
+
+function render() {
+  const total = mocks.length;
+  const best = total ? Math.max(...mocks.map(m=>m.score)) : 0;
+  const avg = total ? (mocks.reduce((a,m)=>a+m.score,0)/total).toFixed(1) : 0;
+  const acc = total ? (mocks.reduce((a,m)=>a+m.acc,0)/total).toFixed(1) : 0;
+  
+  document.getElementById('totalMocks').textContent = total;
+  document.getElementById('bestScore').textContent = best;
+  document.getElementById('avgScore').textContent = avg;
+  document.getElementById('accuracy').textContent = acc+'%';
+  document.getElementById('studyDays').textContent = new Set(mocks.map(m=>m.date)).size;
+  
+  // Estimate rank (very rough formula based on avg score)
+  const estRank = total && avg>=70 ? Math.round(1500 - (avg-50)*100) : '—';
+  document.getElementById('estimatedRank').textContent = estRank;
+
+  // Charts
+  renderScoreChart();
+  renderSubjectChart();
+  renderSubjCards();
+  renderWeakTopics();
+  renderMockList();
+  renderRecommendations();
+}
+
+function renderScoreChart() {
+  const data = mocks.slice(-10).map(m=>({x:m.date.slice(5),y:m.score}));
+  const ctx = document.getElementById('scoreChart')?.getContext('2d');
+  if (!ctx) return;
+  
+  if (charts.score) charts.score.destroy();
+  charts.score = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map(d=>d.x),
+      datasets: [{
+        label: 'Score',
+        data: data.map(d=>d.y),
+        borderColor: '#7c6aff',
+        backgroundColor: 'rgba(124,106,255,.1)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: '#7c6aff',
+        pointBorderColor: '#fff',
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {legend: {display:false}},
+      scales: {
+        y: {beginAtZero:true, max:100, ticks:{color:'#6b6b8a'}, grid:{color:'#2a2a3d'}},
+        x: {ticks:{color:'#6b6b8a'}, grid:{drawBorder:false,color:'transparent'}}
+      }
+    }
+  });
+}
+
+function renderSubjectChart() {
+  const subData = {};
+  SUBS.forEach(s=>subData[s]={correct:0,total:0});
+  mocks.forEach(m=>{
+    if (m.weakSubj) {
+      subData[m.weakSubj].total++;
+      subData[m.weakSubj].correct += m.acc/100;
+    }
+  });
+
+  const ctx = document.getElementById('subjectChart')?.getContext('2d');
+  if (!ctx) return;
+  
+  if (charts.subject) charts.subject.destroy();
+  charts.subject = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: SUBS.map(s=>s.toUpperCase()),
+      datasets: [{
+        label: 'Accuracy %',
+        data: SUBS.map(s=>subData[s].total ? Math.round(subData[s].correct/subData[s].total*100) : 0),
+        backgroundColor: SUBS.map(s=>COLORS[s]),
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'x',
+      plugins: {legend:{display:false}},
+      scales: {
+        y: {beginAtZero:true, max:100, ticks:{color:'#6b6b8a'}, grid:{color:'#2a2a3d'}},
+        x: {ticks:{color:'#6b6b8a'}, grid:{drawBorder:false,color:'transparent'}}
+      }
+    }
+  });
+}
+
+function renderSubjCards() {
+  const subData = {};
+  SUBS.forEach(s=>subData[s]={correct:0,total:0,weight:0});
+  mocks.forEach(m=>{
+    if (m.weakSubj) {
+      subData[m.weakSubj].total++;
+      subData[m.weakSubj].correct += m.acc/100;
+    }
+  });
+
+  document.getElementById('subjCards').innerHTML = SUBS.map(s=>{
+    const acc = subData[s].total ? Math.round(subData[s].correct/subData[s].total*100) : 0;
+    return `<div class="subj-card" style="border-color:${COLORS[s]}44">
+      <div class="subj-name"><span class="subj-dot" style="background:${COLORS[s]}"></span>${s.toUpperCase()}</div>
+      <div class="subj-stat">Mocks: <span class="subj-val">${subData[s].total}</span></div>
+      <div class="subj-stat">Accuracy: <span class="subj-val" style="color:${acc<50?'#ff6a6a':acc<70?'#ffd166':'#4fffb0'}">${acc}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${acc}%;background:${COLORS[s]}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderWeakTopics() {
+  const subData = {};
+  SUBS.forEach(s=>subData[s]={correct:0,total:0});
+  mocks.forEach(m=>{
+    if (m.weakSubj) {
+      subData[m.weakSubj].total++;
+      subData[m.weakSubj].correct += m.acc/100;
+    }
+  });
+
+  const weak = SUBS.filter(s=>subData[s].total>0 && subData[s].correct/subData[s].total<0.5)
+    .map(s=>({s, acc: Math.round(subData[s].correct/subData[s].total*100)}))
+    .sort((a,b)=>a.acc-b.acc);
+
+  if (weak.length) {
+    document.getElementById('noWeakTopics').style.display = 'none';
+    document.getElementById('weakTopicsList').style.display = 'block';
+    document.getElementById('weakTopicsList').innerHTML = weak.map(w=>`
+      <div class="topic-item">
+        <div>
+          <div class="topic-name">🔴 ${w.s.toUpperCase()}</div>
+          <div class="topic-subj">Average accuracy: ${w.acc}%</div>
+          <div class="bar"><div class="bar-fill" style="width:${w.acc}%"></div></div>
+        </div>
+        <div class="topic-score">Focus Area</div>
+      </div>
+    `).join('');
+  } else {
+    document.getElementById('noWeakTopics').style.display = 'block';
+    document.getElementById('weakTopicsList').style.display = 'none';
+  }
+}
+
+function renderMockList() {
+  const el = document.getElementById('mockList');
+  if (!mocks.length) {
+    el.innerHTML = 'No mocks added yet. Take your first mock test! 🚀';
+    el.style.paddingLeft = el.style.paddingRight = '1rem';
+    return;
+  }
+  el.innerHTML = mocks.slice().reverse().slice(0,8).map(m=>{
+    const percent = (m.score/m.total*100).toFixed(0);
+    const cls = percent>=70?'high':percent>=50?'med':'low';
+    return `<div class="mock-item ${cls}">
+      <div>
+        <div class="mock-name">${m.name}</div>
+        <div class="mock-date">${new Date(m.date).toLocaleDateString('en-IN')}</div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:center;">
+        <div class="mock-score">${m.score}/${m.total}</div>
+        <button style="background:none;border:none;color:var(--m);cursor:pointer;padding:.3rem;" onclick="deleteMock(${m.id})">×</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderRecommendations() {
+  const recs = [];
+  const avg = mocks.length ? mocks.reduce((a,m)=>a+m.score,0)/mocks.length : 0;
+  const weak = {};
+  SUBS.forEach(s=>weak[s]={c:0,t:0});
+  mocks.forEach(m=>{if(m.weakSubj){weak[m.weakSubj].t++; weak[m.weakSubj].c+=m.acc/100;}});
+  const worstSubj = SUBS.filter(s=>weak[s].t>0).sort((a,b)=>(weak[b].c/weak[b].t)-(weak[a].c/weak[a].t))[0];
+
+  if (mocks.length < 5) recs.push({icon:'📈',title:'Take more mocks',text:'You need at least 5 mocks for meaningful analysis. Consistent practice reveals patterns.'});
+  if (avg < 50 && mocks.length) recs.push({icon:'📚',title:'Strengthen fundamentals',text:'Your average is below 50%. Review core concepts and practice daily PYQs.'});
+  if (worstSubj) recs.push({icon:'🎯',title:`Focus on ${worstSubj.toUpperCase()}`,text:`Your ${worstSubj.toUpperCase()} accuracy is low. Dedicate extra time here.`});
+  if (avg >= 70 && mocks.length) recs.push({icon:'🚀',title:'Excellent progress!',text:'You\'re on track for a good rank. Keep pushing and refine weak areas.'});
+  if (!mocks.length) recs.push({icon:'📌',title:'Start your first mock',text:'Take a full-length mock to benchmark your current level and identify weak areas.'});
+
+  document.getElementById('recList').innerHTML = recs.map(r=>`
+    <div class="rec-item">
+      <span class="rec-icon">${r.icon}</span>
+      <div class="rec-text"><strong>${r.title}</strong><br>${r.text}</div>
+    </div>
+  `).join('');
+}
+
+render();
+</script>
+</body>
+</html>
