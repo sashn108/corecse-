@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Success Stories — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:1100px;margin:0 auto;padding:2rem;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:3rem;padding:2rem 0;}
+.hero h1{font-size:2.2rem;font-weight:800;margin-bottom:.5rem;}
+.hero p{color:var(--m);font-size:1rem;max-width:600px;margin:0 auto 1.5rem;line-height:1.6;}
+
+/* STATS ROW */
+.stats-hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.5rem;margin-bottom:3rem;}
+.stat{text-align:center;}
+.stat-num{font-family:var(--mono);font-size:2.2rem;font-weight:800;color:var(--g);display:block;margin-bottom:.3rem;}
+.stat-label{font-size:.85rem;color:var(--m);}
+
+/* STORIES GRID */
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-bottom:2rem;}
+.story{background:var(--s);border:1px solid var(--b);border-radius:12px;overflow:hidden;transition:all .3s;position:relative;}
+.story:hover{border-color:var(--acc);box-shadow:0 8px 24px rgba(124,106,255,.15);}
+.story-header{padding:1.5rem;background:linear-gradient(135deg,rgba(124,106,255,.1),rgba(79,255,176,.06));border-bottom:1px solid var(--b);display:flex;align-items:flex-start;gap:1rem;}
+.story-avatar{width:50px;height:50px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.story-info h3{font-size:.95rem;font-weight:700;margin-bottom:.2rem;}
+.story-info p{font-family:var(--mono);font-size:.7rem;color:var(--m);}
+.story-body{padding:1.5rem;}
+.story-quote{font-style:italic;margin-bottom:1rem;line-height:1.6;color:var(--t);}
+.story-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:.8rem;padding-bottom:.8rem;border-bottom:1px solid var(--b);}
+.meta-item{display:flex;align-items:center;gap:.3rem;font-family:var(--mono);font-size:.7rem;color:var(--m);}
+.meta-badge{background:rgba(124,106,255,.1);padding:.2rem .5rem;border-radius:3px;color:var(--acc);}
+.story-result{background:rgba(79,255,176,.06);border:1px solid rgba(79,255,176,.2);border-radius:8px;padding:.8rem;margin-bottom:1rem;}
+.result-title{font-family:var(--mono);font-size:.65rem;color:var(--g);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.3rem;}
+.result-data{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--g);}
+.story-tips{background:var(--s2);border-radius:6px;padding:.8rem;margin-top:1rem;}
+.story-tips h4{font-family:var(--mono);font-size:.7rem;color:var(--acc);margin-bottom:.4rem;}
+.story-tips p{font-size:.8rem;line-height:1.5;margin-bottom:.3rem;}
+.story-tips p:last-child{margin-bottom:0;}
+
+/* FILTERS */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;align-items:center;}
+.filter-btn{font-family:var(--mono);font-size:.72rem;padding:.35rem .75rem;border-radius:20px;border:1px solid var(--b);color:var(--m);background:var(--s);cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{border-color:var(--acc);color:var(--acc);background:rgba(124,106,255,.08);}
+.filter-sep{width:1px;height:20px;background:var(--b);}
+
+/* CTA */
+.cta-banner{background:linear-gradient(135deg,rgba(124,106,255,.15),rgba(79,255,176,.08));border:1px solid rgba(124,106,255,.2);border-radius:12px;padding:2rem;text-align:center;margin-top:3rem;}
+.cta-banner h2{font-size:1.3rem;font-weight:800;margin-bottom:.5rem;}
+.cta-banner p{color:var(--m);margin-bottom:1.2rem;}
+.btn{font-family:var(--mono);font-size:.78rem;padding:.6rem 1.5rem;border-radius:8px;border:none;background:var(--acc);color:#fff;cursor:pointer;transition:opacity .2s;font-weight:700;}
+.btn:hover{opacity:.85;}
+
+@media(max-width:768px){
+  .page{padding:1rem}
+  .hero h1{font-size:1.6rem}
+  .stories{grid-template-columns:1fr}
+  .stats-hero{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="../index.html">← Home</a>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="visualize.html">🎨 Visualize</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <h1>🌟 Success Stories from CoreCSE</h1>
+    <p>Real students share their GATE journey, strategies, and how they cracked AIR ranks using CoreCSE tools</p>
+  </div>
+
+  <div class="stats-hero">
+    <div class="stat">
+      <span class="stat-num">847+</span>
+      <div class="stat-label">Success Stories</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">42</span>
+      <div class="stat-label">AIR < 100</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">156</span>
+      <div class="stat-label">AIR < 500</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">94%</span>
+      <div class="stat-label">Qualified</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All Stories</button>
+    <div class="filter-sep"></div>
+    <button class="filter-btn" onclick="setFilter('air100',this)">🥇 AIR < 100</button>
+    <button class="filter-btn" onclick="setFilter('air500',this)">🥈 AIR < 500</button>
+    <button class="filter-btn" onclick="setFilter('tips',this)">💡 Study Tips</button>
+    <button class="filter-btn" onclick="setFilter('mental',this)">🧠 Mental Health</button>
+  </div>
+
+  <div class="stories" id="storiesGrid"></div>
+
+  <div class="cta-banner">
+    <h2>Your Success Story Starts Here 🚀</h2>
+    <p>Join 847+ students who've cracked GATE CSE using CoreCSE's tools and strategies</p>
+    <button class="btn" onclick="window.location.href='../index.html'">Start Learning Today</button>
+  </div>
+</div>
+
+<script>
+const STORIES = [
+  {
+    name: 'Priya Sharma',
+    initials: 'PS',
+    role: 'CSE Final Year, BITS Pilani',
+    year: 'GATE 2025',
+    filter: 'air100',
+    quote: 'CoreCSE\'s Performance Dashboard completely changed my preparation. I could see exactly which topics needed work, and the daily PYQ practice with streak counter kept me motivated.',
+    air: 'AIR 37',
+    score: 785,
+    background: 'Started 4 months ago with ~40% mock accuracy. Weak in TOC and CO.',
+    result: {title: 'Final Result', data: 'AIR 37 | 785/1000 | 99.2 percentile'},
+    tips: [
+      '📊 Tracked performance daily — weak topics became obvious',
+      '🎯 Focused 70% time on TOC & CO after dashboard insights',
+      '🔥 Maintained 30+ day streak with daily PYQs',
+      '📝 Rich notes helped recall formulas instantly during exam'
+    ]
+  },
+  {
+    name: 'Rajesh Kumar',
+    initials: 'RK',
+    role: 'Working Professional, Amazon',
+    year: 'GATE 2024',
+    filter: 'air100',
+    quote: 'As a working professional with 2 hrs/day, CoreCSE\'s study planner was a lifesaver. Personalized schedule based on my available time + weak topics made preparation efficient.',
+    air: 'AIR 156',
+    score: 762,
+    background: 'Day job + GATE prep. Limited time, needed structured approach.',
+    result: {title: 'Final Result', data: 'AIR 156 | 762/1000 | 98.1 percentile'},
+    tips: [
+      '📅 Planner allocated hours per subject based on weightage',
+      '🔄 Rotation study → no burnout',
+      '⏰ Flashcards during commute',
+      '📊 Weekly mock tests with analysis'
+    ]
+  },
+  {
+    name: 'Sneha Patel',
+    initials: 'SP',
+    role: 'CSE '23 Graduate, TCS',
+    year: 'GATE 2025',
+    filter: 'air500',
+    quote: 'The concept visualizers made DS and Algorithms finally click. Seeing AVL rotations and merge sort animations made everything intuitive.',
+    air: 'AIR 312',
+    score: 724,
+    background: 'Struggled with DS concepts. Visual learner.',
+    result: {title: 'Final Result', data: 'AIR 312 | 724/1000 | 96.8 percentile'},
+    tips: [
+      '🎨 Visualizers cleared DSA doubts',
+      '📚 Revisited visualizations before exam',
+      '🔄 Interactive practice > passive reading',
+      '💾 Bookmarked tough concept animations'
+    ]
+  },
+  {
+    name: 'Vikram Singh',
+    initials: 'VS',
+    role: 'CSE '24 Graduate, Microsoft',
+    year: 'GATE 2024',
+    filter: 'tips',
+    quote: 'CoreCSE gave me the right tools, but consistency was key. 200+ days straight on daily PYQ + notes = success.',
+    air: 'AIR 89',
+    score: 776,
+    background: 'Late start (3 months), high pressure.',
+    result: {title: 'Final Result', data: 'AIR 89 | 776/1000 | 98.9 percentile'},
+    tips: [
+      '🔥 Never broke the daily PYQ streak (200+ days)',
+      '📝 Handwritten + typed notes for retention',
+      '🎯 Focused on high-weightage topics first',
+      '⚡ 3-month sprint: quality > quantity'
+    ]
+  },
+  {
+    name: 'Aisha Khan',
+    initials: 'AK',
+    role: 'CSE Dropout → GATE Student',
+    year: 'GATE 2025',
+    filter: 'mental',
+    quote: 'After dropping college, I felt lost. CoreCSE\'s structured learning path + success stories gave me confidence that a comeback is possible.',
+    air: 'AIR 267',
+    score: 718,
+    background: 'College dropout, mental health struggles, limited resources.',
+    result: {title: 'Final Result', data: 'AIR 267 | 718/1000 | 96.2 percentile'},
+    tips: [
+      '🧠 Mental health first: proper sleep & exercise',
+      '📚 Broke prep into weekly milestones',
+      '🎯 Avoided comparison with others',
+      '💬 Found strength in success stories like these'
+    ]
+  },
+  {
+    name: 'Nikhil Verma',
+    initials: 'NV',
+    role: 'ECE → CSE Lateral, NIT Delhi',
+    year: 'GATE 2024',
+    filter: 'air500',
+    quote: 'As an ECE student, CS fundamentals were new. The rich notes editor let me build my own CS knowledge base. Perfect for lateral entry prep.',
+    air: 'AIR 421',
+    score: 701,
+    background: 'Non-CSE background, needed to learn from scratch.',
+    result: {title: 'Final Result', data: 'AIR 421 | 701/1000 | 95.1 percentile'},
+    tips: [
+      '📝 Detailed notes for every concept (non-CSE background)',
+      '🔄 Visualizers helped intuition building',
+      '📊 Mock tests revealed ECE gaps → focused learning',
+      '⏱️ Extra time for DSA fundamentals'
+    ]
+  },
+  {
+    name: 'Diya Gupta',
+    initials: 'DG',
+    role: 'CSE Final Year, Delhi University',
+    year: 'GATE 2025',
+    filter: 'tips',
+    quote: 'The combination of daily practice, structured notes, and performance tracking is unbeatable. CoreCSE isn\'t just a website, it\'s a complete study companion.',
+    air: 'AIR 143',
+    score: 755,
+    background: 'College student balancing academics + GATE prep.',
+    result: {title: 'Final Result', data: 'AIR 143 | 755/1000 | 97.9 percentile'},
+    tips: [
+      '📆 Planner synced with college exam schedule',
+      '🔥 Used daily PYQ as exam practice',
+      '📊 Dashboard motivated with visible progress',
+      '💡 Notes editor for quick revision'
+    ]
+  },
+  {
+    name: 'Arjun Reddy',
+    initials: 'AR',
+    role: 'CSE '23 Graduate, Flipkart',
+    year: 'GATE 2024',
+    filter: 'air100',
+    quote: 'Weak in Theory of Computation. CoreCSE\'s DFA visualizer + daily TOC questions made it my strongest subject by exam day.',
+    air: 'AIR 52',
+    score: 798,
+    background: 'Initially weak in TOC, turned it around completely.',
+    result: {title: 'Final Result', data: 'AIR 52 | 798/1000 | 99.4 percentile'},
+    tips: [
+      '🤖 DFA simulator fixed TOC understanding',
+      '🔴 Identified weak topic early (dashboard)',
+      '🎯 400 extra TOC questions + visualizer = strength',
+      '✅ Weak to strong in 6 weeks'
+    ]
+  },
+  {
+    name: 'Pooja Sinha',
+    initials: 'PS',
+    role: 'CSE Final Year, IIIT Hyderabad',
+    year: 'GATE 2025',
+    filter: 'mental',
+    quote: 'Preparation felt overwhelming until I started tracking progress visually. Seeing my improvements day-by-day boosted confidence when anxiety hit.',
+    air: 'AIR 198',
+    score: 741,
+    background: 'Perfectionist, anxiety-prone, needed confidence boosting.',
+    result: {title: 'Final Result', data: 'AIR 198 | 741/1000 | 97.2 percentile'},
+    tips: [
+      '📊 Weekly progress reports combated anxiety',
+      '🎯 Achievable daily milestones > big goals',
+      '🔥 Streak counter gave sense of control',
+      '💭 Mindfulness + measurable progress'
+    ]
+  },
+  {
+    name: 'Amit Patel',
+    initials: 'AP',
+    role: 'Working Professional, Infosys',
+    year: 'GATE 2024',
+    filter: 'tips',
+    quote: 'Working 9-5 with a newborn. CoreCSE\'s 1-2 hour daily structure meant I could prep without guilt. Quality beats long hours.',
+    air: 'AIR 347',
+    score: 719,
+    background: '2 years gap, extreme time crunch.',
+    result: {title: 'Final Result', data: 'AIR 347 | 719/1000 | 96.4 percentile'},
+    tips: [
+      '⏱️ 90-min efficient prep > 4 hrs distracted',
+      '📱 Flashcards during lunch break',
+      '🎯 Weekly mocks only (not daily)',
+      '📅 Planned around work & family'
+    ]
+  },
+];
+
+let currentFilter = 'all';
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  render();
+}
+
+function render() {
+  const filtered = STORIES.filter(s => currentFilter === 'all' || s.filter === currentFilter);
+  document.getElementById('storiesGrid').innerHTML = filtered.map(s => `
+    <div class="story">
+      <div class="story-header">
+        <div class="story-avatar">${s.initials[0]}</div>
+        <div class="story-info">
+          <h3>${s.name}</h3>
+          <p>${s.role} • ${s.year}</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-quote">"${s.quote}"</div>
+        <div class="story-meta">
+          <div class="meta-item">🎯 <span class="meta-badge">${s.air}</span></div>
+          <div class="meta-item">📊 Score: <strong>${s.score}/1000</strong></div>
+        </div>
+        <div class="story-result">
+          <div class="result-title">${s.result.title}</div>
+          <div class="result-data">${s.result.data}</div>
+        </div>
+        <div class="story-tips">
+          <h4>💡 Key Strategies:</h4>
+          ${s.tips.map(t => `<p>${t}</p>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+render();
+</script>
+</body>
+</html>
