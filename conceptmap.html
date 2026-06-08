@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🗺️ Concept Map — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+
+.container{display:flex;height:calc(100vh - 60px);}
+.sidebar{width:280px;background:var(--s);border-right:1px solid var(--b);overflow-y:auto;padding:1.5rem;}
+.main{flex:1;display:flex;flex-direction:column;}
+
+h1{font-size:1.4rem;font-weight:800;margin-bottom:1rem;}
+.sub{color:var(--m);font-size:.8rem;margin-bottom:1.5rem;line-height:1.5;}
+
+.subject-list{display:flex;flex-direction:column;gap:.6rem;}
+.subject-btn{font-family:var(--mono);padding:.6rem;border:1px solid var(--b);border-radius:6px;background:var(--s2);color:var(--m);cursor:pointer;font-size:.75rem;transition:all .2s;text-align:left;}
+.subject-btn:hover,.subject-btn.active{border-color:var(--acc);color:var(--acc);background:rgba(124,106,255,.1);}
+
+.controls{padding:1.5rem;border-bottom:1px solid var(--b);display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;}
+.control-btn{font-family:var(--mono);font-size:.75rem;padding:.5rem 1rem;border:1px solid var(--b);border-radius:6px;background:var(--s2);color:var(--m);cursor:pointer;transition:all .2s;}
+.control-btn:hover{border-color:var(--acc);color:var(--acc);}
+.control-btn.active{background:rgba(124,106,255,.2);border-color:var(--acc);color:var(--acc);}
+
+#mapContainer{flex:1;background:linear-gradient(135deg,#0a0a0f,#12121a);}
+
+.info-panel{padding:1.5rem;border-top:1px solid var(--b);background:var(--s);max-height:200px;overflow-y:auto;}
+.info-title{font-weight:700;margin-bottom:.5rem;color:var(--acc);}
+.info-text{font-size:.85rem;color:var(--m);line-height:1.5;}
+
+.legend{padding:1rem;background:rgba(124,106,255,.05);border-radius:8px;margin-bottom:1rem;}
+.legend-item{display:flex;align-items:center;gap:.5rem;font-size:.75rem;margin-bottom:.4rem;}
+.legend-dot{width:12px;height:12px;border-radius:50%;}
+
+@media(max-width:768px){
+  .container{flex-direction:column;}
+  .sidebar{width:100%;height:auto;max-height:30vh;border-right:none;border-bottom:1px solid var(--b);}
+  #mapContainer{height:50vh;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="index.html">← Home</a>
+    <a href="library.html">📚 Library</a>
+    <a href="learningpath.html">🎯 Learning Path</a>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h1>🗺️ Concept Map</h1>
+    <p class="sub">Click any subject to see concept dependencies and learning order.</p>
+    
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#7c6aff;"></div>
+        <span>Foundation</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#4fffb0;"></div>
+        <span>Intermediate</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#ffd166;"></div>
+        <span>Advanced</span>
+      </div>
+    </div>
+
+    <div class="subject-list" id="subjectList"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="controls">
+      <button class="control-btn active" onclick="setLayout('hierarchical')">📊 Hierarchical</button>
+      <button class="control-btn" onclick="setLayout('circular')">⭕ Circular</button>
+      <button class="control-btn" onclick="setLayout('spring')">🌀 Spring</button>
+      <button class="control-btn" onclick="togglePhysics()">⚙️ Physics</button>
+      <button class="control-btn" onclick="resetZoom()">🔄 Reset View</button>
+    </div>
+    <div id="mapContainer"></div>
+  </div>
+
+  <!-- INFO PANEL -->
+  <div class="info-panel" id="infoPanel" style="display:none;">
+    <div class="info-title" id="infoTitle"></div>
+    <div class="info-text" id="infoText"></div>
+  </div>
+</div>
+
+<script>
+// Concept hierarchy for each subject
+const CONCEPT_MAP = {
+  ds: {
+    name: "Data Structures",
+    color: "#4fffb0",
+    nodes: [
+      {id: 'ds-1', label: 'Array', level: 1, color: '#7c6aff'},
+      {id: 'ds-2', label: 'Linked List', level: 1, color: '#7c6aff'},
+      {id: 'ds-3', label: 'Stack', level: 2, color: '#4fffb0'},
+      {id: 'ds-4', label: 'Queue', level: 2, color: '#4fffb0'},
+      {id: 'ds-5', label: 'Tree', level: 2, color: '#4fffb0'},
+      {id: 'ds-6', label: 'BST', level: 3, color: '#ffd166'},
+      {id: 'ds-7', label: 'AVL Tree', level: 3, color: '#ffd166'},
+      {id: 'ds-8', label: 'Heap', level: 3, color: '#ffd166'},
+      {id: 'ds-9', label: 'Graph', level: 2, color: '#4fffb0'},
+      {id: 'ds-10', label: 'Hash Table', level: 2, color: '#4fffb0'},
+    ],
+    edges: [
+      {from: 'ds-1', to: 'ds-3'},
+      {from: 'ds-1', to: 'ds-4'},
+      {from: 'ds-2', to: 'ds-3'},
+      {from: 'ds-1', to: 'ds-5'},
+      {from: 'ds-5', to: 'ds-6'},
+      {from: 'ds-6', to: 'ds-7'},
+      {from: 'ds-5', to: 'ds-8'},
+      {from: 'ds-1', to: 'ds-9'},
+      {from: 'ds-1', to: 'ds-10'},
+    ]
+  },
+  algo: {
+    name: "Algorithms",
+    color: "#ffd166",
+    nodes: [
+      {id: 'a-1', label: 'Recursion', level: 1, color: '#7c6aff'},
+      {id: 'a-2', label: 'Sorting', level: 2, color: '#4fffb0'},
+      {id: 'a-3', label: 'Searching', level: 2, color: '#4fffb0'},
+      {id: 'a-4', label: 'Divide & Conquer', level: 2, color: '#4fffb0'},
+      {id: 'a-5', label: 'Greedy', level: 3, color: '#ffd166'},
+      {id: 'a-6', label: 'Dynamic Programming', level: 3, color: '#ffd166'},
+      {id: 'a-7', label: 'Graph Algorithms', level: 3, color: '#ffd166'},
+      {id: 'a-8', label: 'Shortest Path', level: 3, color: '#ffd166'},
+    ],
+    edges: [
+      {from: 'a-1', to: 'a-2'},
+      {from: 'a-1', to: 'a-3'},
+      {from: 'a-1', to: 'a-4'},
+      {from: 'a-4', to: 'a-5'},
+      {from: 'a-4', to: 'a-6'},
+      {from: 'a-1', to: 'a-7'},
+      {from: 'a-7', to: 'a-8'},
+    ]
+  },
+  os: {
+    name: "Operating Systems",
+    color: "#7c6aff",
+    nodes: [
+      {id: 'os-1', label: 'Process', level: 1, color: '#7c6aff'},
+      {id: 'os-2', label: 'Memory Management', level: 2, color: '#4fffb0'},
+      {id: 'os-3', label: 'CPU Scheduling', level: 2, color: '#4fffb0'},
+      {id: 'os-4', label: 'Synchronization', level: 2, color: '#4fffb0'},
+      {id: 'os-5', label: 'Deadlock', level: 3, color: '#ffd166'},
+      {id: 'os-6', label: 'Paging', level: 3, color: '#ffd166'},
+      {id: 'os-7', label: 'Virtual Memory', level: 3, color: '#ffd166'},
+      {id: 'os-8', label: 'File System', level: 2, color: '#4fffb0'},
+    ],
+    edges: [
+      {from: 'os-1', to: 'os-3'},
+      {from: 'os-1', to: 'os-2'},
+      {from: 'os-1', to: 'os-4'},
+      {from: 'os-4', to: 'os-5'},
+      {from: 'os-2', to: 'os-6'},
+      {from: 'os-6', to: 'os-7'},
+      {from: 'os-1', to: 'os-8'},
+    ]
+  },
+  dbms: {
+    name: "Database Management Systems",
+    color: "#ff9f43",
+    nodes: [
+      {id: 'db-1', label: 'Relations & Keys', level: 1, color: '#7c6aff'},
+      {id: 'db-2', label: 'Normalization', level: 2, color: '#4fffb0'},
+      {id: 'db-3', label: 'SQL', level: 2, color: '#4fffb0'},
+      {id: 'db-4', label: 'Transactions', level: 2, color: '#4fffb0'},
+      {id: 'db-5', label: 'Indexing', level: 3, color: '#ffd166'},
+      {id: 'db-6', label: 'Query Optimization', level: 3, color: '#ffd166'},
+      {id: 'db-7', label: 'Locking & Concurrency', level: 3, color: '#ffd166'},
+    ],
+    edges: [
+      {from: 'db-1', to: 'db-2'},
+      {from: 'db-1', to: 'db-3'},
+      {from: 'db-1', to: 'db-4'},
+      {from: 'db-3', to: 'db-5'},
+      {from: 'db-5', to: 'db-6'},
+      {from: 'db-4', to: 'db-7'},
+    ]
+  },
+};
+
+let network = null;
+let currentSubject = 'ds';
+
+// Initialize subject buttons
+function initSubjects() {
+  const list = document.getElementById('subjectList');
+  list.innerHTML = Object.entries(CONCEPT_MAP).map(([key, data]) => 
+    `<button class="subject-btn ${key === 'ds' ? 'active' : ''}" onclick="loadConcepts('${key}')">${data.name}</button>`
+  ).join('');
+}
+
+// Load concept map for subject
+window.loadConcepts = function(subject) {
+  currentSubject = subject;
+  
+  // Update active button
+  document.querySelectorAll('.subject-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  const data = CONCEPT_MAP[subject];
+  
+  const nodes = new vis.DataSet(data.nodes.map(n => ({
+    ...n,
+    shape: 'dot',
+    size: n.level === 1 ? 30 : n.level === 2 ? 25 : 20,
+    font: {size: 12, color: '#e8e8f0', face: 'monospace'},
+    borderWidth: 2,
+    borderWidthSelected: 3,
+  })));
+  
+  const edges = new vis.DataSet(data.edges.map(e => ({
+    ...e,
+    color: '#2a2a3d',
+    width: 2,
+    arrows: 'to',
+    smooth: {type: 'cubicBezier'},
+  })));
+  
+  const container = document.getElementById('mapContainer');
+  const graphData = {nodes, edges};
+  
+  const options = {
+    physics: {enabled: true, barnesHut: {gravitationalConstant: -26000}},
+    layout: {hierarchical: {enabled: true, direction: 'UD'}},
+  };
+  
+  if (network) network.destroy();
+  network = new vis.Network(container, graphData, options);
+  
+  network.on('click', params => {
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      const node = data.nodes.find(n => n.id === nodeId);
+      showNodeInfo(node);
+    }
+  });
+};
+
+function showNodeInfo(node) {
+  const panel = document.getElementById('infoPanel');
+  panel.style.display = 'block';
+  document.getElementById('infoTitle').textContent = node.label;
+  document.getElementById('infoText').textContent = `Level: ${['Foundation', 'Intermediate', 'Advanced'][node.level - 1]}\n\nClick the concept to start learning.`;
+}
+
+window.setLayout = function(type) {
+  document.querySelectorAll('.controls .control-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  const layouts = {
+    hierarchical: {hierarchical: {enabled: true, direction: 'UD'}},
+    circular: {layout: {type: 'circular'}},
+    spring: {physics: {enabled: true}},
+  };
+  
+  if (network) network.setOptions(layouts[type]);
+};
+
+window.togglePhysics = function() {
+  if (network) {
+    const physics = network.getOptions().physics.enabled;
+    network.setOptions({physics: {enabled: !physics}});
+    event.target.classList.toggle('active');
+  }
+};
+
+window.resetZoom = function() {
+  if (network) network.fit();
+};
+
+// Initialize
+initSubjects();
+loadConcepts('ds');
+</script>
+</body>
+</html>
