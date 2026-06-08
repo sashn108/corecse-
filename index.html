@@ -1,243 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CoreCSE — Every Concept. Every Year. One Place.</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoreCSE GATE 2027 — All-in-One Preparation Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.4rem .8rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+
+.page{max-width:1300px;margin:0 auto;padding:2rem;}
+h1{font-size:2.2rem;font-weight:800;margin-bottom:.5rem;background:linear-gradient(135deg,#7c6aff,#4fffb0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-text{color:var(--m);font-size:1.05rem;line-height:1.6;margin-bottom:2rem;max-width:700px;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:3rem;}
+.stat{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:1.2rem;text-align:center;}
+.stat-num{font-family:var(--mono);font-size:1.8rem;font-weight:800;color:var(--g);display:block;margin-bottom:.3rem;}
+.stat-label{font-size:.8rem;color:var(--m);}
+
+h2{font-size:1.4rem;font-weight:800;margin:2rem 0 1.2rem;}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem;}
+.concept-card{display:block;text-decoration:none;background:#0a0a0f;border:1px solid var(--b);border-radius:10px;padding:1.2rem;transition:all .2s;cursor:pointer;}
+.concept-card:hover{border-color:var(--acc);box-shadow:0 4px 16px rgba(124,106,255,.15);transform:translateY(-2px);}
+.card-icon{font-size:1.8rem;margin-bottom:.6rem;}
+.card-title{font-weight:700;font-size:.95rem;color:var(--t);margin-bottom:.3rem;}
+.card-desc{font-size:.78rem;color:var(--m);line-height:1.5;}
+
+.section-divider{height:1px;background:var(--b);margin:3rem 0;}
+
+.cta-banner{background:linear-gradient(135deg,rgba(124,106,255,.15),rgba(79,255,176,.08));border:1px solid rgba(124,106,255,.2);border-radius:12px;padding:2.5rem;text-align:center;margin:3rem 0;}
+.cta-banner h3{font-size:1.3rem;margin-bottom:.8rem;}
+.cta-banner p{color:var(--m);margin-bottom:1.5rem;font-size:.95rem;}
+.btn{display:inline-block;padding:.8rem 2rem;background:var(--acc);color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-family:var(--mono);transition:opacity .2s;}
+.btn:hover{opacity:.9;}
+
+.footer{text-align:center;padding:2rem;color:var(--m);font-size:.8rem;border-top:1px solid var(--b);margin-top:3rem;}
+
+@media(max-width:768px){
+  .page{padding:1rem;}
+  h1{font-size:1.6rem;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+}
+</style>
 </head>
 <body>
-
-<nav class="nav">
-  <div class="logo">
-    <div class="logo-mark">C²</div>
-    <div>
-      <div class="logo-text">CoreCSE</div>
-      <div class="logo-sub">GATE CSE · AIR 1</div>
-    </div>
-  </div>
-  <div class="nav-links">
-    <a href="#subjects">Subjects</a>
-    <a href="#predict">Predict</a>
-    <a href="#pyqs">PYQs</a>
-    <a href="https://github.com/GATEOverflow/GO-PDFs" target="_blank">GO-PDFs ↗</a>
-    <a href="https://gate.nptel.ac.in/" target="_blank">NPTEL ↗</a>
-    <a href="subjects/os.html" class="nav-cta">Start Studying</a>
+<nav>
+  <a class="logo" href="index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="login.html">🔐 Login</a>
+    <a href="#features">Features</a>
+    <a href="#tools">Tools</a>
   </div>
 </nav>
 
-<div class="hero">
-  <div class="badge">🎯 Targeting Top Institutes</div>
-  <h1>Every concept, every year,<br><span class="accent">one place.</span></h1>
-  <p>The most focused GATE CSE platform. Mastery-level notes, PYQ pattern intelligence, and AI-powered question prediction — built for top rankers.</p>
-  <div class="hero-actions">
-    <a href="#subjects" class="btn-primary">Explore subjects</a>
-    <a href="#predict" class="btn-secondary">See 2027 predictions</a>
-  </div>
-</div>
+<div class="page">
+  <h1>CoreCSE GATE 2027</h1>
+  <p class="hero-text">Complete all-in-one platform for GATE CSE preparation. Interactive learning tools, real PYQs, concept visualizers, and personalized study plans — everything in one place.</p>
 
-<div class="stats-row">
-  <div class="stat"><div class="stat-num">12</div><div class="stat-label">Core subjects</div></div>
-  <div class="stat"><div class="stat-num">2,400+</div><div class="stat-label">PYQs analyzed</div></div>
-  <div class="stat"><div class="stat-num">20 yr</div><div class="stat-label">Pattern coverage</div></div>
-  <div class="stat"><div class="stat-num">91%</div><div class="stat-label">Prediction accuracy</div></div>
-</div>
-
-<div class="section" id="subjects">
-  <div class="section-label">Subjects</div>
-  <div class="subjects-grid">
-    <a class="subject-card" href="subjects/os.html">
-      <div class="subject-icon">⚙️</div>
-      <div class="subject-info">
-        <div class="subject-name">Operating Systems</div>
-        <div class="subject-meta">12% weightage · 10 topics</div>
-      </div>
-      <div class="subject-pct">12%</div>
-    </a>
-    <a class="subject-card" href="subjects/ds.html">
-      <div class="subject-icon">🌲</div>
-      <div class="subject-info">
-        <div class="subject-name">Data Structures</div>
-        <div class="subject-meta">18% weightage · 12 topics</div>
-      </div>
-      <div class="subject-pct">18%</div>
-    </a>
-    <a class="subject-card" href="subjects/algo.html">
-      <div class="subject-icon">📐</div>
-      <div class="subject-info">
-        <div class="subject-name">Algorithms</div>
-        <div class="subject-meta">15% weightage · 10 topics</div>
-      </div>
-      <div class="subject-pct">15%</div>
-    </a>
-    <a class="subject-card" href="subjects/dbms.html">
-      <div class="subject-icon">🗄️</div>
-      <div class="subject-info">
-        <div class="subject-name">DBMS</div>
-        <div class="subject-meta">11% weightage · 9 topics</div>
-      </div>
-      <div class="subject-pct">11%</div>
-    </a>
-    <a class="subject-card" href="subjects/cn.html">
-      <div class="subject-icon">🌐</div>
-      <div class="subject-info">
-        <div class="subject-name">Computer Networks</div>
-        <div class="subject-meta">10% weightage · 8 topics</div>
-      </div>
-      <div class="subject-pct">10%</div>
-    </a>
-    <a class="subject-card" href="subjects/toc.html">
-      <div class="subject-icon">🔄</div>
-      <div class="subject-info">
-        <div class="subject-name">Theory of Computation</div>
-        <div class="subject-meta">9% weightage · 7 topics</div>
-      </div>
-      <div class="subject-pct">9%</div>
-    </a>
-    <a class="subject-card" href="subjects/dl.html">
-      <div class="subject-icon">💡</div>
-      <div class="subject-info">
-        <div class="subject-name">Digital Logic</div>
-        <div class="subject-meta">8% weightage · 7 topics</div>
-      </div>
-      <div class="subject-pct">8%</div>
-    </a>
-    <a class="subject-card" href="subjects/dm.html">
-      <div class="subject-icon">∑</div>
-      <div class="subject-info">
-        <div class="subject-name">Discrete Mathematics</div>
-        <div class="subject-meta">8% weightage · 8 topics</div>
-      </div>
-      <div class="subject-pct">8%</div>
-    </a>
-    <a class="subject-card" href="subjects/coa.html">
-      <div class="subject-icon">🖥️</div>
-      <div class="subject-info">
-        <div class="subject-name">CO &amp; Architecture</div>
-        <div class="subject-meta">7% weightage · 7 topics</div>
-      </div>
-      <div class="subject-pct">7%</div>
-    </a>
-    <a class="subject-card" href="subjects/cd.html">
-      <div class="subject-icon">⚡</div>
-      <div class="subject-info">
-        <div class="subject-name">Compiler Design</div>
-        <div class="subject-meta">6% weightage · 6 topics</div>
-      </div>
-      <div class="subject-pct">6%</div>
-    </a>
-  </div>
-</div>
-
-<div class="section" id="predict">
-  <div class="section-label">2027 predictions</div>
-  <div class="predictor-card">
-    <div class="predictor-header">
-      <div>
-        <div style="font-size:14px;font-weight:500;">High-probability topics · GATE 2027</div>
-        <div style="font-size:11px;color:#888;margin-top:2px;">Based on 20-year PYQ pattern analysis</div>
-      </div>
-      <span class="live-badge">● Updated</span>
+  <div class="stats-row">
+    <div class="stat">
+      <span class="stat-num">83</span>
+      <div class="stat-label">Core Topics</div>
     </div>
-    <div class="predictor-body">
-      <div class="pred-row">
-        <span class="pred-topic">Segment trees &amp; lazy propagation</span>
-        <span class="pred-conf high">Very likely</span>
-        <div class="pred-bar-wrap"><div class="pred-bar" style="width:88%"></div></div>
-        <span class="pred-pct">88%</span>
-      </div>
-      <div class="pred-row">
-        <span class="pred-topic">Page replacement &amp; Belady's anomaly</span>
-        <span class="pred-conf high">Very likely</span>
-        <div class="pred-bar-wrap"><div class="pred-bar" style="width:83%"></div></div>
-        <span class="pred-pct">83%</span>
-      </div>
-      <div class="pred-row">
-        <span class="pred-topic">Pumping lemma for CFLs</span>
-        <span class="pred-conf med">Likely</span>
-        <div class="pred-bar-wrap"><div class="pred-bar" style="width:71%"></div></div>
-        <span class="pred-pct">71%</span>
-      </div>
-      <div class="pred-row">
-        <span class="pred-topic">MVCC &amp; transaction isolation levels</span>
-        <span class="pred-conf med">Likely</span>
-        <div class="pred-bar-wrap"><div class="pred-bar" style="width:65%"></div></div>
-        <span class="pred-pct">65%</span>
-      </div>
-      <div class="pred-row">
-        <span class="pred-topic">QUIC protocol &amp; congestion control</span>
-        <span class="pred-conf watch">Watch</span>
-        <div class="pred-bar-wrap"><div class="pred-bar" style="width:52%"></div></div>
-        <span class="pred-pct">52%</span>
-      </div>
+    <div class="stat">
+      <span class="stat-num">1,200+</span>
+      <div class="stat-label">Real PYQs</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">12</span>
+      <div class="stat-label">Visualizers</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">100%</span>
+      <div class="stat-label">Free</div>
     </div>
   </div>
-</div>
 
-<div style="background:var(--surface,#12121a);border-top:1px solid #2a2a3d;padding:2.5rem 2rem;">
-  <div style="max-width:1100px;margin:0 auto;">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#6b6b8a;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.2rem;">🛠 Study Tools</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;">
-      <a href="tools/planner.html" style="display:block;text-decoration:none;background:#0a0a0f;border:1px solid #2a2a3d;border-radius:10px;padding:1.2rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#7c6aff'" onmouseout="this.style.borderColor='#2a2a3d'">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">📅</div>
-        <div style="font-weight:700;font-size:0.95rem;color:#e8e8f0;margin-bottom:0.25rem;">Study Planner</div>
-        <div style="font-size:0.78rem;color:#6b6b8a;line-height:1.5;">Personalized day-wise schedule based on your GATE date and available hours</div>
-      </a>
-      <a href="tools/daily.html" style="display:block;text-decoration:none;background:#0a0a0f;border:1px solid #2a2a3d;border-radius:10px;padding:1.2rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#4fffb0'" onmouseout="this.style.borderColor='#2a2a3d'">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">🔥</div>
-        <div style="font-weight:700;font-size:0.95rem;color:#e8e8f0;margin-bottom:0.25rem;">Daily PYQ + Streak</div>
-        <div style="font-size:0.78rem;color:#6b6b8a;line-height:1.5;">5 real GATE questions daily with streak tracking and activity heatmap</div>
-      </a>
-      <a href="tools/flashcards.html" style="display:block;text-decoration:none;background:#0a0a0f;border:1px solid #2a2a3d;border-radius:10px;padding:1.2rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#ffd166'" onmouseout="this.style.borderColor='#2a2a3d'">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">🃏</div>
-        <div style="font-weight:700;font-size:0.95rem;color:#e8e8f0;margin-bottom:0.25rem;">Flashcards</div>
-        <div style="font-size:0.78rem;color:#6b6b8a;line-height:1.5;">60+ formula cards across all 10 subjects with spaced repetition rating</div>
-      </a>
-      <a href="tools/notes.html" style="display:block;text-decoration:none;background:#0a0a0f;border:1px solid #2a2a3d;border-radius:10px;padding:1.2rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#fd79a8'" onmouseout="this.style.borderColor='#2a2a3d'">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">📝</div>
-        <div style="font-weight:700;font-size:0.95rem;color:#e8e8f0;margin-bottom:0.25rem;">My Notes</div>
-        <div style="font-size:0.78rem;color:#6b6b8a;line-height:1.5;">Rich notes editor with images, code blocks, tables, tags and export</div>
-      </a>
-      <a href="tools/success.html" style="display:block;text-decoration:none;background:#0a0a0f;border:1px solid #2a2a3d;border-radius:10px;padding:1.2rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#00cfe8'" onmouseout="this.style.borderColor='#2a2a3d'">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">🌟</div>
-        <div style="font-weight:700;font-size:0.95rem;color:#e8e8f0;margin-bottom:0.25rem;">Success Stories</div>
-        <div style="font-size:0.78rem;color:#6b6b8a;line-height:1.5;">Real student testimonials & AIR achievements</div>
-      </a>
-      <a href="tools/dashboard.html" style="display:block;text-decoration:none;background:#0a0a0f;border:1px solid #2a2a3d;border-radius:10px;padding:1.2rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#fd79a8'" onmouseout="this.style.borderColor='#2a2a3d'">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">📊</div>
-        <div style="font-weight:700;font-size:0.95rem;color:#e8e8f0;margin-bottom:0.25rem;">Performance Dashboard</div>
-        <div style="font-size:0.78rem;color:#6b6b8a;line-height:1.5;">Track mock scores, weak topics, estimated AIR rank</div>
-      </a>
-      <a href="tools/visualize.html" style="display:block;text-decoration:none;background:#0a0a0f;border:1px solid #2a2a3d;border-radius:10px;padding:1.2rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#55efc4'" onmouseout="this.style.borderColor='#2a2a3d'">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">🎨</div>
-        <div style="font-weight:700;font-size:0.95rem;color:#e8e8f0;margin-bottom:0.25rem;">Concept Visualizers</div>
-        <div style="font-size:0.78rem;color:#6b6b8a;line-height:1.5;">Animated BST, heap, pipeline, DFA — understand visually</div>
-      </a>
-    </div>
+  <!-- ALL-IN-ONE FEATURES -->
+  <h2 id="features">✨ All-in-One Platform</h2>
+  <div class="concept-grid">
+    <a href="library.html" class="concept-card">
+      <div class="card-icon">📚</div>
+      <div class="card-title">Resource Library</div>
+      <div class="card-desc">Upload notes, PDFs, books. One central place for all study materials with smart search.</div>
+    </a>
+    <a href="conceptmap.html" class="concept-card">
+      <div class="card-icon">🗺️</div>
+      <div class="card-title">Concept Map</div>
+      <div class="card-desc">Interactive dependency graph. See what concepts you need to learn first.</div>
+    </a>
+    <a href="learningpath.html" class="concept-card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Learning Path Generator</div>
+      <div class="card-desc">Personalized 12-week study plan based on your goals and available time.</div>
+    </a>
+  </div>
+
+  <!-- STUDY TOOLS -->
+  <h2 id="tools">🔧 7 Interactive Study Tools</h2>
+  <div class="concept-grid">
+    <a href="tools/planner.html" class="concept-card">
+      <div class="card-icon">📅</div>
+      <div class="card-title">Study Planner</div>
+      <div class="card-desc">Generate personalized day-by-day schedule based on GATE date and available hours.</div>
+    </a>
+    <a href="tools/daily.html" class="concept-card">
+      <div class="card-icon">🔥</div>
+      <div class="card-title">Daily PYQ + Streak</div>
+      <div class="card-desc">5 real GATE questions every day. Build your streak with 60-day heatmap tracking.</div>
+    </a>
+    <a href="tools/flashcards.html" class="concept-card">
+      <div class="card-icon">🃏</div>
+      <div class="card-title">Flashcards</div>
+      <div class="card-desc">60+ formula cards with 3D flip animation. Rate confidence to prioritize hard concepts.</div>
+    </a>
+    <a href="tools/notes.html" class="concept-card">
+      <div class="card-icon">📝</div>
+      <div class="card-title">Rich Notes Editor</div>
+      <div class="card-desc">Notion-like editor with images, code blocks, tables, tags. Save your learning journey.</div>
+    </a>
+    <a href="tools/dashboard.html" class="concept-card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Performance Dashboard</div>
+      <div class="card-desc">Track mock tests, detect weak topics, estimate your AIR rank with analytics.</div>
+    </a>
+    <a href="tools/visualize.html" class="concept-card">
+      <div class="card-icon">🎨</div>
+      <div class="card-title">Concept Visualizers</div>
+      <div class="card-desc">12 animated diagrams: BST search, AVL rotation, heap, DFA, pipeline, and more.</div>
+    </a>
+    <a href="tools/success.html" class="concept-card">
+      <div class="card-icon">🌟</div>
+      <div class="card-title">Success Stories</div>
+      <div class="card-desc">10 real students share their AIR achievements and strategies (AIR 37 to 421).</div>
+    </a>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 10 SUBJECTS -->
+  <h2>📖 10 Subject Pages (83 Topics, 1,200+ PYQs)</h2>
+  <div class="concept-grid">
+    <a href="subjects/os.html" class="concept-card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">Operating Systems</div>
+      <div class="card-desc">10 topics, 275+ PYQs. Process, Memory, CPU, Scheduling, Deadlock, File System.</div>
+    </a>
+    <a href="subjects/ds.html" class="concept-card">
+      <div class="card-icon">🌳</div>
+      <div class="card-title">Data Structures</div>
+      <div class="card-desc">12 topics, 333+ PYQs. Array, Linked List, Stack, Queue, Tree, BST, AVL, Heap, Hash.</div>
+    </a>
+    <a href="subjects/algo.html" class="concept-card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Algorithms</div>
+      <div class="card-desc">10 topics, 291+ PYQs. Sorting, Searching, Recursion, Greedy, DP, Graph.</div>
+    </a>
+    <a href="subjects/dbms.html" class="concept-card">
+      <div class="card-icon">🗄️</div>
+      <div class="card-title">DBMS</div>
+      <div class="card-desc">9 topics, 230+ PYQs. Relations, Normalization, SQL, Transactions, Indexing.</div>
+    </a>
+    <a href="subjects/cn.html" class="concept-card">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">Computer Networks</div>
+      <div class="card-desc">8 topics, 204+ PYQs. OSI, TCP/IP, Routing, DNS, HTTP, SMTP.</div>
+    </a>
+    <a href="subjects/toc.html" class="concept-card">
+      <div class="card-icon">🤖</div>
+      <div class="card-title">Theory of Computation</div>
+      <div class="card-desc">7 topics, 180+ PYQs. Automata, Regex, CFG, PDA, Turing Machines.</div>
+    </a>
+    <a href="subjects/dl.html" class="concept-card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Digital Logic</div>
+      <div class="card-desc">7 topics, 190+ PYQs. Boolean Algebra, Gates, Combinational, Sequential.</div>
+    </a>
+    <a href="subjects/dm.html" class="concept-card">
+      <div class="card-icon">📐</div>
+      <div class="card-title">Discrete Mathematics</div>
+      <div class="card-desc">8 topics, 196+ PYQs. Set Theory, Relations, Functions, Combinatorics, Graphs.</div>
+    </a>
+    <a href="subjects/coa.html" class="concept-card">
+      <div class="card-icon">💻</div>
+      <div class="card-title">CO & Architecture</div>
+      <div class="card-desc">7 topics, 174+ PYQs. Number Systems, ALU, CPU, Pipeline, Cache, Memory.</div>
+    </a>
+    <a href="subjects/cd.html" class="concept-card">
+      <div class="card-icon">🔤</div>
+      <div class="card-title">Compiler Design</div>
+      <div class="card-desc">6 topics, 142+ PYQs. Lexical, Parsing, Semantic, Code Generation.</div>
+    </a>
+  </div>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <h3>Ready to Transform Your GATE Preparation?</h3>
+    <p>Start with 100% free access to all tools, subjects, visualizers, and resources. No signup needed for browsing.</p>
+    <a href="login.html" class="btn">🚀 Get Started Now</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>CoreCSE GATE 2027 — Complete all-in-one platform. Built with ❤️ for GATE aspirants.</p>
+    <p>Free tools • 1,200+ PYQs • 12 Visualizers • Personalized Learning Paths</p>
   </div>
 </div>
-
-<div class="resources-bar" style="background:#12121a;border-top:1px solid #2a2a3d;border-bottom:1px solid #2a2a3d;padding:1.2rem 2rem;">
-  <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
-    <span style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#6b6b8a;letter-spacing:0.1em;text-transform:uppercase;flex-shrink:0;">Free Resources</span>
-    <a href="https://github.com/GATEOverflow/GO-PDFs" target="_blank" style="display:flex;align-items:center;gap:0.4rem;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#ff9f43;text-decoration:none;border:1px solid rgba(255,159,67,0.3);padding:0.3rem 0.7rem;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,159,67,0.08)'" onmouseout="this.style.background=''">📄 GO-PDFs — All GATE PYQs as PDF</a>
-    <a href="https://gateoverflow.in" target="_blank" style="display:flex;align-items:center;gap:0.4rem;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#ffd166;text-decoration:none;border:1px solid rgba(255,209,102,0.3);padding:0.3rem 0.7rem;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,209,102,0.08)'" onmouseout="this.style.background=''">🔶 GATEOverflow — Discuss PYQs</a>
-    <a href="https://gate.nptel.ac.in/" target="_blank" style="display:flex;align-items:center;gap:0.4rem;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#7c6aff;text-decoration:none;border:1px solid rgba(124,106,255,0.3);padding:0.3rem 0.7rem;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(124,106,255,0.08)'" onmouseout="this.style.background=''">🎓 NPTEL GATE Prep — Video Lectures</a>
-    <a href="https://www.geeksforgeeks.org/gate-cs-notes-gq/" target="_blank" style="display:flex;align-items:center;gap:0.4rem;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#4fffb0;text-decoration:none;border:1px solid rgba(79,255,176,0.3);padding:0.3rem 0.7rem;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(79,255,176,0.08)'" onmouseout="this.style.background=''">🟢 GFG GATE Notes</a>
-    <a href="https://www.studytonight.com/computer-science/" target="_blank" style="display:flex;align-items:center;gap:0.4rem;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#e8e8f0;text-decoration:none;border:1px solid #2a2a3d;padding:0.3rem 0.7rem;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background=''">📘 StudyTonight</a>
-  </div>
-</div>
-
-<footer class="footer">
-  <div>© 2026 CoreCSE · Built for AIR 1 aspirants</div>
-  <div class="footer-links">
-    <a href="#subjects">Subjects</a>
-    <a href="#predict">Predictor</a>
-    <a href="#pyqs">PYQ Bank</a>
-    <a href="https://github.com/GATEOverflow/GO-PDFs" target="_blank">GO-PDFs</a>
-    <a href="https://gate.nptel.ac.in/" target="_blank">NPTEL</a>
-  </div>
-</footer>
 
 </body>
 </html>
