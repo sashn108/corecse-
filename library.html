@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📚 Resource Library — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:1200px;margin:0 auto;padding:2rem;}
+
+h1{font-size:1.8rem;font-weight:800;margin-bottom:.3rem;}
+.sub{color:var(--m);font-size:.88rem;margin-bottom:2rem;}
+
+/* SEARCH BAR */
+.search-bar{display:flex;gap:.8rem;margin-bottom:2rem;flex-wrap:wrap;}
+.search-input{flex:1;min-width:200px;padding:.8rem;border:1px solid var(--b);border-radius:8px;background:var(--s);color:var(--t);font-family:var(--sans);}
+.search-input:focus{outline:none;border-color:var(--acc);}
+.filter-btn{font-family:var(--mono);font-size:.75rem;padding:.6rem 1rem;border:1px solid var(--b);border-radius:8px;background:var(--s);color:var(--m);cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{border-color:var(--acc);color:var(--acc);background:rgba(124,106,255,.1);}
+
+/* UPLOAD SECTION */
+.upload-section{background:linear-gradient(135deg,rgba(124,106,255,.1),rgba(79,255,176,.06));border:2px dashed var(--b);border-radius:12px;padding:2rem;text-align:center;margin-bottom:2rem;transition:all .2s;}
+.upload-section:hover{border-color:var(--acc);}
+.upload-icon{font-size:2rem;margin-bottom:.5rem;}
+.upload-text{font-size:.9rem;color:var(--m);margin-bottom:1rem;}
+.upload-btn{font-family:var(--mono);padding:.6rem 1.2rem;background:var(--acc);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700;transition:opacity .2s;}
+.upload-btn:hover{opacity:.9;}
+input[type="file"]{display:none;}
+
+/* RESOURCES GRID */
+.resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-bottom:2rem;}
+.resource-card{background:var(--s);border:1px solid var(--b);border-radius:12px;overflow:hidden;transition:all .2s;}
+.resource-card:hover{border-color:var(--acc);box-shadow:0 4px 16px rgba(124,106,255,.15);}
+
+.resource-header{padding:1.2rem;background:linear-gradient(135deg,rgba(124,106,255,.1),rgba(79,255,176,.06));border-bottom:1px solid var(--b);display:flex;align-items:center;gap:.8rem;}
+.resource-icon{font-size:1.8rem;}
+.resource-info h3{font-size:.95rem;font-weight:700;margin-bottom:.2rem;}
+.resource-info p{font-size:.75rem;color:var(--m);}
+
+.resource-body{padding:1rem;}
+.resource-desc{font-size:.85rem;color:var(--m);line-height:1.5;margin-bottom:.8rem;}
+.resource-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.meta-tag{font-size:.7rem;background:rgba(124,106,255,.1);color:var(--acc);padding:.2rem .5rem;border-radius:3px;font-family:var(--mono);}
+.resource-footer{display:flex;gap:.5rem;}
+.res-btn{flex:1;padding:.5rem;border:1px solid var(--b);border-radius:6px;background:var(--s2);color:var(--m);cursor:pointer;font-size:.75rem;font-family:var(--mono);transition:all .2s;}
+.res-btn:hover{border-color:var(--acc);color:var(--acc);}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem;}
+.stat-box{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:1rem;text-align:center;}
+.stat-num{font-family:var(--mono);font-size:1.8rem;font-weight:800;color:var(--g);display:block;margin-bottom:.3rem;}
+.stat-label{font-size:.8rem;color:var(--m);}
+
+/* CATEGORIES */
+.categories{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;}
+.cat-btn{font-family:var(--mono);font-size:.75rem;padding:.4rem .8rem;border-radius:20px;border:1px solid var(--b);background:var(--s);color:var(--m);cursor:pointer;transition:all .2s;}
+.cat-btn:hover,.cat-btn.active{border-color:var(--acc);color:var(--acc);background:rgba(124,106,255,.1);}
+
+.empty-state{text-align:center;padding:3rem;color:var(--m);}
+.empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.5;}
+
+@media(max-width:768px){
+  .page{padding:1rem;}
+  .resources-grid{grid-template-columns:1fr;}
+  .search-bar{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="index.html">← Home</a>
+    <a href="conceptmap.html">🗺️ Concept Map</a>
+    <a href="learningpath.html">🎯 Learning Path</a>
+  </div>
+</nav>
+
+<div class="page">
+  <h1>📚 Resource Library</h1>
+  <p class="sub">All your study materials in one place. Upload notes, PDFs, and materials.</p>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-box">
+      <span class="stat-num" id="totalResources">0</span>
+      <div class="stat-label">Resources</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" id="totalMaterials">0</span>
+      <div class="stat-label">Materials Uploaded</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" id="totalSaved">0</span>
+      <div class="stat-label">Bookmarks</div>
+    </div>
+  </div>
+
+  <!-- UPLOAD SECTION -->
+  <div class="upload-section" onclick="document.getElementById('fileUpload').click()">
+    <div class="upload-icon">📤</div>
+    <div class="upload-text">Upload Study Materials (PDF, DOCX, Images)</div>
+    <button class="upload-btn">Choose Files</button>
+    <input type="file" id="fileUpload" multiple accept=".pdf,.docx,.pptx,.jpg,.png,.txt">
+  </div>
+
+  <!-- SEARCH & FILTER -->
+  <div class="search-bar">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search notes, books, materials...">
+    <select class="filter-btn" id="subjectFilter">
+      <option value="">All Subjects</option>
+      <option value="os">Operating Systems</option>
+      <option value="ds">Data Structures</option>
+      <option value="algo">Algorithms</option>
+      <option value="dbms">DBMS</option>
+      <option value="cn">Computer Networks</option>
+      <option value="toc">Theory of Computation</option>
+      <option value="dl">Digital Logic</option>
+      <option value="dm">Discrete Mathematics</option>
+      <option value="coa">CO & Architecture</option>
+      <option value="cd">Compiler Design</option>
+    </select>
+    <select class="filter-btn" id="typeFilter">
+      <option value="">All Types</option>
+      <option value="notes">Notes</option>
+      <option value="book">Book</option>
+      <option value="video">Video</option>
+      <option value="formula">Formula Sheet</option>
+      <option value="pyq">PYQs</option>
+    </select>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div>
+    <div style="font-size:.85rem;color:var(--m);margin-bottom:.8rem;font-family:var(--mono);">CATEGORIES:</div>
+    <div class="categories" id="categoryButtons"></div>
+  </div>
+
+  <!-- RESOURCES GRID -->
+  <div class="resources-grid" id="resourcesGrid"></div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <div class="empty-icon">📚</div>
+    <p>No resources yet. Upload your first material to get started!</p>
+  </div>
+</div>
+
+<script type="module">
+import { getCurrentUser, onAuthChange } from './auth.js';
+
+// Sample resources (will be fetched from Firestore)
+const RESOURCES = [
+  {id:1,title:"Data Structures Complete Notes",desc:"Comprehensive notes covering arrays, linked lists, trees, graphs",type:"notes",subject:"ds",icon:"📝",saved:false},
+  {id:2,title:"Operating Systems by Galvin",desc:"Classic OS textbook with detailed explanations",type:"book",subject:"os",icon:"📖",saved:false},
+  {id:3,title:"NPTEL Algorithms Lectures",desc:"Video lectures from NPTEL covering sorting, searching, DP",type:"video",subject:"algo",icon:"📺",saved:false},
+  {id:4,title:"DBMS Formula Sheet",desc:"All important formulas and concepts in one page",type:"formula",subject:"dbms",icon:"📋",saved:false},
+  {id:5,title:"Network Protocols Handbook",desc:"Complete guide to TCP/IP, DNS, HTTP, SMTP",type:"book",subject:"cn",icon:"📖",saved:false},
+  {id:6,title:"TOC Previous Year Questions",desc:"50+ GATE PYQs on automata and formal languages",type:"pyq",subject:"toc",icon:"🎯",saved:false},
+  {id:7,title:"Graph Algorithms Visualizer Notes",desc:"Visual guide to BFS, DFS, Dijkstra, MST algorithms",type:"notes",subject:"algo",icon:"📝",saved:false},
+  {id:8,title:"Digital Logic Design Reference",desc:"Boolean algebra, logic gates, combinational circuits",type:"formula",subject:"dl",icon:"📋",saved:false},
+];
+
+const CATEGORIES = [
+  {name:"All",count:8},
+  {name:"Notes",count:3},
+  {name:"Books",count:2},
+  {name:"Videos",count:1},
+  {name:"Formulas",count:2},
+];
+
+let currentUser = null;
+let filteredResources = [...RESOURCES];
+
+// Auth check
+onAuthChange(user => {
+  if (!user) {
+    window.location.href = 'login.html';
+  }
+  currentUser = user;
+});
+
+// Render categories
+function renderCategories() {
+  const container = document.getElementById('categoryButtons');
+  container.innerHTML = CATEGORIES.map(cat => 
+    `<button class="cat-btn" onclick="filterByCategory('${cat.name}')">${cat.name} (${cat.count})</button>`
+  ).join('');
+}
+
+// Render resources
+function renderResources() {
+  const grid = document.getElementById('resourcesGrid');
+  const empty = document.getElementById('emptyState');
+  
+  if (filteredResources.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  
+  grid.style.display = 'grid';
+  empty.style.display = 'none';
+  
+  grid.innerHTML = filteredResources.map(r => `
+    <div class="resource-card">
+      <div class="resource-header">
+        <div class="resource-icon">${r.icon}</div>
+        <div class="resource-info">
+          <h3>${r.title}</h3>
+          <p>${r.subject.toUpperCase()}</p>
+        </div>
+      </div>
+      <div class="resource-body">
+        <p class="resource-desc">${r.desc}</p>
+        <div class="resource-meta">
+          <span class="meta-tag">${r.type}</span>
+          <span class="meta-tag">${r.subject.toUpperCase()}</span>
+        </div>
+        <div class="resource-footer">
+          <button class="res-btn" onclick="viewResource(${r.id})">📖 View</button>
+          <button class="res-btn" onclick="saveResource(${r.id})">${r.saved ? '❤️ Saved' : '🤍 Save'}</button>
+          <button class="res-btn" onclick="shareResource(${r.id})">📤 Share</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  
+  updateStats();
+}
+
+// Filter functions
+window.filterByCategory = function(cat) {
+  if (cat === 'All') {
+    filteredResources = [...RESOURCES];
+  } else {
+    filteredResources = RESOURCES.filter(r => r.type.toLowerCase() === cat.toLowerCase());
+  }
+  renderResources();
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  const query = e.target.value.toLowerCase();
+  filteredResources = RESOURCES.filter(r => 
+    r.title.toLowerCase().includes(query) || 
+    r.desc.toLowerCase().includes(query)
+  );
+  renderResources();
+});
+
+document.getElementById('subjectFilter').addEventListener('change', e => {
+  applyFilters();
+});
+
+document.getElementById('typeFilter').addEventListener('change', e => {
+  applyFilters();
+});
+
+function applyFilters() {
+  const subject = document.getElementById('subjectFilter').value;
+  const type = document.getElementById('typeFilter').value;
+  
+  filteredResources = RESOURCES.filter(r => 
+    (!subject || r.subject === subject) &&
+    (!type || r.type === type)
+  );
+  renderResources();
+}
+
+// Resource actions
+window.viewResource = function(id) {
+  alert(`Opening resource ${id}...`);
+  // Will integrate with actual PDF viewer
+}
+
+window.saveResource = function(id) {
+  const resource = RESOURCES.find(r => r.id === id);
+  if (resource) {
+    resource.saved = !resource.saved;
+    renderResources();
+  }
+}
+
+window.shareResource = function(id) {
+  alert(`Share resource ${id} link...`);
+  // Will generate shareable link
+}
+
+function updateStats() {
+  document.getElementById('totalResources').textContent = RESOURCES.length;
+  document.getElementById('totalMaterials').textContent = RESOURCES.filter(r => r.type !== 'book').length;
+  document.getElementById('totalSaved').textContent = RESOURCES.filter(r => r.saved).length;
+}
+
+// File upload
+document.getElementById('fileUpload').addEventListener('change', e => {
+  const files = e.target.files;
+  console.log(`Uploading ${files.length} files...`);
+  // Will integrate with Firebase Storage
+  alert(`Uploading ${files.length} files to cloud...`);
+});
+
+// Initial render
+renderCategories();
+renderResources();
+</script>
+</body>
+</html>
