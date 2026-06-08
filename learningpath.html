@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 Learning Path — CoreCSE GATE 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s:#12121a;--s2:#1a1a26;--b:#2a2a3d;--acc:#7c6aff;--g:#4fffb0;--y:#ffd166;--r:#ff6a6a;--t:#e8e8f0;--m:#6b6b8a;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--b);background:rgba(10,10,15,.97);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--acc);text-decoration:none;}.logo span{color:var(--t);}
+.nav-r{display:flex;gap:.8rem;}
+.nav-r a{font-family:var(--mono);font-size:.75rem;color:var(--m);text-decoration:none;border:1px solid var(--b);padding:.3rem .7rem;border-radius:4px;transition:all .2s;}
+.nav-r a:hover{border-color:var(--acc);color:var(--acc);}
+.page{max-width:1100px;margin:0 auto;padding:2rem;}
+
+h1{font-size:1.8rem;font-weight:800;margin-bottom:.3rem;}
+.sub{color:var(--m);font-size:.88rem;margin-bottom:2rem;}
+
+/* STEPPER */
+.stepper{display:flex;gap:1rem;margin-bottom:2rem;overflow-x:auto;}
+.step{display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+.step-circle{width:40px;height:40px;border-radius:50%;background:var(--s2);border:2px solid var(--b);display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--mono);}
+.step.active .step-circle{background:var(--acc);color:#fff;border-color:var(--acc);}
+.step.completed .step-circle{background:var(--g);color:#0a0a0f;border-color:var(--g);}
+.step-line{width:30px;height:2px;background:var(--b);}
+.step-label{font-size:.75rem;color:var(--m);font-family:var(--mono);}
+
+/* FORMS */
+.form{display:none;animation:slideIn .3s ease-out;}
+.form.active{display:block;}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.form-group{margin-bottom:1.5rem;}
+label{display:block;font-weight:700;margin-bottom:.5rem;color:var(--t);}
+.form-group p{font-size:.85rem;color:var(--m);margin-bottom:.8rem;}
+
+input[type="date"],input[type="number"],select{width:100%;padding:.8rem;border:1px solid var(--b);border-radius:8px;background:var(--s2);color:var(--t);font-family:var(--sans);transition:border .2s;}
+input:focus,select:focus{outline:none;border-color:var(--acc);}
+
+.checkbox-group{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;}
+.checkbox-label{display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem;border:1px solid var(--b);border-radius:8px;transition:all .2s;}
+.checkbox-label:hover{border-color:var(--acc);}
+.checkbox-label input{margin:0;width:auto;}
+input[type="checkbox"]:checked + span{color:var(--acc);}
+
+.subject-chips{display:flex;gap:.6rem;flex-wrap:wrap;}
+.chip{padding:.5rem 1rem;border:2px solid var(--b);border-radius:20px;background:var(--s2);color:var(--m);cursor:pointer;font-size:.8rem;font-family:var(--mono);transition:all .2s;}
+.chip:hover{border-color:var(--acc);}
+.chip.selected{background:var(--acc);border-color:var(--acc);color:#fff;}
+
+.slider-group{margin:1.5rem 0;}
+.slider-label{display:flex;justify-content:space-between;margin-bottom:.5rem;font-size:.85rem;}
+input[type="range"]{width:100%;cursor:pointer;}
+
+/* PREVIEW & OUTPUT */
+.path-preview{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:1.5rem;margin-top:1.5rem;}
+.week-card{background:var(--s2);border-left:4px solid var(--acc);border-radius:8px;padding:1rem;margin-bottom:1rem;}
+.week-title{font-weight:700;margin-bottom:.5rem;color:var(--g);}
+.day-item{display:flex;align-items:center;gap:.5rem;padding:.4rem;font-size:.85rem;color:var(--m);}
+.day-item strong{color:var(--t);}
+
+.buttons{display:flex;gap:1rem;margin-top:2rem;}
+.btn{flex:1;padding:.8rem;border:none;border-radius:8px;font-family:var(--mono);font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-primary{background:var(--acc);color:#fff;}
+.btn-primary:hover{opacity:.9;}
+.btn-secondary{background:var(--s2);color:var(--m);border:1px solid var(--b);}
+.btn-secondary:hover{border-color:var(--acc);color:var(--acc);}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem;}
+.stat{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:1rem;text-align:center;}
+.stat-num{font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--g);}
+.stat-label{font-size:.8rem;color:var(--m);margin-top:.3rem;}
+
+@media(max-width:768px){
+  .page{padding:1rem;}
+  .stepper{flex-wrap:wrap;gap:.5rem;}
+  .step-line{display:none;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">C²&nbsp;<span>CoreCSE</span></a>
+  <div class="nav-r">
+    <a href="index.html">← Home</a>
+    <a href="library.html">📚 Library</a>
+    <a href="conceptmap.html">🗺️ Concept Map</a>
+  </div>
+</nav>
+
+<div class="page">
+  <h1>🎯 Generate Your Learning Path</h1>
+  <p class="sub">Create a personalized study plan based on your goals, time, and current level.</p>
+
+  <!-- STEPPER -->
+  <div class="stepper">
+    <div class="step active" id="step1-indicator">
+      <div class="step-circle">1</div>
+      <div class="step-label">Goals</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step2-indicator">
+      <div class="step-circle">2</div>
+      <div class="step-label">Timeline</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step3-indicator">
+      <div class="step-circle">3</div>
+      <div class="step-label">Subjects</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step4-indicator">
+      <div class="step-circle">4</div>
+      <div class="step-label">Preview</div>
+    </div>
+  </div>
+
+  <!-- FORM STEPS -->
+  
+  <!-- STEP 1: GOALS -->
+  <div class="form active" id="step1">
+    <div class="form-group">
+      <label>What's your target AIR rank?</label>
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="radio" name="goal" value="air100" onchange="updatePath()"> <span>AIR < 100</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="radio" name="goal" value="air500" checked onchange="updatePath()"> <span>AIR < 500</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="radio" name="goal" value="qualify" onchange="updatePath()"> <span>Just Qualify</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Current GATE prep level?</label>
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="radio" name="level" value="beginner" checked onchange="updatePath()"> <span>Beginner</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="radio" name="level" value="intermediate" onchange="updatePath()"> <span>Intermediate</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="radio" name="level" value="advanced" onchange="updatePath()"> <span>Advanced</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-primary" onclick="nextStep()">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: TIMELINE -->
+  <div class="form" id="step2">
+    <div class="form-group">
+      <label>GATE exam date:</label>
+      <input type="date" id="examDate" onchange="updatePath()" value="2027-01-30">
+    </div>
+
+    <div class="form-group">
+      <label>Study hours per day:</label>
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Flexible (1-2 hrs)</span>
+          <strong id="hoursDisplay">2</strong> hours
+        </div>
+        <input type="range" id="hoursPerDay" min="1" max="8" value="2" onchange="updatePath()">
+        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--m);margin-top:.3rem;">
+          <span>1 hr</span><span>4 hrs</span><span>8 hrs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Availability:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="weekday" checked> <span>Weekdays</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="weekend" checked> <span>Weekends</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+      <button class="btn btn-primary" onclick="nextStep()">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: SUBJECTS -->
+  <div class="form" id="step3">
+    <div class="form-group">
+      <label>Select subjects to focus on:</label>
+      <p>(Default weightage: OS=9%, DS=13%, Algo=13%, DBMS=9%, CN=8%, TOC=10%, DL=7%, DM=8%, COA=8%, CD=6%)</p>
+      <div class="subject-chips">
+        <button class="chip selected" onclick="toggleSubject('os', this)">OS</button>
+        <button class="chip selected" onclick="toggleSubject('ds', this)">DS</button>
+        <button class="chip selected" onclick="toggleSubject('algo', this)">Algo</button>
+        <button class="chip selected" onclick="toggleSubject('dbms', this)">DBMS</button>
+        <button class="chip selected" onclick="toggleSubject('cn', this)">CN</button>
+        <button class="chip selected" onclick="toggleSubject('toc', this)">TOC</button>
+        <button class="chip selected" onclick="toggleSubject('dl', this)">DL</button>
+        <button class="chip selected" onclick="toggleSubject('dm', this)">DM</button>
+        <button class="chip selected" onclick="toggleSubject('coa', this)">COA</button>
+        <button class="chip selected" onclick="toggleSubject('cd', this)">CD</button>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+      <button class="btn btn-primary" onclick="nextStep()">Preview Path</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: PREVIEW -->
+  <div class="form" id="step4">
+    <div class="stats" id="pathStats"></div>
+    
+    <h2 style="font-size:1.2rem;margin-bottom:1rem;">Your 12-Week Study Path</h2>
+    <div class="path-preview" id="pathPreview"></div>
+
+    <div class="buttons">
+      <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+      <button class="btn btn-primary" onclick="saveAndDownload()">📥 Save & Download</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentStep = 1;
+let selectedSubjects = ['os', 'ds', 'algo', 'dbms', 'cn', 'toc', 'dl', 'dm', 'coa', 'cd'];
+
+const SUBJECT_WEIGHTS = {
+  os: 9, ds: 13, algo: 13, dbms: 9, cn: 8, toc: 10, dl: 7, dm: 8, coa: 8, cd: 6
+};
+
+const SUBJECT_TOPICS = {
+  os: ['Process Management', 'Memory Management', 'CPU Scheduling', 'Synchronization', 'Deadlock', 'File System'],
+  ds: ['Arrays', 'Linked Lists', 'Stacks', 'Queues', 'Trees', 'BST', 'AVL', 'Heaps', 'Hashing'],
+  algo: ['Sorting', 'Searching', 'Recursion', 'Divide & Conquer', 'Greedy', 'Dynamic Programming'],
+  dbms: ['Relations', 'Normalization', 'SQL', 'Transactions', 'Indexing', 'Query Optimization'],
+  cn: ['OSI Model', 'TCP/IP', 'Routing', 'DNS', 'SMTP', 'HTTP'],
+  toc: ['Automata', 'Regular Expressions', 'Context Free Grammar', 'Pushdown Automata', 'Turing Machines'],
+  dl: ['Boolean Algebra', 'Logic Gates', 'Combinational Circuits', 'Sequential Circuits', 'Counters'],
+  dm: ['Set Theory', 'Relations', 'Functions', 'Combinatorics', 'Graph Theory'],
+  coa: ['Number Systems', 'ALU', 'CPU', 'Memory Hierarchy', 'Pipeline', 'Cache'],
+  cd: ['Lexical Analysis', 'Parsing', 'Semantic Analysis', 'Code Generation']
+};
+
+function nextStep() {
+  if (currentStep < 4) {
+    if (currentStep === 3) {
+      generatePath();
+    }
+    showStep(currentStep + 1);
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) {
+    showStep(currentStep - 1);
+  }
+}
+
+function showStep(step) {
+  document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
+  document.getElementById(`step${step}`).classList.add('active');
+  
+  // Update stepper
+  document.querySelectorAll('.step').forEach((s, i) => {
+    s.classList.remove('active', 'completed');
+    if (i + 1 === step) s.classList.add('active');
+    else if (i + 1 < step) s.classList.add('completed');
+  });
+  
+  currentStep = step;
+}
+
+window.toggleSubject = function(subject, btn) {
+  const idx = selectedSubjects.indexOf(subject);
+  if (idx > -1) {
+    selectedSubjects.splice(idx, 1);
+  } else {
+    selectedSubjects.push(subject);
+  }
+  btn.classList.toggle('selected');
+  updatePath();
+}
+
+function generatePath() {
+  const hoursPerDay = parseInt(document.getElementById('hoursPerDay').value);
+  const examDate = new Date(document.getElementById('examDate').value);
+  const startDate = new Date();
+  const daysAvailable = Math.floor((examDate - startDate) / (1000 * 60 * 60 * 24));
+  const weeksAvailable = Math.floor(daysAvailable / 7);
+  
+  // Calculate total study hours needed
+  const totalHoursNeeded = weeksAvailable * hoursPerDay * 6; // 6 days/week
+  
+  // Distribute across subjects
+  const totalWeight = selectedSubjects.reduce((sum, s) => sum + SUBJECT_WEIGHTS[s], 0);
+  const hoursPerSubject = selectedSubjects.map(s => ({
+    subject: s,
+    hours: Math.round((SUBJECT_WEIGHTS[s] / totalWeight) * totalHoursNeeded)
+  }));
+  
+  // Generate week-by-week plan
+  let weekPlan = [];
+  for (let week = 1; week <= 12; week++) {
+    let weekTopics = [];
+    hoursPerSubject.forEach(item => {
+      const topicsPerWeek = Math.max(1, Math.floor(item.hours / 12));
+      const startIdx = (week - 1) * topicsPerWeek;
+      const endIdx = startIdx + topicsPerWeek;
+      const topics = SUBJECT_TOPICS[item.subject].slice(startIdx, endIdx);
+      weekTopics.push(...topics.map(t => `${item.subject.toUpperCase()}: ${t}`));
+    });
+    weekPlan.push({week, topics: weekTopics.slice(0, 5)});
+  }
+  
+  // Display stats
+  const statsHTML = `
+    <div class="stat">
+      <div class="stat-num">${weeksAvailable}</div>
+      <div class="stat-label">Weeks Available</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">${hoursPerDay}</div>
+      <div class="stat-label">Hours/Day</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">${totalHoursNeeded}</div>
+      <div class="stat-label">Total Hours</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">${selectedSubjects.length}</div>
+      <div class="stat-label">Subjects</div>
+    </div>
+  `;
+  document.getElementById('pathStats').innerHTML = statsHTML;
+  
+  // Display path
+  const pathHTML = weekPlan.map(w => `
+    <div class="week-card">
+      <div class="week-title">Week ${w.week}</div>
+      ${w.topics.map(t => `<div class="day-item">→ ${t}</div>`).join('')}
+    </div>
+  `).join('');
+  document.getElementById('pathPreview').innerHTML = pathHTML;
+}
+
+function updatePath() {
+  // Real-time updates
+  const hours = document.getElementById('hoursPerDay').value;
+  document.getElementById('hoursDisplay').textContent = hours;
+}
+
+window.saveAndDownload = function() {
+  const path = document.getElementById('pathPreview').innerText;
+  const text = `CORECSE LEARNING PATH - PERSONALIZED STUDY PLAN\n\n${path}\n\nGenerated on: ${new Date().toDateString()}`;
+  const blob = new Blob([text], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'learning-path.txt';
+  a.click();
+  alert('✅ Learning path saved!');
+}
+
+// Update hours display
+document.getElementById('hoursPerDay').addEventListener('input', updatePath);
+</script>
+
+</body>
+</html>
